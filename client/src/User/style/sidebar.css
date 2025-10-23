@@ -1,0 +1,85 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-right: 0.1rem solid #ddd;
+  transition: width 0.3s ease;
+  min-height: 100%;
+  position: relative;
+  top: 50px;
+}
+
+/* Toggle button base */
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  color: #333;
+  font-size: 1.6rem;
+  z-index: 1100;
+  transition: all 0.3s ease-in-out;
+}
+
+/* When collapsed (☰) — aligned with icons */
+.toggle-btn.collapsed {
+  left: 0;
+}
+
+/* When expanded (✕) — top right corner */
+.toggle-btn.expanded {
+  right: 0;
+}
+
+/* Icons and links */
+.nav {
+  margin-top: 4rem; /* push below toggle button */
+}
+
+.nav-link {
+  color: #333;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+/* Responsive widths */
+.sidebar-collapsed {
+  width: 3.75rem; /* ~60px */
+}
+
+.sidebar-expanded {
+  width: 15rem; /* ~240px */
+}
+
+@media (max-width: 576px) and (min-width: 320px) {
+  .sidebar-expanded {
+    width: 30rem;
+  }
+  .sidebar-collapsed {
+    width: 15rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .sidebar-collapsed {
+    width: 0;
+  }
+  .sidebar-expanded {
+    width: 180px;
+  }
+}
+
+@media (max-width: 36rem) {
+  /* ~576px */
+  .sidebar-expanded {
+    width: 10rem;
+  }
+  .sidebar-collapsed {
+    width: 3rem;
+  }
+}
