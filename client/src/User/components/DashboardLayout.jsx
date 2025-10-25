@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import MainContent from "./MainContent";
+import "../Styles/dashboardLayout.css";
 
 export default function DashboardLayout() {
     const navigate = useNavigate();
@@ -13,35 +14,21 @@ export default function DashboardLayout() {
         if (!storedUser) navigate("/login");
     }, [navigate]);
 
-    // Logout handler
-    const handleLogout = () => {
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate("/login");
-    };
-
     return (
-        <>
-            <div className="dashboard-layout d-flex flex-column vh-100">
-                {/* Navbar at top */}
-                <header>
-                    <Navbar handleLogout={handleLogout} />
-                </header>
+        <div className="dashboard-layout">
+            <header className="dashboard-header">
+                <Navbar />
+            </header>
 
-                {/* Body: sidebar + main content */}
-                <div
-                    className="d-flex flex-grow-1"
-                    style={{ minHeight: 'calc(100vh - 3.5rem)' }} // navbar height in rem
-                >
-                    {/* Sidebar */}
+            <div className="dashboard-body">
+                <aside className="dashboard-sidebar">
                     <Sidebar />
+                </aside>
 
-                    {/* Main Content */}
-                    <main className="flex-grow-1 bg-light p-4">
-                        <MainContent />
-                    </main>
-                </div>
+                <main className="dashboard-main">
+                    <MainContent />
+                </main>
             </div>
-        </>
+        </div>
     );
 }

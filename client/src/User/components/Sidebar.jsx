@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../style/sidebar.css";
+import "../Styles/sidebar.css";
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +47,5 @@ export default function Sidebar() {
                 ))}
             </ul>
         </div>
-
-
     );
 }

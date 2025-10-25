@@ -1,9 +1,20 @@
 // Navbar.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-export default function Navbar({ handleLogout }) {
+
+export default function Navbar() {
+    const navigate = useNavigate();
+
+    // Logout handler
+    const handleLogout = () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate("/login");
+    };
+
     return (
         <nav className="navbar navbar-light bg-white shadow-sm px-3 fixed-top" style={{ height: "56px" }}>
             <div className="d-flex align-items-center">
