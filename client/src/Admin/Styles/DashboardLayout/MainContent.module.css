@@ -1,0 +1,25 @@
+.card {
+  cursor: pointer;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.cardBody {
+  padding: 1rem 1.5rem;
+}
+
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

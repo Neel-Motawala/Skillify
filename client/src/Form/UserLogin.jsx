@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../Images/logo.jpg"; // update path as needed
-import "../style/loginForm.css";
+import "./style/loginForm.css";
 
 export default function LoginForm() {
     const [formData, setFormData] = useState({
@@ -29,10 +29,9 @@ export default function LoginForm() {
 
             if (response.data.success) {
                 setMessage({ text: response.data.message, type: "success" });
-                localStorage.setItem("role", JSON.stringify(response.data.role));
-                localStorage.setItem("token", JSON.stringify(response.data.token));
-                localStorage.setItem("userid", JSON.stringify(response.data.userId));
-                localStorage.setItem("userName", JSON.stringify(response.data.userName));
+                localStorage.setItem("role", response.data.role);
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("id", response.data.userId);
                 setTimeout(() => navigate("/"), 1000);
             } else {
                 setMessage({ text: response.data.error || "Login failed.", type: "error" });

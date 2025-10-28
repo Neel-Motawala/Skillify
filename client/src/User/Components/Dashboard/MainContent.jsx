@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../Styles/mainContent.css";
+import styles from "../../Styles/Dashboard/MainContent.module.css";
 
 export default function MainContent() {
     const [courseCards, setCourseCards] = useState([]);
@@ -20,7 +20,7 @@ export default function MainContent() {
     }, []);
 
     return (
-        <div className="main-container container-fluid py-4">
+        <div className={`${styles.mainContainer} container-fluid py-4`}>
             <div className="row g-4">
                 {courseCards.length > 0 ? (
                     courseCards.map((course) => (
@@ -29,25 +29,25 @@ export default function MainContent() {
                             className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
                         >
                             <div
-                                className="course-card card border-0 shadow-sm h-100"
+                                className={`${styles.courseCard} card shadow-sm h-100`}
                                 onClick={() => navigate(`/dashboard/course/${course.id}`)}
                             >
                                 <div className="card-body d-flex align-items-center justify-content-between p-3">
-                                    <div className="course-info flex-grow-1 text-start">
-                                        <h6 className="course-title mb-1 text-truncate">
+                                    <div className="flex-grow-1 text-start">
+                                        <h6 className={`${styles.courseTitle} mb-1 text-truncate`}>
                                             {course.course_name}
                                         </h6>
-                                        <p className="course-subtitle mb-0 text-muted small">
+                                        <p className={`${styles.courseSubtitle} mb-0 small`}>
                                             View Details
                                         </p>
                                     </div>
 
                                     {course.image_url && (
-                                        <div className="course-img-wrapper ms-3">
+                                        <div className={`${styles.courseImgWrapper} ms-3`}>
                                             <img
                                                 src={`http://localhost:5000${course.image_url}`}
                                                 alt={course.course_name}
-                                                className="course-img"
+                                                className={styles.courseImg}
                                             />
                                         </div>
                                     )}

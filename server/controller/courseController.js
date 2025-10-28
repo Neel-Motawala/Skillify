@@ -11,3 +11,21 @@ exports.getCourses = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
+exports.getCourseDetail = async (req, res) => {
+    try {
+        const [results] = await pool.query(
+            "SELECT * FROM course WHERE id = ?",
+            [req.params.id]
+        );
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        res.status(200).json(results[0]); // ✅ Return a single course object
+    } catch (err) {
+        console.error("Get Course Detail Error:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};

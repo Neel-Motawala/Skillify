@@ -1,41 +1,42 @@
-.main-container {
+.mainContainer {
   background-color: #f8f9fa;
   min-height: 100vh;
 }
 
 /* Course Card */
-.course-card {
+.courseCard {
   cursor: pointer;
   border-radius: 0.75rem;
   transition: all 0.3s ease-in-out;
   background-color: #fff;
+  border: none;
 }
 
-.course-card:hover {
+.courseCard:hover {
   transform: translateY(-0.3rem);
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.08);
 }
 
 /* Text */
-.course-title {
+.courseTitle {
   font-weight: 600;
   color: #212529;
   font-size: 1rem;
 }
 
-.course-subtitle {
+.courseSubtitle {
   color: #6c757d;
   font-size: 0.85rem;
 }
 
 /* Image */
-.course-img-wrapper {
+.courseImgWrapper {
   flex-shrink: 0;
   width: 3rem;
   height: 3rem;
 }
 
-.course-img {
+.courseImg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -44,27 +45,27 @@
 
 /* Spacing tweaks for smaller screens */
 @media (max-width: 768px) {
-  .course-card {
+  .courseCard {
     border-radius: 0.6rem;
   }
-  .course-title {
+  .courseTitle {
     font-size: 0.95rem;
   }
-  .course-img-wrapper {
+  .courseImgWrapper {
     width: 2.5rem;
     height: 2.5rem;
   }
 }
 
 @media (max-width: 576px) {
-  .course-card {
+  .courseCard {
     border-radius: 0.5rem;
     padding: 0.6rem;
   }
-  .course-title {
+  .courseTitle {
     font-size: 0.9rem;
   }
-  .course-img-wrapper {
+  .courseImgWrapper {
     width: 2.2rem;
     height: 2.2rem;
   }

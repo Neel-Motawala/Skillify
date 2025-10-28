@@ -1,0 +1,53 @@
+/* Root Navbar */
+.adminNavbar {
+  height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+}
+
+/* Left Section */
+.navbarLeft {
+  display: flex;
+  align-items: center;
+}
+
+.navbarBrandText {
+  color: #007bff;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Right Section */
+.navbarRight {
+  display: flex;
+  align-items: center;
+}
+
+.navbarAvatar {
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.navbarAvatar:hover {
+  transform: scale(1.05);
+}
+
+/* Dropdown overrides */
+:global(.dropdown-menu) {
+  font-size: 0.9rem;
+  min-width: 180px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+:global(.dropdown-item:hover) {
+  background-color: #f1f5ff;
+  color: #007bff;
+}

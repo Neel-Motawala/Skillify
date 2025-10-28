@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../Styles/sidebar.css";
+import styles from "../../Styles/Dashboard/Sidebar.module.css";
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -7,7 +7,6 @@ export default function Sidebar() {
 
     const toggleSidebar = () => setIsOpen(!isOpen);
 
-    // Detect screen size change
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 320);
         window.addEventListener("resize", handleResize);
@@ -16,12 +15,13 @@ export default function Sidebar() {
 
     return (
         <div
-            className={`sidebar ${isOpen ? "sidebar-expanded" : "sidebar-collapsed"} ${isMobile && !isOpen ? "sidebar-hidden" : ""
-                }`}
+            className={`${styles.sidebar} 
+                ${isOpen ? styles.sidebarExpanded : styles.sidebarCollapsed} 
+                ${isMobile && !isOpen ? styles.sidebarHidden : ""}`}
         >
             {/* Toggle Button */}
             <button
-                className={`toggle-btn btn btn-link ${isOpen ? "expanded" : "collapsed"}`}
+                className={`${styles.toggleBtn} ${isOpen ? styles.expanded : styles.collapsed} btn btn-link`}
                 onClick={toggleSidebar}
             >
                 <span className="icon-wrapper">
@@ -29,9 +29,8 @@ export default function Sidebar() {
                 </span>
             </button>
 
-
             {/* Sidebar Menu */}
-            <ul className="nav flex-column">
+            <ul className={`nav flex-column ${styles.nav}`}>
                 {[
                     { icon: "bi-speedometer2", label: "Overview", href: "#overview" },
                     { icon: "bi-graph-up", label: "Reports", href: "#reports" },
@@ -39,7 +38,7 @@ export default function Sidebar() {
                     { icon: "bi-gear", label: "Settings", href: "#settings" },
                 ].map((item) => (
                     <li key={item.label} className="nav-item mb-3 me-3">
-                        <a href={item.href} className="nav-link d-flex align-items-center">
+                        <a href={item.href} className={`${styles.navLink} d-flex align-items-center`}>
                             <i className={`bi ${item.icon} fs-4`}></i>
                             {isOpen && <span className="ms-2">{item.label}</span>}
                         </a>

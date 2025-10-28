@@ -1,0 +1,145 @@
+/* Base layout */
+.adminSidebar {
+  position: fixed;
+  top: 56px; /* offset = navbar height */
+  left: 0;
+  height: calc(100vh - 56px); /* fill remaining height */
+  background: #1e1e2f;
+  color: #fff;
+  transition: width 0.3s ease-in-out;
+  overflow-y: auto;
+  z-index: 1000; /* below navbar */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Width states */
+.expanded {
+  width: 220px;
+}
+
+.collapsed {
+  width: 70px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Sidebar header */
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Toggle button */
+.toggleBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.toggleBtn:hover {
+  transform: scale(1.1);
+}
+
+/* Title */
+.sidebarTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin: 0;
+  margin-left: 0.6rem;
+}
+
+/* Menu */
+.sidebarMenu {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.sidebarItem {
+  margin-bottom: 5px;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: #b8b8d1;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out,
+    padding-left 0.2s ease-in-out;
+}
+
+.sidebarLink i {
+  font-size: 1.2rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.sidebarLink span {
+  margin-left: 10px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* Hover / active state */
+.sidebarLink:hover,
+.sidebarLinkActive {
+  background: #2f2f4f;
+  color: #fff;
+  border-left: 4px solid #007bff;
+  padding-left: calc(1rem - 4px);
+}
+
+/* Scroll handling */
+.adminSidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.adminSidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.adminSidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .adminSidebar {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  }
+
+  .expanded {
+    transform: translateX(0);
+  }
+
+  .collapsed {
+    transform: translateX(-100%);
+  }
+
+  .hidden {
+    display: none;
+  }
+}
