@@ -46,13 +46,18 @@ exports.loginUser = async (req, res) => {
         const user = rows[0];
 
         if (!user) {
-            return res.status(400).json({ success: false, error: "User Not Found or Invalid Username" });
+            return res.status(400).json({ success: false, error: "User not found or invalid username." });
+        }
+
+        // Check user status
+        if (user.status !== "Active") {
+            return res.status(403).json({ success: false, error: "User account is not active, Contact to Admin" });
         }
 
         // Compare password
         const isMatch = await bcrypt.compare(user_password, user.user_password);
         if (!isMatch) {
-            return res.status(400).json({ success: false, error: "Invalid Username or password. " });
+            return res.status(400).json({ success: false, error: "Invalid username or password." });
         }
 
         // Generate token
@@ -76,6 +81,7 @@ exports.loginUser = async (req, res) => {
         return res.status(500).json({ success: false, error: err.message || "Internal server error." });
     }
 };
+
 
 
 exports.adminLogin = async (req, res) => {

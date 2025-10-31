@@ -1,0 +1,96 @@
+.pageContainer {
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #e9ecef;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #212529;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #dee2e6;
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
+}
+
+.noData {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imageWrapper {
+  height: 160px;
+  background-color: #f1f3f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.cardBody {
+  padding: 1rem;
+}
+
+.courseTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+.courseDesc {
+  font-size: 0.95rem;
+  color: #6c757d;
+  line-height: 1.4;
+}

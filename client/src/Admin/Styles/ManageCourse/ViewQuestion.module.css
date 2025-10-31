@@ -1,0 +1,91 @@
+.container {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Back Button */
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #0d6efd;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.backBtn i {
+  font-size: 1.3rem;
+}
+
+.backBtn:hover {
+  color: #0a58ca;
+}
+
+.pageTitle {
+  font-weight: 700;
+  color: #0d6efd;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* in your .module.css file */
+.infoBox {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.infoBox p {
+  margin: 0.4rem 0;
+}
+
+/* Questions Section */
+.questionSection {
+  margin-top: 1.5rem;
+}
+
+.sectionTitle {
+  color: #0d6efd;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.questionList {
+  list-style: none;
+  padding: 0;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+}
+
+.questionItem {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  transition: background 0.2s ease;
+}
+
+.questionItem:hover {
+  background: #e9ecef;
+}
+
+.questionItem:last-child {
+  border-bottom: none;
+}
+
+.noQuestions {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  margin-top: 1rem;
+}
+

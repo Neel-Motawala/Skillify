@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// Placeholder for course controller functions
-const { getCourses, getCourseDetail } = require('../controller/courseController');
+const { getCourses, getCourseDetail, getCourseCount } = require('../controller/courseController');
 
-
+// ✅ Order matters — specific routes first
+router.get('/count', getCourseCount);
 router.get('/', getCourses);
 router.get('/:id', getCourseDetail);
 

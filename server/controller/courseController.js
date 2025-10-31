@@ -29,3 +29,13 @@ exports.getCourseDetail = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
+exports.getCourseCount = async (req, res) => {
+    try {
+        const [results] = await pool.query("SELECT COUNT(*) AS count FROM course");
+        res.json({ count: results[0].count });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};

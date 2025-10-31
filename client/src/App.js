@@ -10,6 +10,9 @@ import RegisterForm from "./Form/UserRegistration";
 // Admin Pages 
 import AdminDashboardLayout from "./Admin/Pages/DashboardLayout";
 import ViewUsers from "./Admin/Pages/Users";
+import ViewCourses from "./Admin/Pages/ViewCourses";
+import ManageCourse from "./Admin/Pages/ManageCourse";
+import AddQuestions from "./Admin/Pages/AddQuestions";
 
 // User Pages 
 import UserDashboard from "./User/Pages/Dashboard";
@@ -45,11 +48,14 @@ function App() {
           {/* ---------- Admin Routes ---------- */}
           <Route path="/admin-dashboard" element={<ProtectedRoute role="admin"><AdminDashboardLayout /></ProtectedRoute>} />
           <Route path="/admin-dashboard/view-users" element={<ProtectedRoute role="admin"><ViewUsers /></ProtectedRoute>} />
+          <Route path="/admin-dashboard/manage-courses" element={<ProtectedRoute role="admin"><ViewCourses /></ProtectedRoute>} />
+          <Route path="/admin-dashboard/manage-courses/:id" element={<ProtectedRoute role="admin"><ManageCourse /></ProtectedRoute>} />
+          <Route path="/admin-dashboard/manage-courses/:id/add" element={<ProtectedRoute role="admin"><AddQuestions /></ProtectedRoute>} />
 
 
           {/* ---------- User Routes ---------- */}
           <Route path="/" element={<ProtectedRoute role="user"><UserDashboard /></ProtectedRoute>} />
-          <Route path="/dashboard/course/:CId" element={<ProtectedRoute role="user"><CourseDetail /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:id" element={<ProtectedRoute role="user"><CourseDetail /></ProtectedRoute>} />
 
 
           {/* ---------- Fallback ---------- */}

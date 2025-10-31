@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../Images/logo.jpg"; // update path as needed
@@ -22,10 +22,7 @@ export default function LoginForm() {
         setMessage({ text: "", type: "" });
 
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login-user", {
-                user_name: formData.user_name,
-                user_password: formData.user_password,
-            });
+            const response = await axios.post("http://localhost:5000/api/auth/login-user", formData);
 
             if (response.data.success) {
                 setMessage({ text: response.data.message, type: "success" });
@@ -37,13 +34,24 @@ export default function LoginForm() {
                 setMessage({ text: response.data.error || "Login failed.", type: "error" });
             }
         } catch (error) {
-            if (error.response?.data?.error) {
-                setMessage({ text: error.response.data.error, type: "error" });
-            } else {
-                setMessage({ text: "An error occurred. Please try again.", type: "error" });
-            }
+            setMessage({
+                text: error.response?.data?.error || "An error occurred. Please try again.",
+                type: "error",
+            });
         }
     };
+
+    // Auto-hide message after 3 seconds
+    useEffect(() => {
+        if (message.text) {
+            const timer = setTimeout(() => {
+                // Start fade-out before removal
+                const fadeTimer = setTimeout(() => setMessage({ text: "", type: "" }), 500);
+                return () => clearTimeout(fadeTimer);
+            }, 2500); // total ~3s visible (2.5s show + 0.5s fade)
+            return () => clearTimeout(timer);
+        }
+    }, [message.text]);
 
     return (
         <div
@@ -82,11 +90,12 @@ export default function LoginForm() {
                         {message.text && (
                             <div
                                 className={`alert text-center py-2 ${message.type === "success" ? "alert-success" : "alert-danger"
-                                    }`}
+                                    } ${!message.text ? "hide" : ""}`}
                             >
                                 {message.text}
                             </div>
                         )}
+
 
                         <form onSubmit={handleSubmit} className="w-100 text-start">
                             <div className="mb-3">
