@@ -5,33 +5,27 @@ exports.getStage = async (req, res) => {
     const { type } = req.query;
 
     try {
-        // fetch stages for a specific course and type
         const [rows] = await pool.query(
-            `SELECT q.stage, qt.type AS type
-            FROM questions q
-            JOIN question_type qt ON q.type = qt.id
-            WHERE q.course_id = ? AND LOWER(qt.type) = LOWER(?)
-            GROUP BY q.stage, qt.type`,
+            `SELECT stage, type 
+            FROM questions 
+            WHERE course_id = ? AND LOWER(type) = LOWER(?) 
+            GROUP BY stage, type`,
             [courseId, type]
         );
 
-
         res.json(rows);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error fetching stages' });
+        console.error("Error fetching stages:", error);
+        res.status(500).json({ message: "Error fetching stages" });
     }
 };
+
 
 exports.getQuestions = async (req, res) => {
     const { courseId } = req.params;
     const { type, stage } = req.query;
 
-    // Map string type to numeric ID
-    const typeMap = { mcq: 1, theory: 2 };
-    const typeId = typeMap[type?.toLowerCase()] || null;
-
-    if (!typeId) {
+    if (!type || !["mcq", "theory", "code"].includes(type.toLowerCase())) {
         return res.status(400).json({ error: "Invalid question type" });
     }
 
@@ -39,10 +33,10 @@ exports.getQuestions = async (req, res) => {
         // Fetch base questions
         const [questions] = await pool.query(
             "SELECT * FROM questions WHERE course_id = ? AND type = ? AND stage = ?",
-            [courseId, typeId, stage]
+            [courseId, type.toLowerCase(), stage]
         );
 
-        if (typeId === 1) {
+        if (type.toLowerCase() === "mcq") {
             // MCQ type
             for (const q of questions) {
                 const [options] = await pool.query(
@@ -51,7 +45,7 @@ exports.getQuestions = async (req, res) => {
                 );
                 q.options = options;
             }
-        } else if (typeId === 2) {
+        } else if (type.toLowerCase() === "theory") {
             // Theory type
             for (const q of questions) {
                 const [ans] = await pool.query(
@@ -70,6 +64,7 @@ exports.getQuestions = async (req, res) => {
 };
 
 
+
 exports.addMCQ = async (req, res) => {
     const { course_id, stage, question, options, answer } = req.body;
 
@@ -77,7 +72,7 @@ exports.addMCQ = async (req, res) => {
         // Step 1: Insert question into "questions" table
         const [questionResult] = await pool.query(
             "INSERT INTO questions (course_id, question, type, stage, created_at) VALUES (?, ?, ?, ?, NOW())",
-            [course_id, question, 1, stage] // 1 = MCQ type
+            [course_id, question, "mcq", stage] // 1 = MCQ type
         );
 
         const questionId = questionResult.insertId;
@@ -110,7 +105,7 @@ exports.addTheory = async (req, res) => {
         // Insert into questions table
         const [questionResult] = await pool.query(
             "INSERT INTO questions (course_id, question, type, stage, created_at) VALUES (?, ?, ?, ?, NOW())",
-            [course_id, question, 2, stage]
+            [course_id, question, "theory", stage]
         );
 
         const question_id = questionResult.insertId;

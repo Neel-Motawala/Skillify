@@ -17,6 +17,10 @@ import AddQuestions from "./Admin/Pages/AddQuestions";
 // User Pages 
 import UserDashboard from "./User/Pages/Dashboard";
 import CourseDetail from "./User/Pages/CourseDetail";
+import TestPage from "./User/Pages/TestPage";
+import MyActivity from "./User/Pages/MyActivity";
+import PreviewPage from "./User/Pages/PreviewPage";
+import ViewResult from "./User/Pages/ViewResult";
 
 function App() {
   // ✅ ProtectedRoute with role verification
@@ -56,6 +60,10 @@ function App() {
           {/* ---------- User Routes ---------- */}
           <Route path="/" element={<ProtectedRoute role="user"><UserDashboard /></ProtectedRoute>} />
           <Route path="/dashboard/course/:id" element={<ProtectedRoute role="user"><CourseDetail /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:id/test/:userTestId" element={<ProtectedRoute role="user"><TestPage /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:id/test/:userTestId/preview" element={<ProtectedRoute role="user"><PreviewPage /></ProtectedRoute>} />
+          <Route path="/dashboard/activity" element={<ProtectedRoute role="user"><MyActivity /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:id/result/:userTestId" element={<ProtectedRoute role="user"><ViewResult /></ProtectedRoute>} />
 
 
           {/* ---------- Fallback ---------- */}

@@ -1,0 +1,79 @@
+.activityContainer {
+  background-color: #f8f9fb;
+  min-height: 100vh;
+}
+
+.testCard {
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.testCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.completed {
+  background-color: #e8f8f0;
+  color: #198754;
+}
+
+.inProgress {
+  background-color: #fff5e5;
+  color: #ff9800;
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statusList {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.testCount {
+  font-size: 0.9rem;
+  background-color: #e9ecef;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.backButton {
+  border: none;
+  background: #f0f2f5;
+  color: #333;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: #e0e3e7;
+  color: #000;
+}
+
+.testCount {
+  font-size: 0.9rem;
+  background-color: #e9ecef;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 500;
+}

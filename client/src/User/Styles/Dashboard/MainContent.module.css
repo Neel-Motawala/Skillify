@@ -1,72 +1,103 @@
 .mainContainer {
-  background-color: #f8f9fa;
   min-height: 100vh;
+  background-color: #f9fafc;
+  font-family: "Inter", sans-serif;
 }
 
-/* Course Card */
+/* === User Option Section === */
+/* === User Option Section (Full Width Grid) === */
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.optionCard {
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.optionCard:hover {
+  transform: translateY(-4px);
+  border-color: #3182ce;
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15);
+}
+
+.optionIcon {
+  font-size: 1.8rem;
+  color: #3182ce;
+  margin-bottom: 0.5rem;
+}
+
+.optionText {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2d3748;
+  text-align: center;
+}
+
+/* === Course Cards === */
 .courseCard {
   cursor: pointer;
-  border-radius: 0.75rem;
-  transition: all 0.3s ease-in-out;
-  background-color: #fff;
-  border: none;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
 }
 
 .courseCard:hover {
-  transform: translateY(-0.3rem);
-  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+  border-color: #3182ce;
 }
 
-/* Text */
 .courseTitle {
-  font-weight: 600;
-  color: #212529;
   font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
 }
 
 .courseSubtitle {
-  color: #6c757d;
   font-size: 0.85rem;
+  color: #718096;
 }
 
-/* Image */
 .courseImgWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
   flex-shrink: 0;
-  width: 3rem;
-  height: 3rem;
 }
 
 .courseImg {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  border-radius: 0.5rem;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-/* Spacing tweaks for smaller screens */
+/* === Responsive === */
 @media (max-width: 768px) {
-  .courseCard {
-    border-radius: 0.6rem;
+  .optionGrid {
+    justify-content: center;
   }
-  .courseTitle {
-    font-size: 0.95rem;
-  }
-  .courseImgWrapper {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-}
 
-@media (max-width: 576px) {
+  .optionCard {
+    width: 45%;
+    height: 110px;
+  }
+
   .courseCard {
-    border-radius: 0.5rem;
-    padding: 0.6rem;
-  }
-  .courseTitle {
-    font-size: 0.9rem;
-  }
-  .courseImgWrapper {
-    width: 2.2rem;
-    height: 2.2rem;
+    margin-bottom: 1rem;
   }
 }

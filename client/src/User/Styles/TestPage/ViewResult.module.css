@@ -1,0 +1,106 @@
+.resultContainer {
+  width: 90%;
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.heading {
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.backButton {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.backButton:hover {
+  background: #0056b3;
+}
+
+.resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.resultTable th,
+.resultTable td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 10px;
+  text-align: left;
+}
+
+.resultTable th {
+  background: #f5f6f8;
+  font-weight: 600;
+  color: #333;
+}
+
+.resultTable tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.resultTable tr:hover {
+  background: #f1f5ff;
+}
+
+.question {
+  font-weight: 500;
+  color: #222;
+}
+
+.correctBadge {
+  background: #28a745;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.wrongBadge {
+  background: #dc3545;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.theoryBadge {
+  background: #6c757d;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.loading,
+.error,
+.noData {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.1rem;
+  color: #555;
+}

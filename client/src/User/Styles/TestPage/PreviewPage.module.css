@@ -1,0 +1,85 @@
+.previewContainer {
+  padding: 30px;
+  background-color: #f9fafc;
+  min-height: 100vh;
+}
+
+.previewContainer h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.previewTable th,
+.previewTable td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+}
+
+.previewTable th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 500;
+}
+
+.dropdown {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}
+
+.textarea:focus,
+.dropdown:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.successMessage {
+  margin-top: 15px;
+  text-align: center;
+  color: #28a745;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.submitButton {
+  display: block;
+  margin: 25px auto 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}

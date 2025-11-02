@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../../Styles/CourseDetail/TestOption.module.css";
 
@@ -9,12 +10,16 @@ export default function TestOption({ courseId, courseName }) {
     const [confirmModal, setConfirmModal] = useState(false);
     const [selectedStage, setSelectedStage] = useState(null);
     const [testMode, setTestMode] = useState("");
+    const navigate = useNavigate();
 
     const options = [
         { label: "MCQs", value: "mcq" },
         { label: "Theory", value: "theory" },
         { label: "Code", value: "code" },
     ];
+
+    // Example: replace with actual logged-in user ID
+    const userId = localStorage.getItem("user_id") || 1;
 
     const fetchStages = async (type) => {
         try {
@@ -55,6 +60,37 @@ export default function TestOption({ courseId, courseName }) {
         setConfirmModal(false);
         setTestMode("");
     };
+
+    // Handle start test and insert entries
+    const handleStartTest = async () => {
+        try {
+            const testRes = await axios.post("http://localhost:5000/api/user-test/start", {
+                user_id: userId,
+                course_id: courseId,
+                test_type: selected,
+                test_mode: testMode,
+                stage: selectedStage,
+            });
+
+            const userTestId = testRes.data.user_test_id;
+
+            // Call second API to mark "in_progress"
+            await axios.post("http://localhost:5000/api/user-test/progress", {
+                user_test_id: userTestId,
+            });
+
+            alert("Test started successfully!");
+            setConfirmModal(false);
+
+            // Redirect to test page
+            navigate(`/dashboard/course/${courseId}/test/${userTestId}`);
+        } catch (err) {
+            console.error("Error starting test:", err);
+            alert("Failed to start test. Please try again.");
+        }
+    };
+
+
 
     return (
         <div>
@@ -102,13 +138,13 @@ export default function TestOption({ courseId, courseName }) {
                         <div className={styles.modalActions}>
                             <button
                                 className={styles.practiceBtn}
-                                onClick={() => handleModeSelect("Practice Test")}
+                                onClick={() => handleModeSelect("Practice")}
                             >
                                 Practice Test
                             </button>
                             <button
                                 className={styles.practiceBtn}
-                                onClick={() => handleModeSelect("Attempt Test")}
+                                onClick={() => handleModeSelect("Attempt")}
                             >
                                 Attempt Test
                             </button>
@@ -136,7 +172,7 @@ export default function TestOption({ courseId, courseName }) {
                         <div className={styles.modalActions}>
                             <button
                                 className={`${styles.btn} ${styles.startBtn}`}
-                                onClick={() => alert("Test Started!")}
+                                onClick={handleStartTest}
                             >
                                 Start Test
                             </button>

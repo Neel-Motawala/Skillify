@@ -19,8 +19,31 @@ export default function MainContent() {
         fetchCourses();
     }, []);
 
+    const userOptions = [
+        { title: "My Progress", icon: "bi-graph-up", route: "/dashboard/progress" },
+        { title: "Profile", icon: "bi-person", route: "/dashboard/profile" },
+        { title: "My Activity", icon: "bi-clock-history", route: "/dashboard/activity" },
+        { title: "Achievements", icon: "bi-award", route: "/dashboard/achievements" },
+        { title: "Settings", icon: "bi-gear", route: "/dashboard/settings" },
+    ];
+
     return (
         <div className={`${styles.mainContainer} container-fluid py-4`}>
+            {/* User Options Section */}
+            <div className={`${styles.optionGrid} mb-4`}>
+                {userOptions.map((opt, idx) => (
+                    <div
+                        key={idx}
+                        className={styles.optionCard}
+                        onClick={() => navigate(opt.route)}
+                    >
+                        <i className={`bi ${opt.icon} ${styles.optionIcon}`}></i>
+                        <p className={styles.optionText}>{opt.title}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* Course List Section */}
             <div className="row g-4">
                 {courseCards.length > 0 ? (
                     courseCards.map((course) => (
