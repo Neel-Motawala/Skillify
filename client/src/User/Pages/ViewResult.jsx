@@ -71,18 +71,24 @@ export default function ViewResult() {
                             <td>
                                 {r?.type === "mcq" ? (
                                     <span
-                                        className={
-                                            r?.is_correct
-                                                ? styles.correctBadge
-                                                : styles.wrongBadge
-                                        }
+                                        className={r?.is_correct ? styles.correctBadge : styles.wrongBadge}
                                     >
                                         {r?.is_correct ? "Correct" : "Incorrect"}
                                     </span>
                                 ) : (
-                                    <span className={styles.theoryBadge}>Theory</span>
+                                    <span
+                                        className={`${styles.theoryBadge} ${r?.answer_score < 5
+                                            ? styles.redScore
+                                            : r?.answer_score < 8
+                                                ? styles.yellowScore
+                                                : styles.greenScore
+                                            }`}
+                                    >
+                                        {r?.answer_score !== null ? `${r.answer_score.toFixed(1)}` : "—"}
+                                    </span>
                                 )}
                             </td>
+
                         </tr>
                     ))}
                 </tbody>

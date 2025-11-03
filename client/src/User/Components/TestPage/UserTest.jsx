@@ -54,13 +54,11 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
     const skipQuestion = () => nextQuestion();
 
     const handleFinish = () => {
-        // Ensure skipped questions are null
         const finalAnswers = { ...answers };
         questions.forEach((q) => {
             if (!(q.id in finalAnswers)) finalAnswers[q.id] = null;
         });
 
-        // Navigate to preview page with data
         navigate(`/dashboard/course/${courseId}/test/${userTestId}/preview`, {
             state: {
                 questions,
@@ -69,6 +67,11 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
                 userTestId,
             },
         });
+    };
+
+    const handleQuit = () => {
+        const confirmQuit = window.confirm("Are you sure you want to quit?");
+        if (confirmQuit) navigate("/dashboard/activity", { replace: true });
     };
 
     if (loading) return <p className={styles.loading}>Loading questions...</p>;
@@ -80,12 +83,18 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h2 className={styles.testTitle}>{testType.toUpperCase()} Test — Stage {stage}</h2>
-                <p className={styles.subHeader}>
-                    <strong>Mode:</strong> {testMode} |{" "}
-                    <strong>Question:</strong> {currentIndex + 1} / {questions.length}
-                </p>
+                <div>
+                    <h2 className={styles.testTitle}>{testType.toUpperCase()} Test — Stage {stage}</h2>
+                    <p className={styles.subHeader}>
+                        <strong>Mode:</strong> {testMode} |{" "}
+                        <strong>Question:</strong> {currentIndex + 1} / {questions.length}
+                    </p>
+                </div>
+                <button className={styles.quitButton} onClick={handleQuit}>
+                    Quit
+                </button>
             </div>
+
 
             <div className={styles.questionCard}>
                 <h4 className={styles.questionText}>{q.question}</h4>

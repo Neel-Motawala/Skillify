@@ -55,7 +55,7 @@ export default function PreviewPage() {
             if (mcqData.length > 0)
                 await axios.post("http://localhost:5000/api/user-response/mcq", mcqData);
             if (theoryData.length > 0)
-                await axios.post("http://localhost:5000/api/user-theory-ans/process", theoryData);
+                await axios.post("http://localhost:5000/api/user-response/theory", theoryData);
 
             alert("Answers submitted successfully.");
 

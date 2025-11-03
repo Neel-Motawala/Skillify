@@ -12,12 +12,13 @@ exports.getMcqResult = async (req, res) => {
                 q.type,
                 ua.user_answer,
                 mo.option_text AS correct_answer,
-                ua.is_correct
-             FROM user_mcq_ans ua
-             JOIN questions q ON ua.question_id = q.id
-             LEFT JOIN mcq_option mo 
+                ua.is_correct,
+                NULL AS answer_score
+            FROM user_mcq_ans ua
+            JOIN questions q ON ua.question_id = q.id
+            LEFT JOIN mcq_option mo 
                 ON mo.question_id = q.id AND mo.is_correct = 1
-             WHERE ua.user_test_id = ?`,
+            WHERE ua.user_test_id = ?`,
             [userTestId]
         );
 
@@ -28,7 +29,9 @@ exports.getMcqResult = async (req, res) => {
                 q.question,
                 q.type,
                 uta.user_answer,
-                ta.answer AS correct_answer
+                ta.answer AS correct_answer,
+                NULL AS is_correct,
+                uta.answer_score
              FROM user_theory_ans uta
              JOIN questions q ON uta.question_id = q.id
              LEFT JOIN theory_answer ta ON ta.question_id = q.id
