@@ -1,85 +1,186 @@
+/* === Page Layout === */
 .previewContainer {
-  padding: 30px;
-  background-color: #f9fafc;
+  background: #e9f4f5;
   min-height: 100vh;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
+/* === Title === */
 .previewContainer h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 25px;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #5f8faf;
+  border-left: 4px solid #5fa8af;
+  padding-left: 12px;
+  margin-bottom: 2rem;
 }
 
+/* === Table === */
 .previewTable {
   width: 100%;
+  max-width: 1000px;
   border-collapse: collapse;
-  background: #fff;
-  border-radius: 8px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(95, 168, 175, 0.18);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .previewTable th,
 .previewTable td {
-  padding: 14px 18px;
-  border-bottom: 1px solid #ddd;
   text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid #e3f2f2;
   vertical-align: top;
 }
 
 .previewTable th {
-  background-color: #007bff;
-  color: #fff;
-  font-weight: 500;
+  background: #f7fbfb;
+  color: #234250;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
+.previewTable td {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.previewTable tr:hover td {
+  background: #eef9f8;
+}
+
+/* === Dropdown (for MCQ answers) === */
+/* === Dropdown (for MCQ answers) === */
 .dropdown {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
+  max-width: 400px;
+  background: #ffffff;
+  border: 1.5px solid #d6e9ea;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #234250;
+  font-weight: 500;
+  appearance: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.1);
+  background-image: linear-gradient(45deg, transparent 50%, #5fa8af 50%),
+    linear-gradient(135deg, #5fa8af 50%, transparent 50%);
+  background-position: calc(100% - 22px) calc(1rem + 2px),
+    calc(100% - 16px) calc(1rem + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  cursor: pointer;
 }
 
+.dropdown:hover {
+  border-color: #5fa8af;
+  background-color: #f8fcfc;
+  box-shadow: 0 3px 10px rgba(95, 168, 175, 0.15);
+}
+
+.dropdown:focus {
+  border-color: #5fa8af;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(95, 168, 175, 0.25);
+}
+
+/* Dropdown option styling (only applies in some browsers) */
+.dropdown option {
+  background: #ffffff;
+  color: #234250;
+  padding: 0.7rem;
+  font-weight: 500;
+}
+
+/* Add a smoother arrow for Chrome & Edge */
+@supports (-webkit-appearance: none) {
+  .dropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}
+
+/* Small devices */
+@media (max-width: 576px) {
+  .dropdown {
+    max-width: 100%;
+    padding: 0.8rem;
+  }
+}
+
+/* === Textarea (for theory answers) === */
 .textarea {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  resize: vertical;
+  max-width: 500px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.8rem;
+  font-size: 0.95rem;
+  color: #333;
+  resize: none;
+  transition: 0.2s ease;
+  background: #f9fdfd;
+}
+.textarea:focus {
+  border-color: #5fa8af;
   outline: none;
+  box-shadow: 0 0 0 2px rgba(95, 168, 175, 0.15);
 }
 
-.textarea:focus,
-.dropdown:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-}
-
+/* === Success Message === */
 .successMessage {
-  margin-top: 15px;
-  text-align: center;
-  color: #28a745;
-  font-weight: 500;
-  transition: opacity 0.3s ease;
+  margin-top: 1rem;
+  color: #317873;
+  font-weight: 600;
+  background: #e7f8f6;
+  border: 1px solid #b8e1dc;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
 }
 
+/* === Submit Button === */
 .submitButton {
-  display: block;
-  margin: 25px auto 0;
-  background-color: #007bff;
-  color: white;
+  margin-top: 2rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(90deg, #5fa8af, #5faf98);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
   border: none;
-  padding: 12px 28px;
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.25s ease;
+}
+.submitButton:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(90deg, #5faf98, #5f8faf);
 }
 
-.submitButton:hover {
-  background-color: #0056b3;
+/* === Responsive === */
+@media (max-width: 768px) {
+  .previewTable th,
+  .previewTable td {
+    padding: 0.8rem;
+  }
+
+  .dropdown,
+  .textarea {
+    max-width: 100%;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
 }

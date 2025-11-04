@@ -1,0 +1,177 @@
+/* === Global Layout === */
+.analyticsContainer {
+  background: #f4f6f9;
+  min-height: 100vh;
+  padding: 24px 40px;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* === Header === */
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #5f8faf;
+  border-left: 4px solid #5fa8af;
+  padding-left: 10px;
+  margin-bottom: 1.2rem;
+}
+
+/* === Summary Bar === */
+.summaryBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.1);
+  padding: 0.8rem 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.summaryItem {
+  text-align: center;
+  flex: 1;
+}
+.summaryItem h4 {
+  color: #5fa8af;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.summaryItem p {
+  font-size: 0.9rem;
+  color: #475569;
+  margin: 0;
+}
+
+/* === Top Section (Pie + Accuracies) === */
+.topGrid {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+/* Pie Chart Card */
+.chartCardSmall {
+  flex: 0 0 350px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.1);
+  padding: 1rem 1rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chartTitle {
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.chartInner {
+  width: 100%;
+  max-width: 280px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Accuracy Grid */
+.accuracyGrid {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.accuracyCard {
+  flex: 1 1 160px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.08);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.chartInnerSmall {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.accuracyMeta {
+  text-align: center;
+  margin-top: 0.4rem;
+}
+.accTitle {
+  font-size: 0.9rem;
+  color: #5f8faf;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.accValue {
+  font-size: 0.95rem;
+  color: #2f3e46;
+  font-weight: 700;
+}
+
+/* === Bar Chart === */
+.barChartBox {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.1);
+  padding: 1rem 1.2rem;
+}
+.barHeader h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #5f8faf;
+  margin: 0 0 0.8rem 0;
+}
+.barWrapper {
+  width: 100%;
+  height: 200px;
+}
+
+/* === Responsiveness === */
+@media (max-width: 992px) {
+  .topGrid {
+    flex-direction: column;
+  }
+  .chartCardSmall {
+    width: 100%;
+    max-width: none;
+  }
+  .chartInner {
+    height: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .analyticsContainer {
+    padding: 16px;
+  }
+  .summaryBar {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  .chartInner {
+    height: 180px;
+  }
+  .chartInnerSmall {
+    width: 90px;
+    height: 90px;
+  }
+}

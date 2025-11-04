@@ -95,14 +95,21 @@ exports.getUserTests = async (req, res) => {
             ut.id,
             ut.user_id,
             ut.course_id,
+            c.course_name,
+            c.image_url,
+            c.course_desc,
+            c.template,
+            c.timestamp AS course_created_at,
             ut.test_type,
             ut.test_mode,
             ut.stage,
-            ut.timestamp,
+            ut.timestamp AS test_created_at,
             GROUP_CONCAT(ual.status ORDER BY ual.timestamp ASC SEPARATOR ', ') AS all_statuses,
             latest.status AS latest_status,
             endlog.end_time
         FROM user_tests ut
+        LEFT JOIN course c 
+            ON ut.course_id = c.id
         LEFT JOIN user_activity_logs ual 
             ON ual.user_test_id = ut.id
         LEFT JOIN (
@@ -130,11 +137,9 @@ exports.getUserTests = async (req, res) => {
 
     try {
         const [rows] = await pool.query(sql, [userId]);
-        // console.log(rows);
         res.json(rows);
     } catch (err) {
         console.error("Error fetching user tests:", err);
         res.status(500).json({ message: "Error fetching user tests" });
     }
 };
-

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaListUl, FaFileAlt, FaCode } from "react-icons/fa";
 import axios from "axios";
 import styles from "../../Styles/CourseDetail/TestOption.module.css";
 
 export default function TestOption({ courseId, courseName }) {
+    const [course, setCourse] = useState(null);
     const [selected, setSelected] = useState("mcq");
     const [stages, setStages] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -18,22 +20,37 @@ export default function TestOption({ courseId, courseName }) {
         { label: "Code", value: "code" },
     ];
 
-    // Example: replace with actual logged-in user ID
     const userId = localStorage.getItem("user_id") || 1;
 
-    const fetchStages = async (type) => {
-        try {
-            const res = await axios.get(`http://localhost:5000/api/questions/${courseId}?type=${type}`);
-            setStages(res.data || []);
-        } catch (err) {
-            console.error("Error fetching stages:", err);
-            setStages([]);
-        }
-    };
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/course/${courseId}`);
+                setCourse(response.data || null);
+            } catch (error) {
+                console.error("Error fetching course:", error);
+                setCourse(null);
+            }
+        };
+        if (courseId) fetchCourse();
+    }, [courseId]);
+
+    const fetchStages = useCallback(
+        async (type) => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/questions/${courseId}?type=${type}`);
+                setStages(res.data || []);
+            } catch (err) {
+                console.error("Error fetching stages:", err);
+                setStages([]);
+            }
+        },
+        [courseId]
+    );
 
     useEffect(() => {
         fetchStages("mcq");
-    }, []);
+    }, [fetchStages]);
 
     const handleTypeSelect = (type) => {
         setSelected(type);
@@ -61,7 +78,6 @@ export default function TestOption({ courseId, courseName }) {
         setTestMode("");
     };
 
-    // Handle start test and insert entries
     const handleStartTest = async () => {
         try {
             const testRes = await axios.post("http://localhost:5000/api/user-test/start", {
@@ -72,17 +88,15 @@ export default function TestOption({ courseId, courseName }) {
                 stage: selectedStage,
             });
 
-            const userTestId = testRes.data.user_test_id;
+            const userTestId = testRes.data?.user_test_id;
 
-            // Call second API to mark "in_progress"
+            if (!userTestId) throw new Error("Invalid response: missing user_test_id");
+
             await axios.post("http://localhost:5000/api/user-test/progress", {
                 user_test_id: userTestId,
             });
 
-            alert("Test started successfully!");
             setConfirmModal(false);
-
-            // Redirect to test page
             navigate(`/dashboard/course/${courseId}/test/${userTestId}`);
         } catch (err) {
             console.error("Error starting test:", err);
@@ -90,24 +104,42 @@ export default function TestOption({ courseId, courseName }) {
         }
     };
 
-
-
     return (
-        <div>
+        <div className={styles.pageContainer}>
+            {/* Header Section */}
+            <div className={styles.titleContainer}>
+                <button
+                    className="btn btn-outline-secondary mb-3"
+                    onClick={() => navigate(-1)}
+                >
+                    ← Back
+                </button>
+                <h2 className={styles.courseTitle}>
+                    {course?.course_name || courseName || "Course"}
+                </h2>
+                <p className={styles.courseDescription}>
+                    {course?.course_desc || "No description available."}
+                </p>
+            </div>
+
             {/* Type Options */}
             <div className={styles.optionContainer}>
                 {options.map((opt) => (
                     <div
                         key={opt.value}
-                        className={`${styles.optionBox} ${selected === opt.value ? styles.selected : ""}`}
+                        className={`${styles.optionBox} ${selected === opt.value ? styles.selected : ""
+                            }`}
                         onClick={() => handleTypeSelect(opt.value)}
                     >
+                        {opt.value === "mcq" && <FaListUl className={styles.icon} />}
+                        {opt.value === "theory" && <FaFileAlt className={styles.icon} />}
+                        {opt.value === "code" && <FaCode className={styles.icon} />}
                         {opt.label}
                     </div>
                 ))}
             </div>
 
-            {/* Stage Display */}
+            {/* Stage List */}
             {selected && (
                 <div className={styles.stageContainer}>
                     <h4 className={styles.stageTitle}>Available Stages ({selected})</h4>
@@ -129,7 +161,7 @@ export default function TestOption({ courseId, courseName }) {
                 </div>
             )}
 
-            {/* Test Mode Modal */}
+            {/* Mode Selection Modal */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={`${styles.modal} ${styles.leftAligned}`}>
@@ -143,7 +175,7 @@ export default function TestOption({ courseId, courseName }) {
                                 Practice Test
                             </button>
                             <button
-                                className={styles.practiceBtn}
+                                className={styles.attemptBtn}
                                 onClick={() => handleModeSelect("Attempt")}
                             >
                                 Attempt Test

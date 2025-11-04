@@ -21,7 +21,7 @@ export default function Sidebar() {
         >
             {/* Toggle Button */}
             <button
-                className={`${styles.toggleBtn} ${isOpen ? styles.expanded : styles.collapsed} btn btn-link`}
+                className={`${styles.toggleBtn} ${isOpen ? styles.expanded : styles.collapsed}`}
                 onClick={toggleSidebar}
             >
                 <span className="icon-wrapper">
@@ -29,22 +29,33 @@ export default function Sidebar() {
                 </span>
             </button>
 
+
             {/* Sidebar Menu */}
             <ul className={`nav flex-column ${styles.nav}`}>
                 {[
                     { icon: "bi-speedometer2", label: "Overview", href: "#overview" },
                     { icon: "bi-graph-up", label: "Reports", href: "#reports" },
-                    { icon: "bi-bar-chart-line", label: "Analytics", href: "#analytics" },
+                    { icon: "bi-bar-chart-line", label: "Analytics", href: "dashboard/analytics" },
                     { icon: "bi-gear", label: "Settings", href: "#settings" },
                 ].map((item) => (
                     <li key={item.label} className="nav-item mb-3 me-3">
-                        <a href={item.href} className={`${styles.navLink} d-flex align-items-center`}>
+                        <a
+                            href={isOpen ? item.href : "#"}
+                            className={`${styles.navLink} d-flex align-items-center`}
+                            onClick={(e) => {
+                                if (!isOpen) {
+                                    e.preventDefault();
+                                    setIsOpen(true);
+                                }
+                            }}
+                        >
                             <i className={`bi ${item.icon} fs-4`}></i>
                             {isOpen && <span className="ms-2">{item.label}</span>}
                         </a>
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 }

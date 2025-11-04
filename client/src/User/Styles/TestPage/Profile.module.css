@@ -1,0 +1,209 @@
+.profilePage {
+  background: linear-gradient(180deg, #eaf5f6 0%, #f7fbfb 100%);
+  min-height: 100vh;
+  padding: 50px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 30px;
+}
+
+.navTitle {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #2f4f60;
+  border-left: 4px solid #5fa8af;
+  padding-left: 12px;
+}
+
+.backButton {
+  background: #e8f6f7;
+  color: #3b7f82;
+  border: 1.5px solid #cbe7e6;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.backButton:hover {
+  background: linear-gradient(90deg, #5faf98, #5f8faf);
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(95, 168, 175, 0.25);
+}
+
+/* Profile Card */
+.profileCard {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(95, 168, 175, 0.15);
+  padding: 2rem;
+  width: 100%;
+  max-width: 900px;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-bottom: 1px solid #e3f2f2;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profileLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.profilePic {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #5fa8af;
+  background-color: #f1fafa;
+  object-fit: cover;
+}
+
+.profileText h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2f3e46;
+}
+
+.username {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.active {
+  background: rgba(93, 195, 162, 0.15);
+  color: #0b8358;
+  border: 1px solid rgba(93, 195, 162, 0.3);
+}
+
+.inactive {
+  background: rgba(255, 193, 7, 0.15);
+  color: #92400e;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.editButton {
+  background: linear-gradient(90deg, #5faf98, #5f8faf);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.editButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(95, 168, 175, 0.25);
+}
+
+/* === Vertical Info Layout === */
+.detailsSection {
+  margin-top: 1rem;
+}
+
+.sectionTitle {
+  color: #2f4f60;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.verticalInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.infoItem {
+  background: #f9fcfc;
+  border: 1px solid #e2f1f1;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  transition: all 0.25s ease;
+}
+
+.infoItem:hover {
+  border-color: #5fa8af;
+  background: #eef9f8;
+}
+
+.infoItem label {
+  display: block;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.infoItem p {
+  font-size: 1rem;
+  color: #2f3e46;
+  font-weight: 500;
+}
+
+/* Loading and Error */
+.loading,
+.error {
+  text-align: center;
+  font-weight: 500;
+  color: #5f8faf;
+  margin-top: 50px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .profileHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profilePic {
+    width: 80px;
+    height: 80px;
+  }
+
+  .infoItem {
+    padding: 0.9rem;
+  }
+}

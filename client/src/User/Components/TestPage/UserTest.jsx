@@ -29,29 +29,15 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
     }, [courseId, testType, stage]);
 
     const handleSelectOption = (qid, optionText) => {
-        setAnswers((prev) => {
-            if (prev[qid] === optionText) {
-                const newAnswers = { ...prev };
-                delete newAnswers[qid];
-                return newAnswers;
-            }
-            return { ...prev, [qid]: optionText };
-        });
+        setAnswers((prev) => ({
+            ...prev,
+            [qid]: optionText,
+        }));
     };
 
     const handleTextAnswer = (qid, value) => {
         setAnswers((prev) => ({ ...prev, [qid]: value }));
     };
-
-    const nextQuestion = () => {
-        if (currentIndex < questions.length - 1) setCurrentIndex((i) => i + 1);
-    };
-
-    const prevQuestion = () => {
-        if (currentIndex > 0) setCurrentIndex((i) => i - 1);
-    };
-
-    const skipQuestion = () => nextQuestion();
 
     const handleFinish = () => {
         const finalAnswers = { ...answers };
@@ -60,31 +46,38 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
         });
 
         navigate(`/dashboard/course/${courseId}/test/${userTestId}/preview`, {
-            state: {
-                questions,
-                answers: finalAnswers,
-                testType,
-                userTestId,
-            },
+            state: { questions, answers: finalAnswers, testType, userTestId },
         });
     };
 
     const handleQuit = () => {
-        const confirmQuit = window.confirm("Are you sure you want to quit?");
-        if (confirmQuit) navigate("/dashboard/activity", { replace: true });
+        if (window.confirm("Are you sure you want to quit?"))
+            navigate("/dashboard/activity", { replace: true });
     };
 
+    const nextQuestion = () =>
+        currentIndex < questions.length - 1 && setCurrentIndex((i) => i + 1);
+
+    const prevQuestion = () =>
+        currentIndex > 0 && setCurrentIndex((i) => i - 1);
+
+    const skipQuestion = nextQuestion;
+
     if (loading) return <p className={styles.loading}>Loading questions...</p>;
-    if (questions.length === 0) return <p className={styles.noData}>No questions found for this test.</p>;
+    if (questions.length === 0)
+        return <p className={styles.noData}>No questions found for this test.</p>;
 
     const q = questions[currentIndex];
     const userAnswer = answers[q.id] || "";
 
     return (
         <div className={styles.container}>
+            {/* Header */}
             <div className={styles.header}>
                 <div>
-                    <h2 className={styles.testTitle}>{testType.toUpperCase()} Test — Stage {stage}</h2>
+                    <h2 className={styles.testTitle}>
+                        {testType.toUpperCase()} Test — Stage {stage}
+                    </h2>
                     <p className={styles.subHeader}>
                         <strong>Mode:</strong> {testMode} |{" "}
                         <strong>Question:</strong> {currentIndex + 1} / {questions.length}
@@ -95,10 +88,11 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
                 </button>
             </div>
 
-
+            {/* Question Section */}
             <div className={styles.questionCard}>
                 <h4 className={styles.questionText}>{q.question}</h4>
 
+                {/* MCQ Type */}
                 {testType === "mcq" && q.options && (
                     <div className={styles.optionList}>
                         {q.options.map((opt, idx) => (
@@ -111,12 +105,15 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
                                     onChange={() => handleSelectOption(q.id, opt.option_text)}
                                     className={styles.radioInput}
                                 />
-                                <span className={styles.optionLabel}>{opt.option_text}</span>
+                                <span className={styles.optionLabel}>
+                                    {opt.option_text}
+                                </span>
                             </label>
                         ))}
                     </div>
                 )}
 
+                {/* Theory / Code Type */}
                 {(testType === "theory" || testType === "code") && (
                     <textarea
                         className={styles.textArea}
@@ -128,21 +125,26 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
                 )}
             </div>
 
+            {/* Navigation */}
             <div className={styles.navigation}>
                 <button
-                    className={`${styles.navButton} ${currentIndex === 0 ? styles.disabled : ""}`}
+                    className={`${styles.navButton} ${currentIndex === 0 ? styles.disabled : ""
+                        }`}
                     onClick={prevQuestion}
                     disabled={currentIndex === 0}
                 >
                     Previous
                 </button>
+
                 <button
-                    className={`${styles.navButton} ${currentIndex === questions.length - 1 ? styles.disabled : ""}`}
+                    className={`${styles.navButton} ${currentIndex === questions.length - 1 ? styles.disabled : ""
+                        }`}
                     onClick={skipQuestion}
                     disabled={currentIndex === questions.length - 1}
                 >
                     Skip
                 </button>
+
                 {currentIndex < questions.length - 1 ? (
                     <button className={styles.primaryButton} onClick={nextQuestion}>
                         Next

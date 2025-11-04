@@ -4,7 +4,7 @@ import axios from "axios";
 import styles from "../Styles/TestPage/ViewResult.module.css";
 
 export default function ViewResult() {
-    const { id, userTestId } = useParams();
+    const { userTestId } = useParams();
     const navigate = useNavigate();
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -58,7 +58,7 @@ export default function ViewResult() {
                         <th>Question</th>
                         <th>Your Answer</th>
                         <th>Correct Answer</th>
-                        <th>Result</th>
+                        <th style={{ width: "160px" }}>Result</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,27 +68,27 @@ export default function ViewResult() {
                             <td className={styles.question}>{r?.question || "—"}</td>
                             <td>{r?.user_answer || "—"}</td>
                             <td>{r?.correct_answer || "—"}</td>
-                            <td>
-                                {r?.type === "mcq" ? (
-                                    <span
-                                        className={r?.is_correct ? styles.correctBadge : styles.wrongBadge}
-                                    >
-                                        {r?.is_correct ? "Correct" : "Incorrect"}
-                                    </span>
-                                ) : (
-                                    <span
-                                        className={`${styles.theoryBadge} ${r?.answer_score < 5
-                                            ? styles.redScore
+                            <td
+                                className={
+                                    r?.type === "mcq"
+                                        ? r?.is_correct
+                                            ? styles.correctCell
+                                            : styles.wrongCell
+                                        : r?.answer_score < 5
+                                            ? styles.redCell
                                             : r?.answer_score < 8
-                                                ? styles.yellowScore
-                                                : styles.greenScore
-                                            }`}
-                                    >
-                                        {r?.answer_score !== null ? `${r.answer_score.toFixed(1)}` : "—"}
-                                    </span>
+                                                ? styles.yellowCell
+                                                : styles.greenCell
+                                }
+                            >
+                                {r?.type === "mcq" ? (
+                                    r?.is_correct ? "Correct" : "Incorrect"
+                                ) : (
+                                    r?.answer_score !== null
+                                        ? `${r.answer_score.toFixed(1)} / 10`
+                                        : "—"
                                 )}
                             </td>
-
                         </tr>
                     ))}
                 </tbody>

@@ -85,7 +85,7 @@ exports.storeTheory = async (req, res) => {
 
                 if (aiRes.data && aiRes.data.success) {
                     aiScore = aiRes.data.finalScore || 0;
-                    console.log(`AI evaluation for Q${question_id}:`, aiRes.data.details);
+                    // console.log(`AI evaluation for Q${question_id}:`, aiRes.data.details);
                 } else {
                     console.warn(`AI model returned unexpected response for Q${question_id}`);
                 }

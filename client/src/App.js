@@ -21,6 +21,11 @@ import TestPage from "./User/Pages/TestPage";
 import MyActivity from "./User/Pages/MyActivity";
 import PreviewPage from "./User/Pages/PreviewPage";
 import ViewResult from "./User/Pages/ViewResult";
+import MyAnalytics from "./User/Pages/MyAnalytics";
+import Profile from "./User/Pages/Profile";
+import Progress from "./User/Pages/Progress";
+
+import MCQ from "./Extra/mcq";
 
 function App() {
   // ✅ ProtectedRoute with role verification
@@ -64,7 +69,13 @@ function App() {
           <Route path="/dashboard/course/:id/test/:userTestId/preview" element={<ProtectedRoute role="user"><PreviewPage /></ProtectedRoute>} />
           <Route path="/dashboard/activity" element={<ProtectedRoute role="user"><MyActivity /></ProtectedRoute>} />
           <Route path="/dashboard/course/:id/result/:userTestId" element={<ProtectedRoute role="user"><ViewResult /></ProtectedRoute>} />
+          <Route path="/dashboard/analytics" element={<ProtectedRoute role="user"><MyAnalytics /></ProtectedRoute>} />
+          <Route path="/dashboard/profile" element={<ProtectedRoute role="user"><Profile /></ProtectedRoute>} />
+          <Route path="/dashboard/progress" element={<ProtectedRoute role="user"><Progress /></ProtectedRoute>} />
 
+
+          {/* ---------- Extra Routes ---------- */}
+          <Route path="/mcq" element={<MCQ />} />
 
           {/* ---------- Fallback ---------- */}
           {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}

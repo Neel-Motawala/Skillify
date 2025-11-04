@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import logo from "../Images/logo.jpg"; // replace with your logo path
+import logo from "../Images/skillify_logo.jpg"; // replace with your logo path
 
 export default function UserRegistration() {
     const [formData, setFormData] = useState({
@@ -193,7 +193,7 @@ export default function UserRegistration() {
                                 type="submit"
                                 className="btn w-100 text-white fw-semibold"
                                 style={{
-                                    backgroundColor: "#007bff",
+                                    backgroundColor: "#5FA8AF",
                                     borderRadius: "8px",
                                     padding: "10px 0",
                                 }}
@@ -206,7 +206,7 @@ export default function UserRegistration() {
                                 style={{ fontSize: "0.9rem", color: "#6c757d" }}
                             >
                                 Already have an account?{" "}
-                                <Link to="/login" className="text-primary fw-medium">
+                                <Link to="/login" className="text-primary FontColor fw-medium">
                                     Login
                                 </Link>
                             </p>
@@ -219,14 +219,14 @@ export default function UserRegistration() {
                     className="d-none d-lg-flex flex-column justify-content-center align-items-center text-white"
                     style={{
                         flex: 1,
-                        background: "linear-gradient(135deg, #0056b3, #00b4d8)",
+                        background: "linear-gradient(135deg, #90C9CF, #5FA8AF)",
                         textAlign: "center",
                         padding: "50px",
                     }}
                 >
-                    <h1 className="fw-bold mb-3">Join Us!</h1>
+                    <h1 className="fw-bold mb-3">Welcome to Skillify!</h1>
                     <p style={{ fontSize: "1rem", maxWidth: "350px" }}>
-                        Create an account and start your journey with us today.
+                        Start your journey with us. Build your profile, track growth, and unlock your potential today.
                     </p>
                 </div>
 
@@ -235,14 +235,17 @@ export default function UserRegistration() {
             {/* Responsive adjustments */}
             <style>
                 {`
-            @media (max-width: 425px) {
-                .shadow {
-                    box-shadow: none !important;
+                @media (max-width: 425px) {
+                    .shadow {
+                        box-shadow: none !important;
+                    }
+                    .rounded-4 {
+                        border-radius: 0 !important;
+                    }
                 }
-                .rounded-4 {
-                    border-radius: 0 !important;
+                .FontColor{
+                    color: #4a888eff !important;
                 }
-            }
         `}
             </style>
         </div>

@@ -1,60 +1,74 @@
-// Navbar.jsx
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
+import styles from "../../Styles/Dashboard/Navbar.module.css";
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
 
-    // Logout handler
     const handleLogout = () => {
         localStorage.clear();
         sessionStorage.clear();
         navigate("/login");
     };
 
-    return (
-        <nav className="navbar navbar-light bg-white shadow-sm px-3 fixed-top" style={{ height: "56px" }}>
-            <div className="d-flex align-items-center">
-                <h4 className="mb-0 text-primary">Skillify</h4>
-            </div>
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
-            <div className="dropdown">
-                <img
-                    src="/images/avtar/bear.png"
-                    width="45"
-                    height="45"
-                    alt="account"
-                    className="rounded-circle me-3"
-                    style={{ cursor: "pointer" }}
-                    id="accountMenu"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                />
-                <ul
-                    className="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="accountMenu"
+    return (
+        <nav className={styles.navbar}>
+            <div className={styles.logo}>Skillify</div>
+
+            <div className={styles.dropdown} ref={menuRef}>
+                <button
+                    className={styles.avatarBtn}
+                    onClick={() => setMenuOpen(!menuOpen)}
                 >
-                    <li>
-                        <button className="dropdown-item">Profile</button>
-                    </li>
-                    <li>
-                        <button className="dropdown-item">Settings</button>
-                    </li>
-                    <li>
-                        <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                        <button
-                            className="dropdown-item text-danger"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
-                    </li>
-                </ul>
+                    <img
+                        src="/images/avtar/bear.png"
+                        alt="account"
+                        className={styles.avatarImg}
+                    />
+                </button>
+
+                {menuOpen && (
+                    <ul className={styles.dropdownMenu}>
+                        <li>
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => navigate("/dashboard/profile")}
+                            >
+                                Profile
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => navigate("/setting")}
+                            >
+                                Settings
+                            </button>
+                        </li>
+                        <li><hr className={styles.divider} /></li>
+                        <li>
+                            <button
+                                className={`${styles.dropdownItem} ${styles.logout}`}
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                )}
             </div>
         </nav>
     );

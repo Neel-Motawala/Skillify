@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import logo from "../Images/logo.jpg"; // update path as needed
+import logo from "../Images/skillify_logo.jpg"; // update path as needed
 import "./style/loginForm.css";
 
 export default function LoginForm() {
@@ -81,7 +81,7 @@ export default function LoginForm() {
                                 alt="Logo"
                                 style={{ width: "70px", height: "70px", marginBottom: "10px" }}
                             />
-                            <h4 className="fw-semibold text-dark mb-2">Welcome Back</h4>
+                            <h4 className="fw-semibold text-dark mb-2">Hello</h4>
                             <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
                                 Please sign in to your account
                             </p>
@@ -136,7 +136,7 @@ export default function LoginForm() {
                                 type="submit"
                                 className="btn w-100 text-white fw-semibold"
                                 style={{
-                                    backgroundColor: "#007bff",
+                                    backgroundColor: "#5FA8AF",
                                     borderRadius: "8px",
                                     padding: "10px 0",
                                 }}
@@ -149,7 +149,7 @@ export default function LoginForm() {
                                 style={{ fontSize: "0.9rem", color: "#6c757d" }}
                             >
                                 Don’t have an account?{" "}
-                                <Link to="/register" className="text-primary fw-medium">
+                                <Link to="/register" className="text-primary FontColor fw-medium">
                                     Register
                                 </Link>
                             </p>
@@ -162,14 +162,14 @@ export default function LoginForm() {
                     className="d-none d-md-flex flex-column justify-content-center align-items-center text-white"
                     style={{
                         flex: 1,
-                        background: "linear-gradient(135deg, #0056b3, #00b4d8)",
+                        background: "linear-gradient(135deg, #90C9CF, #5FA8AF)",
                         textAlign: "center",
                         padding: "50px",
                     }}
                 >
-                    <h1 className="fw-bold mb-3">Hello Again!</h1>
+                    <h1 className="fw-bold mb-3">Welcome!</h1>
                     <p style={{ fontSize: "1rem", maxWidth: "350px" }}>
-                        Log in to continue your journey with us.
+                        Track your learning, assess your skills, and grow with confidence. Let's make progress together.
                     </p>
                 </div>
             </div>
@@ -187,6 +187,9 @@ export default function LoginForm() {
                     border-radius: 0 !important;
                 }
             }
+                .FontColor{
+                    color: #4a888eff !important;
+                }
         `}
             </style>
         </div>

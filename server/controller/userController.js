@@ -11,6 +11,26 @@ exports.getUsers = async (req, res) => {
     }
 };
 
+exports.getUserData = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const [userRows] = await pool.query("SELECT * FROM users WHERE id = ?", [userId]);
+
+        if (userRows.length === 0) {
+            return res.status(404).json({ error: "User not found." });
+        }
+
+        // Send user data
+        return res.status(200).json({ success: true, user: userRows[0] });
+
+    } catch (err) {
+        console.error("Get User Data Error:", err);
+        return res.status(500).json({ error: "Failed to retrieve user data." });
+    }
+};
+
+
 // ✅ Get total user count (returns object)
 exports.getUserCount = async (req, res) => {
     try {

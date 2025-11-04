@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  color: #333;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.subject-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4a90e2;
+}
+
+.subject-header img {
+  width: 45px;
+  height: 45px;
+}
+
+.intro {
+  margin: 15px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  background: #eaf2ff;
+  border-left: 5px solid #4a90e2;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.exam-options {
+  margin: 25px 0;
+}
+
+.exam-options h2 {
+  margin-bottom: 15px;
+  color: #6c63ff;
+}
+
+.options {
+  display: flex;
+  gap: 20px;
+}
+
+.option-box {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 25px 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.option-box h3 {
+  margin-top: 8px;
+  color: #333;
+}
+
+.option-box img {
+  width: 50px;
+  margin-bottom: 12px;
+}
+
+.option-box:nth-child(1) {
+  border-top: 5px solid #4a90e2;
+}
+
+.option-box:nth-child(2) {
+  border-top: 5px solid #6c63ff;
+}
+
+.option-box:nth-child(3) {
+  border-top: 5px solid #28a745;
+}
+
+.option-box:hover {
+  transform: translateY(-6px);
+  background: #f7faff;
+}
+
+.stage-section {
+  margin-top: 35px;
+}
+
+.stage-section h2 {
+  color: #4a90e2;
+}
+
+.stage-square {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  border-left: 6px solid #6c63ff;
+}
+
+.stage-square h3 {
+  margin-bottom: 12px;
+  color: #6c63ff;
+}
+
+.stage-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+
+.stage-row:last-child {
+  border-bottom: none;
+}
+
+.start-section {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.start-section h2 {
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.start-section button {
+  background: linear-gradient(90deg, #4a90e2, #6c63ff);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.start-section button:hover {
+  background: linear-gradient(90deg, #357abd, #574bdb);
+}

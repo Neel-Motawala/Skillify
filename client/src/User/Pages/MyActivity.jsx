@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import styles from "../Styles/MyActivity.module.css";
+import styles from "../Styles/TestPage/MyActivity.module.css";
 
 export default function MyActivity() {
-    const [tests, setTests] = useState([]);
+    const [groupedTests, setGroupedTests] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -13,9 +13,21 @@ export default function MyActivity() {
                 const userId = localStorage.getItem("id");
                 const res = await axios.get(`http://localhost:5000/api/user-test/user/${userId}`);
                 const sorted = (res.data || []).sort(
-                    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+                    (a, b) => new Date(b.test_created_at) - new Date(a.test_created_at)
                 );
-                setTests(sorted);
+
+                const grouped = sorted.reduce((acc, test) => {
+                    const date = new Date(test.test_created_at).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                    });
+                    if (!acc[date]) acc[date] = [];
+                    acc[date].push(test);
+                    return acc;
+                }, {});
+
+                setGroupedTests(grouped);
             } catch (err) {
                 console.error("Error fetching user tests:", err);
             }
@@ -38,57 +50,86 @@ export default function MyActivity() {
         }
     };
 
+    const dates = Object.keys(groupedTests);
+
     return (
-        <div className={`${styles.activityContainer} container-fluid py-4`}>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className={styles.activityContainer}>
+            <div className={styles.headerRow}>
                 <button className={styles.backButton} onClick={() => navigate("/", { replace: true })}>
-                    <i className="bi bi-arrow-left me-2"></i> Back
+                    ← Back
                 </button>
-                <h4 className="fw-semibold m-0">My Activity</h4>
-                <span className={styles.testCount}>Total Tests: {tests.length}</span>
+                <h2 className={styles.title}>My Activity</h2>
+                <span className={styles.testCount}>
+                    Total Tests: {dates.reduce((sum, d) => sum + groupedTests[d].length, 0)}
+                </span>
             </div>
 
-            {tests.length === 0 ? (
-                <p className="text-muted text-center mt-5">No test records found.</p>
+            {dates.length === 0 ? (
+                <p className={styles.noData}>No test records found.</p>
             ) : (
-                <div className={styles.verticalList}>
-                    {tests.map((test) => (
-                        <div
-                            key={test.id}
-                            className={`${styles.testCard} shadow-sm border-0`}
-                            onClick={() => handleAction(test)}
-                        >
-                            <div className={styles.cardContent}>
-                                <div className={styles.cardInfo}>
-                                    <h6 className="fw-bold text-primary mb-1">
-                                        {test.test_type.toUpperCase()} Test
-                                    </h6>
-                                    <p className="text-muted small mb-1">Mode: {test.test_mode}</p>
-                                    <p className="text-muted small mb-1">Stage: {test.stage}</p>
-                                    <p className="text-muted small mb-1">
-                                        Started: {new Date(test.timestamp).toLocaleString()}
-                                    </p>
-                                    <p className="text-muted small">
-                                        {test.end_time
-                                            ? `Ended: ${new Date(test.end_time).toLocaleString()}`
-                                            : "Still Active"}
-                                    </p>
-                                </div>
-                                <div className={styles.statusRow}>
-                                    <span
-                                        className={`${styles.statusBadge} ${test.latest_status === "complete"
-                                                ? styles.completed
-                                                : styles.inProgress
-                                            }`}
-                                    >
-                                        {test.latest_status === "complete"
-                                            ? "Completed"
-                                            : "Continue Test"}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                <div className={styles.tableWrapper}>
+                    <table className={styles.testTable}>
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Type</th>
+                                <th>Stage</th>
+                                <th>Mode</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dates.map((date) => (
+                                <React.Fragment key={date}>
+                                    <tr>
+                                        <td colSpan="7" className={styles.dateRow}>
+                                            {date === new Date().toLocaleDateString("en-IN", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                            })
+                                                ? "Today"
+                                                : date}
+                                        </td>
+                                    </tr>
+                                    {groupedTests[date].map((test) => (
+                                        <tr
+                                            key={test.id}
+                                            className={styles.testRow}
+                                            onClick={() => handleAction(test)}
+                                        >
+                                            <td>{test.course_name}</td>
+                                            <td className={styles.typeText}>
+                                                {test.test_type.toUpperCase()}
+                                            </td>
+                                            <td>{test.stage}</td>
+                                            <td>{test.test_mode}</td>
+                                            <td>{new Date(test.test_created_at).toLocaleString()}</td>
+                                            <td>
+                                                {test.end_time
+                                                    ? new Date(test.end_time).toLocaleString()
+                                                    : "Still Active"}
+                                            </td>
+                                            <td>
+                                                <span
+                                                    className={`${styles.statusBadge} ${test.latest_status === "complete"
+                                                            ? styles.completed
+                                                            : styles.inProgress
+                                                        }`}
+                                                >
+                                                    {test.latest_status === "complete"
+                                                        ? "Completed"
+                                                        : "Continue Test"}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </React.Fragment>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>

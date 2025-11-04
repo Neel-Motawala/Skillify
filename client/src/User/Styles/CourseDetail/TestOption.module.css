@@ -1,95 +1,130 @@
+/* ===== Global Layout ===== */
+:global(body) {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f6f9;
+  font-family: "Inter", sans-serif;
+}
+
+/* ===== Page Layout ===== */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  gap: 1.5rem;
+}
+
+/* ===== Title Section ===== */
+.titleContainer {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.courseTitle {
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: #5fa8af;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== Option Section (MCQ / Theory / Code) ===== */
 .optionContainer {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
 }
 
 .optionBox {
   flex: 1;
-  max-width: 10rem;
+  min-width: 280px;
   text-align: center;
-  padding: 1.2rem 1rem;
-  background-color: #ffffff;
-  border: 2px solid #e0e0e0;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  color: #333;
+  padding: 25px 0;
   cursor: pointer;
-  transition: all 0.25s ease;
-  user-select: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+  background: #ffffff;
+  border: 1px solid #d0e2e3;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 5px solid #5fa8af;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.1);
 }
 
 .optionBox:hover {
-  border-color: #007bff;
-  color: #007bff;
+  background: #e6f4f5;
+  color: #5f8faf;
+  border-color: #5f8faf;
   transform: translateY(-2px);
 }
 
 .selected {
-  border-color: #007bff;
-  background-color: #f0f8ff;
-  color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  background: #d8f3ed;
+  color: #5faf98;
+  border: 2px solid #5faf98;
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #5f8faf;
 }
 
 /* ===== Stage Section ===== */
 .stageContainer {
-  margin-top: 2rem;
   width: 100%;
   text-align: left;
+  margin-top: 1.5rem;
 }
 
 .stageTitle {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 1.5rem;
-  text-align: left;
+  color: #5f8faf;
+  border-left: 5px solid #5faf98;
+  padding-left: 10px;
+  margin-bottom: 1rem;
 }
 
 .stageGrid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
 }
 
 .stageCard {
   width: 100%;
-  background-color: #fff;
-  border: 2px solid #e0e0e0;
-  border-radius: 0.5rem;
-  padding: 1rem 1.5rem;
-  font-weight: 500;
-  color: #333;
+  background: #ffffff;
+  border: 1px solid #d0e2e3;
+  border-radius: 10px;
+  padding: 22px 28px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-top: 4px solid #5fa8af;
+  box-shadow: 0 2px 8px rgba(95, 175, 152, 0.08);
 }
 
 .stageCard:hover {
-  border-color: #007bff;
-  background-color: #f0f8ff;
-  color: #007bff;
-  transform: translateY(-2px);
+  background: #f0fbfa;
+  border-color: #5faf98;
+  box-shadow: 0 4px 10px rgba(95, 168, 175, 0.15);
 }
 
-.noStage {
-  color: #888;
-  font-size: 0.95rem;
-  margin-top: 1rem;
-  text-align: center;
-}
-
-/* Modal Css  */
-/* Modal */
+/* ===== Modal Section ===== */
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
@@ -98,22 +133,24 @@
 }
 
 .modal {
-  background: #fff;
+  background: #ffffff;
   padding: 2rem;
   border-radius: 0.75rem;
   width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  text-align: left;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  border-top: 5px solid #5faf98;
 }
 
 .modal h3 {
   margin-bottom: 1rem;
-  color: #333;
+  color: #5f8faf;
+  font-weight: 600;
 }
 
 .modal p {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #555;
 }
 
@@ -133,69 +170,56 @@
   transition: all 0.2s ease;
 }
 
+/* ===== Buttons ===== */
 .startBtn {
-  background-color: #007bff;
+  background-color: #5faf98;
   color: #fff;
 }
-
 .startBtn:hover {
-  background-color: #0069d9;
+  background-color: #5f8faf;
 }
 
 .cancelBtn {
-  background-color: #e9ecef;
+  background-color: #eaf1f2;
   color: #333;
 }
-
 .cancelBtn:hover {
-  background-color: #d6d8db;
+  background-color: #d7e6e7;
 }
 
 .practiceBtn,
 .attemptBtn {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #007bff;
+  border: 2px solid #5fa8af;
   border-radius: 0.5rem;
-  background-color: #f0f8ff;
-  color: #007bff;
-  cursor: pointer;
+  background-color: #f1fafa;
+  color: #5fa8af;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
-
 .practiceBtn:hover,
 .attemptBtn:hover {
-  background-color: #007bff;
+  background-color: #5fa8af;
   color: #fff;
   transform: translateY(-2px);
 }
 
 .closeBtn {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   background: transparent;
   border: none;
   color: #888;
   cursor: pointer;
   font-size: 0.95rem;
-  transition: color 0.2s;
 }
-
 .closeBtn:hover {
   color: #333;
-}
-
-/* Left Aligh CSS  */
-.leftAligned {
-  text-align: left;
 }
 
 .detailBox {
   margin: 1rem 0 1.5rem;
   color: #444;
   line-height: 1.6;
-}
-
-.detailBox p {
-  margin: 0.4rem 0;
 }

@@ -1,0 +1,158 @@
+/* === Full Layout === */
+.fullContainer {
+  background: #f4f6f9;
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  padding: 24px 60px;
+  box-sizing: border-box;
+}
+
+/* === Header === */
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #5f8faf;
+  border-left: 4px solid #5fa8af;
+  padding-left: 10px;
+}
+
+.backButton {
+  background: #e9f4f5;
+  border: none;
+  color: #5fa8af;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.backButton:hover {
+  background: #d8eeee;
+}
+
+/* === Progress Grid (Full Width) === */
+.progressGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* === Course Card === */
+.progressCard {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.08);
+  padding: 1rem 1.5rem;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+.progressCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(95, 168, 175, 0.15);
+}
+
+/* === Course Header === */
+.courseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.courseInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.courseImage {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.courseName {
+  font-weight: 600;
+  color: #2f3e46;
+}
+.percentText {
+  font-weight: 700;
+  color: #5f8faf;
+  font-size: 0.95rem;
+}
+
+/* === Progress Bar === */
+.progressBarOuter {
+  background: #e9f4f5;
+  border-radius: 8px;
+  height: 14px;
+  overflow: hidden;
+}
+.progressBarFill {
+  background: linear-gradient(90deg, #5fa8af, #5faf98);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.6s ease;
+}
+
+/* === Stats === */
+.statsRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-top: 0.5rem;
+}
+
+/* === Overall Progress === */
+.avgProgressBox {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.08);
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+.avgProgressBox h4 {
+  font-size: 1.1rem;
+  color: #5f8faf;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+.avgProgressFill {
+  background: linear-gradient(90deg, #5faf98, #5f8faf);
+  height: 14px;
+  border-radius: 8px;
+  transition: width 0.6s ease;
+}
+.avgProgressText {
+  color: #344e5c;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* === Responsive === */
+@media (max-width: 992px) {
+  .fullContainer {
+    padding: 24px 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .fullContainer {
+    padding: 16px;
+  }
+  .statsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

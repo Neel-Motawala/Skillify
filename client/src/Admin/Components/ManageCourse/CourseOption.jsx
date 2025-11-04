@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "../../Styles/ManageCourse/CourseOption.module.css";
@@ -7,34 +7,42 @@ import AddTheoryModal from "./AddTheoryModal";
 
 export default function CourseOption({ courseId, courseName }) {
     const navigate = useNavigate();
+    const options = useMemo(
+        () => [
+            { label: "MCQs", icon: "bi bi-list-check", value: "mcq" },
+            { label: "Theory", icon: "bi bi-journal-text", value: "theory" },
+            { label: "Code", icon: "bi bi-code-slash", value: "code" },
+        ],
+        [] // no dependencies, so this array never changes
+    );
 
-    const options = [
-        { label: "MCQs", icon: "bi bi-list-check", value: "mcq" },
-        { label: "Theory", icon: "bi bi-journal-text", value: "theory" },
-        { label: "Code", icon: "bi bi-code-slash", value: "code" },
-    ];
 
     const [selected, setSelected] = useState(options[0]); // default MCQ
     const [stages, setStages] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const fetchStages = async (option) => {
-        try {
-            const res = await axios.get(
-                `http://localhost:5000/api/questions/${courseId}?type=${option.value}`
-            );
-            setStages(res.data || []);
-        } catch (err) {
-            console.error("Error fetching stages:", err);
-            setStages([]);
-        }
-    };
+    const fetchStages = useCallback(
+        async (option) => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:5000/api/questions/${courseId}?type=${option.value}`
+                );
+                setStages(res.data || []);
+            } catch (err) {
+                console.error("Error fetching stages:", err);
+                setStages([]);
+            }
+        },
+        [courseId] // only re-create when courseId changes
+    );
 
     useEffect(() => {
-        // load MCQ stages by default
-        fetchStages(options[0]);
-    }, [courseId]);
+        if (options?.length) {
+            fetchStages(options[0]);
+        }
+    }, [fetchStages, options]);
+
 
     const handleSelect = async (option) => {
         setSelected(option);

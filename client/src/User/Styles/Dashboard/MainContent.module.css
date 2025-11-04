@@ -1,100 +1,144 @@
+/* === Global Layout === */
 .mainContainer {
   min-height: 100vh;
-  background-color: #f9fafc;
+  background-color: #f4f6f9;
   font-family: "Inter", sans-serif;
+  padding: 1.5rem 2rem;
 }
 
 /* === User Option Section === */
-/* === User Option Section (Full Width Grid) === */
 .optionGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.4rem;
   width: 100%;
+  margin-bottom: 2rem;
 }
 
 .optionCard {
-  background-color: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  height: 120px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
+  border: 1px solid #d0e2e3;
+  border-radius: 14px;
+  height: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-  width: 100%;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.08);
+  transition: all 0.25s ease;
 }
 
 .optionCard:hover {
-  transform: translateY(-4px);
-  border-color: #3182ce;
-  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15);
+  transform: translateY(-5px);
+  border-color: #5faf98;
+  background: #f1faf9;
+  box-shadow: 0 6px 16px rgba(95, 175, 152, 0.2);
 }
 
 .optionIcon {
-  font-size: 1.8rem;
-  color: #3182ce;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #5f8faf;
+  margin-bottom: 0.6rem;
+  transition: color 0.2s ease;
+}
+
+.optionCard:hover .optionIcon {
+  color: #5faf98;
 }
 
 .optionText {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #2d3748;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2f3e46;
   text-align: center;
 }
 
-/* === Course Cards === */
+/* === Course Cards Section === */
 .courseCard {
   cursor: pointer;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  transition: all 0.2s ease;
+  border-radius: 14px;
+  border: 1px solid #d0e2e3;
+  transition: all 0.3s ease-in-out;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.1);
 }
 
 .courseCard:hover {
-  transform: translateY(-5px);
-  border-color: #3182ce;
+  transform: translateY(-6px);
+  border-color: #5faf98;
+  box-shadow: 0 6px 18px rgba(95, 168, 175, 0.25);
 }
 
 .courseTitle {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #2d3748;
+  color: #344e5c;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.2px;
 }
 
 .courseSubtitle {
-  font-size: 0.85rem;
-  color: #718096;
+  font-size: 0.9rem;
+  color: #5f8faf;
+  font-weight: 500;
 }
 
 .courseImgWrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+  background: #f8fdfd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .courseImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-/* === Responsive === */
-@media (max-width: 768px) {
+/* === Empty State === */
+.noCourse {
+  text-align: center;
+  color: #718096;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+/* === Responsive Design === */
+@media (max-width: 992px) {
   .optionGrid {
-    justify-content: center;
+    gap: 1.2rem;
   }
 
   .optionCard {
-    width: 45%;
+    height: 120px;
+  }
+
+  .courseCard {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .optionGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .optionCard {
     height: 110px;
+  }
+
+  .optionIcon {
+    font-size: 1.6rem;
   }
 
   .courseCard {

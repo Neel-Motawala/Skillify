@@ -1,84 +1,110 @@
+/* === Sidebar Base === */
 .sidebar {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  border-right: 0.1rem solid #ddd;
-  transition: width 0.3s ease;
-  min-height: 100%;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
+  border-right: 1px solid #d0e2e3;
+  transition: width 0.3s ease, background 0.3s ease;
+  min-height: 100vh;
   position: relative;
+  box-shadow: 2px 0 8px rgba(95, 168, 175, 0.08);
+  overflow: hidden;
+  z-index: 1050;
 }
 
-/* Toggle button base */
+/* === Toggle Button === */
 .toggleBtn {
   position: absolute;
-  top: 10px;
-  color: #333;
-  font-size: 1.6rem;
+  top: 12px;
+  left: 12px;
+  background: none;
+  border: none;
+  color: #5f8faf;
+  font-size: 1.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
   z-index: 1100;
-  transition: all 0.3s ease-in-out;
 }
 
-/* When collapsed (☰) */
+.toggleBtn:hover {
+  color: #5faf98;
+  transform: scale(1.1);
+}
+
 .collapsed {
-  left: 0;
+  left: 10px;
 }
 
-/* When expanded (✕) */
 .expanded {
-  right: 0;
+  right: -10rem;
 }
 
-/* Icons and links */
+/* === Nav Links === */
 .nav {
   margin-top: 4rem;
+  padding: 0;
 }
 
 .navLink {
-  color: #333;
+  color: #344e5c;
   font-weight: 500;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
-  transition: color 0.2s ease-in-out;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.navLink i {
+  color: #5f8faf;
+  transition: color 0.2s ease;
 }
 
 .navLink:hover {
-  color: #007bff;
+  background-color: #f0faf9;
+  color: #5faf98;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.15);
 }
 
-/* Sidebar states */
+.navLink:hover i {
+  color: #5faf98;
+}
+
+/* === Active Link State (optional for routing) === */
+.navLink.active {
+  background-color: #e5f7f6;
+  color: #5faf98;
+  font-weight: 600;
+}
+
+/* === Sidebar States === */
 .sidebarCollapsed {
-  width: 3.75rem;
+  width: 4rem;
+  align-items: center;
 }
 
 .sidebarExpanded {
   width: 15rem;
+  padding-left: 0.3rem;
 }
 
-/* Mobile adjustments */
-@media (max-width: 576px) and (min-width: 320px) {
+/* === Mobile Adjustments === */
+@media (max-width: 576px) {
   .sidebarExpanded {
-    width: 30rem;
+    width: 12rem;
   }
-  .sidebarCollapsed {
-    width: 15rem;
-  }
-}
-
-@media (max-width: 320px) {
   .sidebarCollapsed {
     width: 0;
   }
-  .sidebarExpanded {
-    width: 180px;
-  }
 }
 
-@media (max-width: 36rem) {
+@media (max-width: 425px) {
   .sidebarExpanded {
-    width: 10rem;
-  }
-  .sidebarCollapsed {
-    width: 3rem;
+    width: 100%;
+    position: absolute;
+    height: 100vh;
+    z-index: 1200;
+    background: linear-gradient(180deg, #ffffff 0%, #f3fbfb 100%);
   }
 }
