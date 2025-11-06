@@ -38,8 +38,20 @@ export default function TestOption({ courseId, courseName }) {
     const fetchStages = useCallback(
         async (type) => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/questions/${courseId}?type=${type}`);
-                setStages(res.data || []);
+                let res;
+
+                if (type === "code") {
+                    // ✅ NEW → Fetch code stages
+                    res = await axios.get(`http://localhost:5000/api/code/stages/${courseId}`);
+                    setStages(res.data?.stages || []);
+                } else {
+                    // ✅ Existing MCQ + Theory API
+                    res = await axios.get(
+                        `http://localhost:5000/api/questions/${courseId}?type=${type}`
+                    );
+                    setStages(res.data || []);
+                }
+
             } catch (err) {
                 console.error("Error fetching stages:", err);
                 setStages([]);
@@ -47,6 +59,7 @@ export default function TestOption({ courseId, courseName }) {
         },
         [courseId]
     );
+
 
     useEffect(() => {
         fetchStages("mcq");
@@ -89,7 +102,6 @@ export default function TestOption({ courseId, courseName }) {
             });
 
             const userTestId = testRes.data?.user_test_id;
-
             if (!userTestId) throw new Error("Invalid response: missing user_test_id");
 
             await axios.post("http://localhost:5000/api/user-test/progress", {
@@ -97,12 +109,19 @@ export default function TestOption({ courseId, courseName }) {
             });
 
             setConfirmModal(false);
-            navigate(`/dashboard/course/${courseId}/test/${userTestId}`);
+
+            if (selected === "code") {
+                navigate(`/dashboard/course/${courseId}/code/${userTestId}`);
+            } else {
+                navigate(`/dashboard/course/${courseId}/test/${userTestId}`);
+            }
+
         } catch (err) {
             console.error("Error starting test:", err);
             alert("Failed to start test. Please try again.");
         }
     };
+
 
     return (
         <div className={styles.pageContainer}>
@@ -146,11 +165,7 @@ export default function TestOption({ courseId, courseName }) {
                     {stages.length > 0 ? (
                         <div className={styles.stageGrid}>
                             {stages.map((s) => (
-                                <div
-                                    key={s.stage}
-                                    className={styles.stageCard}
-                                    onClick={() => openStageModal(s.stage)}
-                                >
+                                <div key={s.stage} className={styles.stageCard} onClick={() => openStageModal(s.stage)}>
                                     Stage {s.stage}
                                 </div>
                             ))}

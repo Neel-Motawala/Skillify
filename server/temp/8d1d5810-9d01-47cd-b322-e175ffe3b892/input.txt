@@ -1,0 +1,8 @@
+# No Imports
+
+a, b = map(int, input().split())
+def sum_two(a, b):
+ # Write your code here
+ return a + b
+
+print(sum_two(a, b))

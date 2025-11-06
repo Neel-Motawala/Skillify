@@ -1,0 +1,28 @@
+.editorContainer {
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ✅ Removes Monaco's bottom white decoration */
+.monaco-editor .scroll-decoration {
+  display: none !important;
+}
+
+/* ✅ Removes any padding that causes blank area */
+.monaco-editor .monaco-editor-background,
+.monaco-editor .view-lines {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ✅ Remove gutter border */
+.monaco-editor .margin {
+  border-right: none !important;
+}
+
+/* ✅ Remove scrollbars’ background */
+.monaco-editor .monaco-scrollable-element {
+  background: transparent !important;
+}

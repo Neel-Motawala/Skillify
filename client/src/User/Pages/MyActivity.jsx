@@ -12,6 +12,7 @@ export default function MyActivity() {
             try {
                 const userId = localStorage.getItem("id");
                 const res = await axios.get(`http://localhost:5000/api/user-test/user/${userId}`);
+
                 const sorted = (res.data || []).sort(
                     (a, b) => new Date(b.test_created_at) - new Date(a.test_created_at)
                 );
@@ -22,8 +23,7 @@ export default function MyActivity() {
                         month: "short",
                         day: "numeric",
                     });
-                    if (!acc[date]) acc[date] = [];
-                    acc[date].push(test);
+                    (acc[date] ||= []).push(test);
                     return acc;
                 }, {});
 
@@ -32,23 +32,50 @@ export default function MyActivity() {
                 console.error("Error fetching user tests:", err);
             }
         };
+
         fetchTests();
     }, []);
 
     const handleAction = (test) => {
-        switch (test.latest_status) {
+        const type = test.test_type?.toLowerCase();
+        const course = test.course_id;
+        const id = test.id;
+        const status = test.latest_status;
+
+        // ✅ CODE TEST LOGIC
+        if (type === "code") {
+            if (status === "in_progress") {
+                // Continue Code Test
+                if (window.confirm("Do you want to continue your test?")) {
+                    navigate(`/dashboard/course/${course}/code/${id}`);
+                }
+            } else if (status === "complete") {
+                // Show Code Result Page (if you have one)
+                navigate(`/dashboard/course/${course}/code/${id}/result`);
+            } else {
+                // Start New Code Test
+                navigate(`/dashboard/course/${course}/code/${id}`);
+            }
+            return;
+        }
+
+        // ✅ MCQ / THEORY LOGIC
+        switch (status) {
             case "in_progress":
                 if (window.confirm("Do you want to continue your test?")) {
-                    navigate(`/dashboard/course/${test.course_id}/test/${test.id}`);
+                    navigate(`/dashboard/course/${course}/test/${id}`);
                 }
                 break;
+
             case "complete":
-                navigate(`/dashboard/course/${test.course_id}/result/${test.id}`);
+                navigate(`/dashboard/course/${course}/result/${id}`);
                 break;
+
             default:
-                navigate(`/dashboard/course/${test.course_id}/test/${test.id}`);
+                navigate(`/dashboard/course/${course}/test/${id}`);
         }
     };
+
 
     const dates = Object.keys(groupedTests);
 
@@ -80,6 +107,7 @@ export default function MyActivity() {
                                 <th>Status</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {dates.map((date) => (
                                 <React.Fragment key={date}>
@@ -94,6 +122,7 @@ export default function MyActivity() {
                                                 : date}
                                         </td>
                                     </tr>
+
                                     {groupedTests[date].map((test) => (
                                         <tr
                                             key={test.id}
@@ -101,22 +130,27 @@ export default function MyActivity() {
                                             onClick={() => handleAction(test)}
                                         >
                                             <td>{test.course_name}</td>
+
                                             <td className={styles.typeText}>
                                                 {test.test_type.toUpperCase()}
                                             </td>
+
                                             <td>{test.stage}</td>
                                             <td>{test.test_mode}</td>
+
                                             <td>{new Date(test.test_created_at).toLocaleString()}</td>
+
                                             <td>
                                                 {test.end_time
                                                     ? new Date(test.end_time).toLocaleString()
                                                     : "Still Active"}
                                             </td>
+
                                             <td>
                                                 <span
                                                     className={`${styles.statusBadge} ${test.latest_status === "complete"
-                                                            ? styles.completed
-                                                            : styles.inProgress
+                                                        ? styles.completed
+                                                        : styles.inProgress
                                                         }`}
                                                 >
                                                     {test.latest_status === "complete"

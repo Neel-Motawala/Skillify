@@ -89,3 +89,73 @@
   margin-top: 1rem;
 }
 
+.codeBlock {
+  width: 100%;
+  padding: 22px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.sectionRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.subTitle {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 10px 0 4px;
+  color: #444;
+}
+
+.sectionText {
+  font-size: 15px;
+  color: #555;
+}
+
+.codePre {
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #ddd;
+}
+
+.testCaseList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.testCaseItem {
+  background: #fafafa;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e5e5;
+}
+
+.sampleTag {
+  background: #007bff;
+  color: white;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  margin-left: 8px;
+}

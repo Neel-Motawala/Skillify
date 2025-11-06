@@ -226,4 +226,68 @@ exports.getProfileData = async (req, res) => {
     }
 };
 
+exports.getCodeTestResults = async (req, res) => {
+    try {
+        const userTestId = req.params.userTestId;
 
+        if (!userTestId) {
+            return res.status(400).json({ error: "Missing userTestId" });
+        }
+
+        // -----------------------------
+        // Fetch test detail
+        // -----------------------------
+        const [testRows] = await pool.query(
+            `SELECT id, user_id, course_id, test_type, test_mode, stage, timestamp
+             FROM user_tests
+             WHERE id = ?`,
+            [userTestId]
+        );
+
+        if (!testRows.length) {
+            return res.status(404).json({ error: "Test not found" });
+        }
+
+        const testDetail = testRows[0];
+
+        // -----------------------------
+        // Fetch all user code attempts
+        // -----------------------------
+        const [codeRows] = await pool.query(
+            `SELECT 
+                id,
+                question_id,
+                user_test_id,
+                user_id,
+                code_language,
+                user_code,
+                is_correct,
+                runtime_ms,
+                memory_kb,
+                result_summary,
+                timestamp
+             FROM user_code_ans
+             WHERE user_test_id = ?
+             ORDER BY timestamp DESC`,
+            [userTestId]
+        );
+
+        // Parse JSON summary safely
+        const submissions = codeRows.map(r => ({
+            ...r,
+            result_summary: r.result_summary ? JSON.parse(r.result_summary) : null
+        }));
+
+        // -----------------------------
+        // Response
+        // -----------------------------
+        return res.json({
+            test: testDetail,
+            submissions
+        });
+
+    } catch (err) {
+        console.error("Fetch code results error:", err);
+        return res.status(500).json({ error: "Server error" });
+    }
+};

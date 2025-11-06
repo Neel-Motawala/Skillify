@@ -1,4 +1,5 @@
 // controller/courseController.js
+const e = require("express");
 const pool = require("../config/db"); // mysql2/promise pool
 
 // Get all courses
@@ -39,3 +40,34 @@ exports.getCourseCount = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
+exports.updateCourseDetail = async (req, res) => {
+    const id = req.params.id;
+    const { course_name, image_url, course_desc, template } = req.body;
+
+    try {
+        if (!course_name || !image_url || !course_desc) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        const sql = `
+            UPDATE course 
+            SET course_name = ?, image_url = ?, course_desc = ?, template = ?
+            WHERE id = ?
+        `;
+
+        await pool.query(sql, [
+            course_name,
+            image_url,
+            course_desc,
+            template || "",
+            id
+        ]);
+
+        return res.json({ message: "Course updated" });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+

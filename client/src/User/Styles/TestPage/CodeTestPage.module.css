@@ -1,0 +1,171 @@
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px 50px;
+  background: #f5f7fa;
+}
+
+.solvedBadge {
+  background: #22c55e;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* Back Button */
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #444;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.backBtn:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+/* Header */
+.headerBox {
+  margin-bottom: 25px;
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #666;
+}
+
+/* Questions Section */
+.questionWrapper {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #222;
+}
+
+.noData {
+  font-size: 16px;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* Cards */
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.qBadge {
+  background: #0055ff;
+  color: #fff;
+  font-size: 16px;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.cardDesc {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Loading Text */
+.loading {
+  padding: 30px;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.modal {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-bottom: 10px;
+  color: #16a34a;
+  font-size: 22px;
+}
+
+.modal p {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.continueBtn {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.continueBtn:hover {
+  background: #1e40af;
+}

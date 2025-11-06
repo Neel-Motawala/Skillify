@@ -11,6 +11,7 @@ const questionRoutes = require("./routes/questionRoutes");
 const userTestRoutes = require("./routes/userTestRoutes");
 const userResponseRoutes = require("./routes/userResponseRoute");
 const userResultRoutes = require("./routes/userResultRoute");
+const codeRoutes = require("./routes/codeRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/user-test", userTestRoutes);
 app.use("/api/user-response", userResponseRoutes);
 app.use("/api/results", userResultRoutes);
+app.use("/api", codeRoutes);
 
 
 

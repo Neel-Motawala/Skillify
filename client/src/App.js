@@ -24,6 +24,8 @@ import ViewResult from "./User/Pages/ViewResult";
 import MyAnalytics from "./User/Pages/MyAnalytics";
 import Profile from "./User/Pages/Profile";
 import Progress from "./User/Pages/Progress";
+import CodePlayground from "./User/Pages/CodePlayground";
+import CodeTestPage from "./User/Pages/CodeTestPage";
 
 import MCQ from "./Extra/mcq";
 
@@ -72,6 +74,8 @@ function App() {
           <Route path="/dashboard/analytics" element={<ProtectedRoute role="user"><MyAnalytics /></ProtectedRoute>} />
           <Route path="/dashboard/profile" element={<ProtectedRoute role="user"><Profile /></ProtectedRoute>} />
           <Route path="/dashboard/progress" element={<ProtectedRoute role="user"><Progress /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:courseId/code/:userTestId" element={<ProtectedRoute role="user"><CodeTestPage /></ProtectedRoute>} />
+          <Route path="/dashboard/course/:courseId/code/:userTestId/q/:questionId" element={<ProtectedRoute role="user"><CodePlayground /></ProtectedRoute>} />
 
 
           {/* ---------- Extra Routes ---------- */}

@@ -1,0 +1,198 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Modal */
+/* .modal {
+  width: 900px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
+} */
+
+.modal {
+  width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.gridTwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.gridThree {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.gridFour {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* .modal {
+  width: 1000px;
+  max-height: 90vh;
+  overflow-y: auto;
+} */
+
+.toggleRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+}
+
+.activeTab {
+  flex: 1;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  font-weight: bold;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeBtn {
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #444;
+}
+
+/* Form */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Layout */
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.sectionTitle {
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+/* Test Case Card */
+.testCaseCard {
+  border: 1px solid #ddd;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #fafafa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.addCaseBtn,
+.removeCaseBtn {
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.removeCaseBtn {
+  background: #ffe4e6;
+  border-color: #fecdd3;
+}
+
+/* Footer */
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelBtn,
+.saveBtn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-size: 15px;
+}
+
+.cancelBtn {
+  background: #e5e7eb;
+}
+
+.saveBtn {
+  background: #4f46e5;
+  color: white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
