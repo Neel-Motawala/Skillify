@@ -116,7 +116,7 @@ export default function CourseOption({ courseId, courseName }) {
 
             {/* Header */}
             <div className={styles.header}>
-                <button className={styles.backBtn} onClick={() => navigate(-1)}>
+                <button className={styles.backBtn} onClick={() => navigate("/admin-dashboard/manage-courses", { replace: true })}>
                     <i className="bi bi-arrow-left-circle"></i>
                     <span>Back</span>
                 </button>
@@ -184,7 +184,8 @@ export default function CourseOption({ courseId, courseName }) {
                                     className={styles.stageCard}
                                     onClick={() =>
                                         navigate(
-                                            `/admin-dashboard/manage-courses/${courseId}/add?stage=${s.stage}&type=${selected.value}`
+                                            `/admin-dashboard/manage-courses/${courseId}/add?stage=${s.stage}&type=${selected.value}`,
+                                            { replace: true }
                                         )
                                     }
                                 >

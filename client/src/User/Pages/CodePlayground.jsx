@@ -95,12 +95,19 @@ export default function CodePlayground() {
         const loadQuestion = async () => {
             try {
                 const courseRes = await axios.get(`http://localhost:5000/api/course/${courseId}`);
-                const template = courseRes.data?.template || "";
-                const language = courseRes.data.course_name.toLowerCase();
 
-                console.log("Language Receive:", language);
+                let language = courseRes.data.course_name.toLowerCase();
 
+                // ✅ Normalize invalid names
+                if (language.includes("c++")) language = "cpp";
+                else if (language.includes("c language")) language = "c";
+                else if (language === "c-lang") language = "c";
+                else if (language === "cpp-lang") language = "cpp";
+
+                console.log("Normalized Language:", language);
                 setCourseLang(language);
+
+                const template = courseRes.data?.template || "";
 
                 const qRes = await axios.get(
                     `http://localhost:5000/api/code/${courseId}/${stage}/${questionId}`
@@ -109,13 +116,12 @@ export default function CodePlayground() {
                 const q = qRes.data.question;
                 setQuestion(q);
 
-                // Build final template
                 let finalCode = template
                     .replace("__IMPORT_CLASSES__", q.require_import || "")
                     .replace("__USER_INPUT__", q.user_input || "")
                     .replace("__FUNCTION_TEMPLATE__", q.function_template || "");
 
-                // Try formatting (for supported languages only)
+                // ✅ Formatting only for supported languages
                 let formatted = finalCode;
                 const cfg = getPrettierConfigForLanguage(language);
 
@@ -130,6 +136,7 @@ export default function CodePlayground() {
                 setCode(formatted);
 
                 if (q.test_cases?.length > 0) setInput(q.test_cases[0].input);
+
             } catch {
                 setError("Failed to load question");
             }
@@ -160,9 +167,12 @@ export default function CodePlayground() {
         setLoading(true);
         setOutput("");
 
+        const normalizedLang =
+            courseLang === "c language" ? "c" : courseLang;
+
         try {
             const res = await axios.post("http://localhost:5000/api/run", {
-                language: courseLang,
+                language: normalizedLang,
                 code,
                 stdin: input,
             });
@@ -175,6 +185,7 @@ export default function CodePlayground() {
         }
     };
 
+
     // ---------------------------------------------------
     // Submit Code
     // ---------------------------------------------------
@@ -182,10 +193,13 @@ export default function CodePlayground() {
         setLoading(true);
         setOutput("");
 
+        const normalizedLang =
+            courseLang === "c language" ? "c" : courseLang;
+
         try {
             const res = await axios.post("http://localhost:5000/api/submit", {
                 question_id: questionId,
-                language: courseLang,
+                language: normalizedLang,
                 code,
                 user_id: userId,
                 user_test_id: userTestId,
@@ -208,7 +222,7 @@ export default function CodePlayground() {
 
             // ✅ Redirect after 1 second
             setTimeout(() => {
-                navigate(`/dashboard/course/${courseId}/code/${userTestId}`);
+                navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true });
             }, 1000);
 
         } catch (err) {
@@ -229,7 +243,7 @@ export default function CodePlayground() {
     return (
         <div className={styles.layout}>
             <div className={styles.headerRow}>
-                <button className={styles.backBtn} onClick={() => navigate(-1)}>
+                <button className={styles.backBtn} onClick={() => navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true })}>
                     ← Back
                 </button>
 

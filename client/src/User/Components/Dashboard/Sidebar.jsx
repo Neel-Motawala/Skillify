@@ -34,9 +34,9 @@ export default function Sidebar() {
             <ul className={`nav flex-column ${styles.nav}`}>
                 {[
                     { icon: "bi-speedometer2", label: "Overview", href: "#overview" },
-                    { icon: "bi-graph-up", label: "Reports", href: "#reports" },
-                    { icon: "bi-bar-chart-line", label: "Analytics", href: "dashboard/analytics" },
-                    { icon: "bi-gear", label: "Settings", href: "#settings" },
+                    { icon: "bi-graph-up", label: "Progress", href: "/dashboard/progress" },
+                    { icon: "bi-bar-chart-line", label: "Analytics", href: "/dashboard/analytics" },
+                    { icon: "bi-gear", label: "Settings", href: "/dashboard/settings" },
                 ].map((item) => (
                     <li key={item.label} className="nav-item mb-3 me-3">
                         <a

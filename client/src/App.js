@@ -26,6 +26,7 @@ import Profile from "./User/Pages/Profile";
 import Progress from "./User/Pages/Progress";
 import CodePlayground from "./User/Pages/CodePlayground";
 import CodeTestPage from "./User/Pages/CodeTestPage";
+import Settings from "./User/Pages/Setting";
 
 import MCQ from "./Extra/mcq";
 
@@ -76,7 +77,7 @@ function App() {
           <Route path="/dashboard/progress" element={<ProtectedRoute role="user"><Progress /></ProtectedRoute>} />
           <Route path="/dashboard/course/:courseId/code/:userTestId" element={<ProtectedRoute role="user"><CodeTestPage /></ProtectedRoute>} />
           <Route path="/dashboard/course/:courseId/code/:userTestId/q/:questionId" element={<ProtectedRoute role="user"><CodePlayground /></ProtectedRoute>} />
-
+          <Route path="/dashboard/settings" element={<ProtectedRoute role="user"><Settings /></ProtectedRoute>} />
 
           {/* ---------- Extra Routes ---------- */}
           <Route path="/mcq" element={<MCQ />} />

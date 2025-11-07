@@ -33,7 +33,7 @@ const Profile = () => {
         <div className={styles.profilePage}>
             {/* Navbar */}
             <nav className={styles.navbar}>
-                <button className={styles.backButton} onClick={() => navigate("/")}>
+                <button className={styles.backButton} onClick={() => navigate("/", { replace: true })}>
                     ← Back
                 </button>
                 <h2 className={styles.navTitle}>Profile Overview</h2>
@@ -53,8 +53,8 @@ const Profile = () => {
                             <p className={styles.username}>@{user.user_name}</p>
                             <span
                                 className={`${styles.status} ${user.status?.toLowerCase() === "active"
-                                        ? styles.active
-                                        : styles.inactive
+                                    ? styles.active
+                                    : styles.inactive
                                     }`}
                             >
                                 {user.status?.toLowerCase() === "active"
@@ -65,7 +65,7 @@ const Profile = () => {
                     </div>
                     <button
                         className={styles.editButton}
-                        onClick={() => navigate("/setting")}
+                        onClick={() => navigate("/dashboard/settings", { replace: true })}
                     >
                         Edit Profile
                     </button>
@@ -75,24 +75,28 @@ const Profile = () => {
                 <div className={styles.detailsSection}>
                     <h3 className={styles.sectionTitle}>Account Information</h3>
 
-                    <div className={styles.verticalInfo}>
+                    <div className={styles.infoGrid}>
                         <div className={styles.infoItem}>
                             <label>Full Name</label>
                             <p>{user.user_fullname}</p>
                         </div>
+
                         <div className={styles.infoItem}>
                             <label>Username</label>
                             <p>{user.user_name}</p>
                         </div>
+
                         <div className={styles.infoItem}>
                             <label>Email</label>
                             <p>{user.user_email}</p>
                         </div>
+
                         <div className={styles.infoItem}>
                             <label>Contact</label>
                             <p>{user.user_contact}</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

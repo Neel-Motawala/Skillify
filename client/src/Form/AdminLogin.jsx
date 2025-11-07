@@ -28,7 +28,7 @@ const AdminLogin = () => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("role", res.data.role);
                 localStorage.setItem("id", res.data.adminId);
-                setTimeout(() => navigate("/admin-dashboard"), 1000);
+                setTimeout(() => navigate("/admin-dashboard", { replace: true }), 1000);
             } else {
                 setMessage({ text: res.data.error || "Login failed.", type: "error" });
             }

@@ -19,6 +19,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// ✅ Serve static files first
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "public")));  // ✅ serves /public and /public/profile
+
+// ✅ API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/course", courseRoutes);
@@ -27,10 +32,6 @@ app.use("/api/user-test", userTestRoutes);
 app.use("/api/user-response", userResponseRoutes);
 app.use("/api/results", userResultRoutes);
 app.use("/api", codeRoutes);
-
-
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
     res.send("✅ Skill Assessment API is running");

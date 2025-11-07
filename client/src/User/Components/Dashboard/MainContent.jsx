@@ -53,7 +53,7 @@ export default function MainContent() {
                         >
                             <div
                                 className={`${styles.courseCard} card shadow-sm h-100`}
-                                onClick={() => navigate(`/dashboard/course/${course.id}`)}
+                                onClick={() => navigate(`/dashboard/course/${course.id}`, { replace: true })}
                             >
                                 <div className="card-body d-flex align-items-center justify-content-between p-3">
                                     <div className="flex-grow-1 text-start">

@@ -53,7 +53,7 @@ export default function UserList() {
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <button
                     className="btn btn-outline-primary btn-sm"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/admin-dashboard`, { replace: true })}
                 >
                     <i className="bi bi-arrow-left me-1"></i> Back
                 </button>

@@ -3,22 +3,67 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../Styles/TestPage/CodeTestPage.module.css";
 
+// ✅ Correct import path (must point to your hooks folder)
+import useStrictTestMonitoring from "./hooks/useStrictTestMonitoring";
+
 export default function CodeTestPage() {
     const { courseId, userTestId } = useParams();
     const navigate = useNavigate();
 
     const [stage, setStage] = useState(null);
     const [questions, setQuestions] = useState([]);
+    const [testMode, setTestMode] = useState(null);
     const [solveStatus, setSolveStatus] = useState({});
     const [loading, setLoading] = useState(true);
 
     const [showModal, setShowModal] = useState(false);
     const [serverMsg, setServerMsg] = useState("");
 
+    const [violations, setViolations] = useState(0);
+    const [lastEvent, setLastEvent] = useState("");
+    const [showWarning, setShowWarning] = useState(false);
+    const [aborted, setAborted] = useState(false);
+
+    // ✅ Clean message list
+    const violationMessages = {
+        TAB_CHANGE: "You switched the tab",
+        TAB_HIDDEN: "You left the test window",
+        WINDOW_RESIZED: "You resized or split-screen",
+        FULLSCREEN_EXIT: "You exited fullscreen mode",
+        INSPECT_BLOCKED: "Inspecting the browser is blocked",
+        RIGHT_CLICK_BLOCKED: "Right-click is disabled during the test",
+    };
+
+    // ✅ Format the violation
+    const reportViolation = (code) => {
+        const msg = violationMessages[code] || "Violation detected";
+        setLastEvent(msg);
+        setViolations((v) => v + 1);
+        setShowWarning(true);
+    };
+
+    // ✅ Strict browser monitoring hook
+    const { pauseChecking } = useStrictTestMonitoring({
+        testMode,
+        disabled: testMode !== "Attempt" || aborted || showWarning,
+        onViolation: reportViolation,
+    });
+
+
+
+    // ✅ Auto-abort after violations
+    useEffect(() => {
+        if (testMode === "Attempt" && violations >= 3) {
+            setAborted(true);
+        }
+    }, [violations, testMode]);
+
+
+
+    // ✅ Fetch test + questions
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Get test details
                 const res = await axios.get(
                     `http://localhost:5000/api/user-test/test/${userTestId}`
                 );
@@ -26,32 +71,33 @@ export default function CodeTestPage() {
                 const testStage = res.data?.stage;
                 setStage(testStage);
 
-                // Get questions
+                const testMode = res.data?.test_mode;
+                setTestMode(testMode);
+
                 let questionList = [];
+
                 if (testStage) {
                     const qRes = await axios.get(
                         `http://localhost:5000/api/code/${courseId}/${testStage}`
                     );
+
                     questionList = qRes.data.questions || [];
                     setQuestions(questionList);
                 }
 
-                // Get solved status
                 const codeRes = await axios.get(
                     `http://localhost:5000/api/results/user-code/${userTestId}`
                 );
 
                 const submissions = codeRes.data?.submissions || [];
                 const map = {};
+
                 submissions.forEach((s) => {
-                    if (s.is_correct === 1) {
-                        map[s.question_id] = true;
-                    }
+                    if (s.is_correct === 1) map[s.question_id] = true;
                 });
 
                 setSolveStatus(map);
 
-                // ✅ Check if ALL questions solved
                 if (
                     questionList.length > 0 &&
                     Object.keys(map).length === questionList.length
@@ -68,14 +114,53 @@ export default function CodeTestPage() {
         if (courseId && userTestId) fetchData();
     }, [courseId, userTestId]);
 
+    // ✅ Abort UI
+    if (aborted) {
+        return (
+            <div className={styles.abortBackdrop}>
+                <div className={styles.abortBox}>
+                    <h2>Test Aborted</h2>
+                    <p>Your test has been aborted due to the following reason:</p>
+                    <p className={styles.abortReason}>{lastEvent}</p>
+
+                    <button
+                        className={styles.abortConfirmBtn}
+                        onClick={() => navigate("/dashboard/activity", { replace: true })}
+                    >
+                        Confirm & Exit
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     if (loading)
         return <p className={styles.loading}>Loading test data...</p>;
 
     return (
         <div className={styles.page}>
 
+            {/* ✅ Strict Warning Popup */}
+            {showWarning && (
+                <div className={styles.modalBackdrop}>
+                    <div className={styles.modalBox}>
+                        <h3>Warning</h3>
+                        <p>{lastEvent}</p>
+                        <button
+                            className={styles.closeModalBtn}
+                            onClick={() => setShowWarning(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Back Button */}
-            <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            <button className={styles.backBtn} onClick={() => {
+                pauseChecking();
+                navigate(`/dashboard/activity`, { replace: true });
+            }}>
                 <i className="bi bi-arrow-left"></i> Back
             </button>
 
@@ -85,7 +170,8 @@ export default function CodeTestPage() {
                 <p className={styles.meta}>
                     Course <strong>{courseId}</strong> |
                     Stage <strong>{stage}</strong> |
-                    Test ID <strong>{userTestId}</strong>
+                    Test ID <strong>{userTestId}</strong> |
+                    Test Mode <strong>{testMode}</strong>
                 </p>
             </div>
 
@@ -102,14 +188,11 @@ export default function CodeTestPage() {
                                 key={q.id}
                                 className={styles.card}
                                 onClick={() => {
+                                    pauseChecking();
                                     if (solveStatus[q.id]) {
-                                        navigate(
-                                            `/dashboard/code/result/c/${courseId}/s/${stage}/ut/${userTestId}/q/${q.id}`
-                                        );
+                                        navigate(`/dashboard/code/result/c/${courseId}/s/${stage}/ut/${userTestId}/q/${q.id}`, { replace: true });
                                     } else {
-                                        navigate(
-                                            `/dashboard/course/${courseId}/code/${userTestId}/q/${q.id}`
-                                        );
+                                        navigate(`/dashboard/course/${courseId}/code/${userTestId}/q/${q.id}`, { replace: true });
                                     }
                                 }}
                             >
@@ -117,7 +200,6 @@ export default function CodeTestPage() {
                                     <span className={styles.qBadge}>Que:</span>
                                     <h3 className={styles.cardTitle}>{q.question_title}</h3>
 
-                                    {/* ✅ Solved badge */}
                                     {solveStatus[q.id] && (
                                         <span className={styles.solvedBadge}>Solved</span>
                                     )}
@@ -130,13 +212,12 @@ export default function CodeTestPage() {
                 )}
             </div>
 
-            {/* ✅ Completion Modal */}
+            {/* Completion Modal */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <h2>Congratulation!</h2>
 
-                        {/* Default message or server message */}
                         <p>{serverMsg || "You successfully completed all code questions."}</p>
 
                         {!serverMsg && (
@@ -150,11 +231,9 @@ export default function CodeTestPage() {
 
                                         setServerMsg(res.data?.message || "Completed");
 
-                                        // Keep modal visible for 2 seconds
                                         setTimeout(() => {
-                                            navigate("/dashboard/activity");
+                                            navigate("/dashboard/activity", { replace: true });
                                         }, 2000);
-
                                     } catch (err) {
                                         console.error("Error completing test:", err);
                                     }

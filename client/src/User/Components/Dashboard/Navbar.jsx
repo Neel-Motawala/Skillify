@@ -10,7 +10,7 @@ export default function Navbar() {
     const handleLogout = () => {
         localStorage.clear();
         sessionStorage.clear();
-        navigate("/login");
+        navigate("/login", { replace: true });
     };
 
     // Close dropdown when clicking outside
@@ -45,7 +45,7 @@ export default function Navbar() {
                         <li>
                             <button
                                 className={styles.dropdownItem}
-                                onClick={() => navigate("/dashboard/profile")}
+                                onClick={() => navigate("/dashboard/profile", { replace: true })}
                             >
                                 Profile
                             </button>
@@ -53,7 +53,7 @@ export default function Navbar() {
                         <li>
                             <button
                                 className={styles.dropdownItem}
-                                onClick={() => navigate("/setting")}
+                                onClick={() => navigate("/dashboard/settings", { replace: true })}
                             >
                                 Settings
                             </button>

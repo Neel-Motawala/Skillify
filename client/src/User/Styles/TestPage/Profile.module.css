@@ -8,6 +8,34 @@
   font-family: "Inter", sans-serif;
 }
 
+/* Two-column grid for account details */
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 equal columns */
+  gap: 20px 30px;
+  margin-top: 15px;
+}
+
+.infoItem label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.infoItem p {
+  margin: 4px 0 0 0;
+  font-size: 1rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .infoGrid {
+    grid-template-columns: 1fr; /* stack vertically on small screens */
+  }
+}
+
 /* Navbar */
 .navbar {
   display: flex;

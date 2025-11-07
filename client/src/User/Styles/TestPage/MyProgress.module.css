@@ -13,7 +13,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.4rem;
 }
 
 .title {
@@ -34,115 +34,145 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .backButton:hover {
   background: #d8eeee;
 }
 
-/* === Progress Grid (Full Width) === */
-.progressGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+/* =====================================================
+   ✅ OVERALL PROGRESS (Larger Section at Top)
+   ===================================================== */
+.overallSection {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.8rem 2rem;
+  box-shadow: 0 2px 10px rgba(95, 168, 175, 0.1);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.overallTitle {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #5f8faf;
+}
+
+.overallBarOuter {
+  margin-top: 14px;
+  height: 14px;
+  background: #e9f4f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.overallBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #5faf98, #5f8faf);
+  transition: width 0.6s ease;
+}
+
+.overallPercent {
+  margin-top: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #344e5c;
+}
+
+/* =====================================================
+   ✅ TWO-COLUMN COURSE GRID (Equal width)
+   ===================================================== */
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.4rem;
   width: 100%;
 }
 
-/* === Course Card === */
-.progressCard {
+/* =====================================================
+   ✅ COURSE CARDS (Slightly bigger, clean)
+   ===================================================== */
+.courseCard {
   background: #ffffff;
   border-radius: 12px;
+  padding: 1.2rem 1.5rem;
   box-shadow: 0 2px 8px rgba(95, 168, 175, 0.08);
-  padding: 1rem 1.5rem;
-  transition: all 0.25s ease;
-  width: 100%;
+  transition: 0.25s ease;
 }
-.progressCard:hover {
-  transform: translateY(-3px);
+
+.courseCard:hover {
+  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(95, 168, 175, 0.15);
 }
 
-/* === Course Header === */
-.courseHeader {
+/* Header inside course card */
+.cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
 }
-.courseInfo {
+
+.cardInfo {
   display: flex;
   align-items: center;
   gap: 0.8rem;
 }
-.courseImage {
-  width: 46px;
-  height: 46px;
-  border-radius: 8px;
+
+.cardImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
   object-fit: cover;
 }
-.courseName {
+
+.cardName {
   font-weight: 600;
+  font-size: 1rem;
   color: #2f3e46;
 }
-.percentText {
+
+.cardPercent {
   font-weight: 700;
+  font-size: 1rem;
   color: #5f8faf;
-  font-size: 0.95rem;
 }
 
-/* === Progress Bar === */
+/* Progress bar inside card */
 .progressBarOuter {
   background: #e9f4f5;
   border-radius: 8px;
-  height: 14px;
+  height: 12px;
   overflow: hidden;
 }
+
 .progressBarFill {
   background: linear-gradient(90deg, #5fa8af, #5faf98);
   height: 100%;
-  border-radius: 8px;
   transition: width 0.6s ease;
 }
 
-/* === Stats === */
-.statsRow {
+/* Stats row */
+.cardStats {
   display: flex;
   justify-content: space-between;
+  margin-top: 0.7rem;
   font-size: 0.85rem;
   color: #475569;
-  margin-top: 0.5rem;
 }
 
-/* === Overall Progress === */
-.avgProgressBox {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.08);
-  padding: 1.5rem 1.2rem;
-  text-align: center;
-  width: 100%;
-  margin-top: 2rem;
-}
-.avgProgressBox h4 {
-  font-size: 1.1rem;
-  color: #5f8faf;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-}
-.avgProgressFill {
-  background: linear-gradient(90deg, #5faf98, #5f8faf);
-  height: 14px;
-  border-radius: 8px;
-  transition: width 0.6s ease;
-}
-.avgProgressText {
-  color: #344e5c;
-  font-weight: 700;
-  margin-top: 0.5rem;
-}
-
-/* === Responsive === */
+/* =====================================================
+   ✅ Responsive
+   ===================================================== */
 @media (max-width: 992px) {
   .fullContainer {
     padding: 24px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .courseGrid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -150,9 +180,9 @@
   .fullContainer {
     padding: 16px;
   }
-  .statsRow {
+
+  .cardStats {
     flex-direction: column;
-    align-items: flex-start;
     gap: 4px;
   }
 }

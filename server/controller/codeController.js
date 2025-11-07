@@ -422,7 +422,7 @@ exports.addCodeQuestion = async (req, res) => {
                 return_type, time_limit_ms, memory_limit_kb,
                 html_template, css_template, js_template, created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         `;
 
         const params = [

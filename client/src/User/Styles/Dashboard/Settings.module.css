@@ -1,0 +1,299 @@
+/* ------------------ Header ------------------ */
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #5f8faf;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.backBtn:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  font-size: 1.1rem;
+  color: #64748b;
+}
+
+.pageTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #344e5c;
+  margin: 0;
+}
+
+/* ------------------ Container ------------------ */
+
+.pageContainer {
+  width: 100%;
+  padding: 20px 40px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ------------------ Grid Layout ------------------ */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------ Card ------------------ */
+
+.card {
+  background: #ffffff;
+  padding: 1.4rem 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.12);
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #5f8faf;
+}
+
+/* ------------------ Profile Grid ------------------ */
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Avatar */
+
+.avatarBlock {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.editIcon {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  background: #5f8faf;
+  color: white;
+  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Profile Columns */
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.infoRow label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.valueRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.displayText {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+/* Small edit icon */
+
+.editIconSmall {
+  background: #5f8faf;
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.editIconSmall:hover {
+  background: #4d7a8a;
+}
+
+.editBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.editBox input {
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  width: 140px;
+  font-size: 0.9rem;
+}
+
+.saveBtn {
+  background: #5f8faf;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: #e2e8f0;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Buttons */
+
+.uploadBtn {
+  padding: 0.55rem 1.2rem;
+  background: #5f8faf;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 1rem;
+}
+
+.primaryBtn {
+  padding: 0.55rem 1.2rem;
+  background: #5f8faf;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.uploadBtn:hover,
+.primaryBtn:hover {
+  background: #4d7a8a;
+}
+
+/* ------------------ Security Section ------------------ */
+
+.inlineRow {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 1.9rem;
+}
+
+.inlineInput {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inlineInput label {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.inlineInput input {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.inlineInput input:focus {
+  border-color: #5f8faf;
+}
+
+@media (max-width: 768px) {
+  .inlineRow {
+    flex-direction: column;
+  }
+
+  .inlineInput {
+    width: 100%;
+  }
+}
+
+/* ------------------ Account Buttons ------------------ */
+
+.btnGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.logoutBtn,
+.deleteBtn {
+  flex: 1;
+  padding: 0.55rem 1.2rem;
+  border: 2px solid #e11d48;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logoutBtn {
+  background: transparent;
+  color: #e11d48;
+}
+
+.logoutBtn:hover {
+  background: #ffe4e6;
+}
+
+.deleteBtn {
+  background: #e11d48;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background: #b91c1c;
+}

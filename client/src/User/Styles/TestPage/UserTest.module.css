@@ -235,3 +235,73 @@
     height: 20px;
   }
 }
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modalBox {
+  background: #fff;
+  padding: 20px;
+  width: 340px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.closeModalBtn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  margin-top: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.closeModalBtn:hover {
+  background: #005fcc;
+}
+
+/* Abort screen */
+.abortBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+.abortBox {
+  background: #fff;
+  padding: 28px;
+  width: 420px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.abortReason {
+  margin: 10px 0 18px;
+  font-weight: bold;
+  color: #b80000;
+}
+
+.abortConfirmBtn {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.abortConfirmBtn:hover {
+  background: #b02a37;
+}

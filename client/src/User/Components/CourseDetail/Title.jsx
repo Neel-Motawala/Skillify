@@ -28,7 +28,7 @@ export default function Title({ courseId }) {
                 className="btn btn-outline-secondary mb-3"
                 onClick={() => navigate(-1)}
             >
-                ← Back
+                ← Back Hola
             </button>
             <h2 className={styles.courseTitle}>{course.course_name}</h2>
             <p className={styles.courseDescription}>{course.course_desc}</p>

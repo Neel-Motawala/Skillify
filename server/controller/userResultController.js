@@ -291,3 +291,117 @@ exports.getCodeTestResults = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 };
+
+exports.userTestAborted = async (req, res) => {
+    try {
+        const { userTestId } = req.params;
+        const { status, status_detail } = req.body;
+
+        const sql = `
+            INSERT INTO user_activity_logs 
+                (user_test_id, status, status_detail, timestamp)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        await pool.query(sql, [
+            userTestId,
+            status,
+            status_detail,
+            new Date()
+        ]);
+
+        return res.json({ success: true });
+    } catch (err) {
+        console.error("Abort log error:", err);
+        return res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.getUserCodeTestResults = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        if (!userId) {
+            return res.status(400).json({ error: "Missing userId" });
+        }
+
+        // -------------------------------------
+        // ✅ Fetch all user test attempts of type "code"
+        // -------------------------------------
+        const [tests] = await pool.query(
+            `
+            SELECT 
+                id, user_id, course_id, test_type, test_mode, stage, timestamp
+            FROM user_tests
+            WHERE user_id = ? AND test_type = 'code'
+            ORDER BY timestamp DESC
+            `,
+            [userId]
+        );
+
+        if (!tests.length) {
+            return res.json([]);
+        }
+
+        const finalResponse = [];
+
+        // -------------------------------------
+        // ✅ For each test, fetch coding submissions
+        // -------------------------------------
+        for (const test of tests) {
+            const [submissions] = await pool.query(
+                `
+                SELECT 
+                    uca.id,
+                    uca.question_id,
+                    uca.user_test_id,
+                    uca.user_id,
+                    uca.code_language,
+                    uca.user_code,
+                    uca.is_correct,
+                    uca.runtime_ms,
+                    uca.memory_kb,
+                    uca.result_summary,
+                    uca.timestamp,
+                    cq.question_title
+                FROM user_code_ans uca
+                JOIN code_question cq ON cq.id = uca.question_id
+                WHERE uca.user_test_id = ?
+                ORDER BY uca.timestamp DESC
+                `,
+                [test.id]
+            );
+
+            finalResponse.push({
+                test: {
+                    id: test.id,
+                    user_id: test.user_id,
+                    course_id: test.course_id,
+                    test_type: test.test_type,
+                    test_mode: test.test_mode,
+                    stage: test.stage,
+                    timestamp: test.timestamp,
+                },
+                submissions: submissions.map((s) => ({
+                    id: s.id,
+                    question_id: s.question_id,
+                    question_title: s.question_title,
+                    is_correct: s.is_correct,
+                    code_language: s.code_language,
+                    runtime_ms: s.runtime_ms,
+                    memory_kb: s.memory_kb,
+                    result_summary: s.result_summary
+                        ? JSON.parse(s.result_summary)
+                        : null,
+                    timestamp: s.timestamp,
+                })),
+            });
+        }
+
+        return res.json(finalResponse);
+
+    } catch (err) {
+        console.error("Fetch code test results error:", err);
+        return res.status(500).json({ error: "Server error" });
+    }
+};

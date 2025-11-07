@@ -37,7 +37,7 @@ export default function UserRegistration() {
 
             if (response.data.success) {
                 setMessage({ text: response.data.message, type: "success" });
-                setTimeout(() => navigate("/login"), 1500);
+                setTimeout(() => navigate("/login", { replace: true }), 1500);
             } else {
                 setMessage({ text: response.data.error || "Registration failed", type: "error" });
             }

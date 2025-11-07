@@ -20,6 +20,12 @@
   margin-bottom: 1.8rem;
 }
 
+.centerBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .title {
   font-size: 1.75rem;
   font-weight: 700;
@@ -135,6 +141,12 @@
   background: rgba(255, 193, 7, 0.15);
   color: #92400e;
   border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.aborted {
+  background: rgba(255, 77, 79, 0.15); /* Soft red background */
+  color: #b30000; /* Darker readable red */
+  border: 1px solid rgba(255, 77, 79, 0.3); /* Consistent border */
 }
 
 /* === No Data Message === */

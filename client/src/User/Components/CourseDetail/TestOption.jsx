@@ -111,9 +111,9 @@ export default function TestOption({ courseId, courseName }) {
             setConfirmModal(false);
 
             if (selected === "code") {
-                navigate(`/dashboard/course/${courseId}/code/${userTestId}`);
+                navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true });
             } else {
-                navigate(`/dashboard/course/${courseId}/test/${userTestId}`);
+                navigate(`/dashboard/course/${courseId}/test/${userTestId}`, { replace: true });
             }
 
         } catch (err) {
@@ -129,7 +129,7 @@ export default function TestOption({ courseId, courseName }) {
             <div className={styles.titleContainer}>
                 <button
                     className="btn btn-outline-secondary mb-3"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/`, { replace: true })}
                 >
                     ← Back
                 </button>
@@ -208,6 +208,20 @@ export default function TestOption({ courseId, courseName }) {
                 <div className={styles.modalOverlay}>
                     <div className={`${styles.modal} ${styles.leftAligned}`}>
                         <h3>Confirm Test Details</h3>
+
+                        {testMode === "Attempt" && (
+                            <div className={styles.rulesBox}>
+                                <p><strong>Test Rules:</strong></p>
+                                <ul>
+                                    <li>Do not switch tabs or minimize the window.</li>
+                                    <li>Do not resize or split the screen.</li>
+                                    <li>Right-click and inspect are disabled.</li>
+                                    <li>Do not exit fullscreen once started.</li>
+                                    <li>Multiple violations will abort the test.</li>
+                                </ul>
+                            </div>
+                        )}
+
                         <div className={styles.detailBox}>
                             <p><strong>Course:</strong> {courseName}</p>
                             <p><strong>Type:</strong> {selected}</p>
@@ -231,6 +245,7 @@ export default function TestOption({ courseId, courseName }) {
                             </button>
                         </div>
                     </div>
+
                 </div>
             )}
         </div>

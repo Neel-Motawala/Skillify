@@ -35,7 +35,7 @@ export default function MainContent() {
                 <div className="col-md-3 col-sm-8">
                     <div
                         className={`${styles.card} border-0 shadow-sm text-white`}
-                        onClick={() => navigate("/admin-dashboard/view-users")}
+                        onClick={() => navigate("/admin-dashboard/view-users", { replace: true })}
                     >
                         <div
                             className={`${styles.cardBody} d-flex align-items-center justify-content-between`}
@@ -55,7 +55,7 @@ export default function MainContent() {
                 <div className="col-md-3 col-sm-8">
                     <div
                         className={`${styles.card} border-0 shadow-sm text-white`}
-                        onClick={() => navigate("/admin-dashboard/manage-courses")}
+                        onClick={() => navigate("/admin-dashboard/manage-courses", { replace: true })}
                     >
                         <div
                             className={`${styles.cardBody} d-flex align-items-center justify-content-between`}

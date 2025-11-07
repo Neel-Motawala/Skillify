@@ -41,7 +41,7 @@ export default function ViewQuestion({ courseId, stage, type }) {
         <div className={styles.container}>
 
             {/* Back Button */}
-            <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            <button className={styles.backBtn} onClick={() => navigate(`/admin-dashboard/manage-courses/${courseId}`, { replace: true })}>
                 <i className="bi bi-arrow-left-circle"></i>
                 <span>Back</span>
             </button>

@@ -60,3 +60,68 @@ exports.updateStatus = async (req, res) => {
         res.status(500).json({ success: false, message: "Failed to update user status." });
     }
 };
+
+
+exports.editUserDetails = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const data = req.body;
+
+        let field, value;
+
+        // Case 1: Image uploaded
+        if (req.file) {
+            field = "profile_img";
+            value = "/profile/" + req.file.filename;
+        }
+        // Case 2: Normal text field update
+        else {
+            field = Object.keys(data)[0];
+            value = data[field];
+        }
+
+        const allowedFields = [
+            "user_fullname",
+            "user_name",
+            "user_email",
+            "user_contact",
+            "profile_img"
+        ];
+
+        if (!allowedFields.includes(field)) {
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid field update" });
+        }
+
+        const sql = `UPDATE users SET ${field} = ? WHERE id = ?`;
+        const [result] = await pool.query(sql, [value, userId]);
+
+        if (result.affectedRows === 0) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        // fetch updated user
+        const [rows] = await pool.query(
+            "SELECT * FROM users WHERE id = ?",
+            [userId]
+        );
+
+        return res.json({
+            success: true,
+            message: "Profile updated successfully",
+            user: rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while updating profile"
+        });
+    }
+};
+
+

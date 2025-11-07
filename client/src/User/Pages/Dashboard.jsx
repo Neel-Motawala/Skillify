@@ -10,7 +10,7 @@ export default function DashboardLayout() {
 
     useEffect(() => {
         const storedUser = localStorage.getItem("role");
-        if (!storedUser) navigate("/login");
+        if (!storedUser) navigate("/login", { replace: true });
     }, [navigate]);
 
     return (

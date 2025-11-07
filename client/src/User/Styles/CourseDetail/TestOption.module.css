@@ -223,3 +223,20 @@
   color: #444;
   line-height: 1.6;
 }
+
+.rulesBox {
+  background: #e2fef6;
+  padding: 12px;
+  border-left: 4px solid #5faf98;
+  margin-bottom: 14px;
+  border-radius: 6px;
+}
+
+.rulesBox ul {
+  margin: 6px 0 0 18px;
+}
+
+.rulesBox li {
+  margin-bottom: 4px;
+  font-size: 14px;
+}

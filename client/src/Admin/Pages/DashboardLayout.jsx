@@ -16,7 +16,7 @@ export default function DashboardLayout() {
     // Access control
     useEffect(() => {
         const role = localStorage.getItem("role");
-        if (role !== "admin") navigate("/admin-login");
+        if (role !== "admin") navigate("/admin-login", { replace: true });
     }, [navigate]);
 
     // Sidebar toggle handler

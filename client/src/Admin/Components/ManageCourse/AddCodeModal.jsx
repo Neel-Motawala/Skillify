@@ -14,7 +14,6 @@ export default function AddCodeModal({ courseId, onClose, onAdded }) {
         "static int functionName(int x) {\n   \n}"
     );
     const [userInput, setUserInput] = useState("");
-    const [userCodePlaceholder, setUserCodePlaceholder] = useState("");
 
     const [returnType, setReturnType] = useState("int");
     const [timeLimit, setTimeLimit] = useState(2000);
@@ -214,15 +213,6 @@ export default function AddCodeModal({ courseId, onClose, onAdded }) {
                                     rows={4}
                                     value={functionTemplate}
                                     onChange={(e) => setFunctionTemplate(e.target.value)}
-                                />
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>User Code Placeholder</label>
-                                <input
-                                    type="text"
-                                    value={userCodePlaceholder}
-                                    onChange={(e) => setUserCodePlaceholder(e.target.value)}
                                 />
                             </div>
                         </>

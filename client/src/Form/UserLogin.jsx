@@ -29,7 +29,7 @@ export default function LoginForm() {
                 localStorage.setItem("role", response.data.role);
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("id", response.data.userId);
-                setTimeout(() => navigate("/"), 1000);
+                setTimeout(() => navigate("/", { replace: true }), 1000);
             } else {
                 setMessage({ text: response.data.error || "Login failed.", type: "error" });
             }

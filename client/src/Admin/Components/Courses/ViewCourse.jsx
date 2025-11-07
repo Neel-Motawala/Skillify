@@ -24,7 +24,7 @@ export default function ManageCourse() {
             <div className={styles.header}>
                 <button
                     className={styles.backBtn}
-                    onClick={() => navigate("/admin-dashboard")}
+                    onClick={() => navigate("/admin-dashboard", { replace: true })}
                 >
                     <i className="bi bi-arrow-left"></i> Back
                 </button>
@@ -40,7 +40,7 @@ export default function ManageCourse() {
                             key={course.id}
                             className={styles.card}
                             onClick={() =>
-                                navigate(`/admin-dashboard/manage-courses/${course.id}`)
+                                navigate(`/admin-dashboard/manage-courses/${course.id}`, { replace: true })
                             }
                         >
                             {course.image_url && (

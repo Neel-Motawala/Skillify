@@ -1,171 +1,230 @@
-.page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 30px 50px;
-  background: #f5f7fa;
-}
+/* ---------------------
+   STRICT CHECKING MODALS
+---------------------- */
 
-.solvedBadge {
-  background: #22c55e;
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: auto;
-}
-
-/* Back Button */
-.backBtn {
+/* Warning Modal */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  color: #444;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-.backBtn:hover {
-  color: #000;
-  text-decoration: underline;
+  justify-content: center;
+  z-index: 9999;
 }
 
-/* Header */
+.modalBox {
+  background: #fff;
+  padding: 20px 22px;
+  width: 340px;
+  border-radius: 10px;
+  text-align: center;
+  border-left: 4px solid #ff9900;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.closeModalBtn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  margin-top: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.closeModalBtn:hover {
+  background: #0063cc;
+}
+
+/* ---------------------
+   ABORT SCREEN
+---------------------- */
+
+.abortBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.abortBox {
+  background: #fff;
+  padding: 28px;
+  width: 420px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.abortReason {
+  margin: 12px 0 20px;
+  font-weight: bold;
+  color: #b30000;
+  font-size: 15px;
+}
+
+.abortConfirmBtn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.abortConfirmBtn:hover {
+  background: #b02a37;
+}
+
+/* ---------------------
+   QUESTION CARD + PAGE
+---------------------- */
+
+.page {
+  padding: 20px;
+}
+
 .headerBox {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .pageTitle {
-  font-size: 32px;
-  font-weight: 700;
-  color: #222;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 .meta {
-  margin-top: 6px;
-  font-size: 15px;
-  color: #666;
+  font-size: 14px;
+  color: #555;
 }
 
-/* Questions Section */
-.questionWrapper {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.sectionTitle {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 18px;
-  color: #222;
-}
-
-.noData {
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #007bff;
   font-size: 16px;
-  color: #777;
-  margin-top: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
-/* Cards */
+.backBtn:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------
+   QUESTION LIST STYLES
+---------------------- */
+
 .cardList {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  width: 100%;
+  gap: 14px;
 }
 
 .card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 22px 26px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  transition: 0.2s ease-in-out;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: 0.15s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  border-color: #007bff;
+  background: #f7faff;
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: 8px;
 }
 
 .qBadge {
-  background: #0055ff;
-  color: #fff;
-  font-size: 16px;
-  padding: 4px 10px;
-  border-radius: 6px;
+  background: #e6f2ff;
+  color: #0057c2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
 }
 
 .cardTitle {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
-  color: #333;
 }
 
 .cardDesc {
-  font-size: 15px;
+  margin-top: 6px;
   color: #555;
-  line-height: 1.5;
 }
 
-/* Loading Text */
-.loading {
-  padding: 30px;
-  text-align: center;
-  font-size: 18px;
-  color: #666;
+.solvedBadge {
+  margin-left: auto;
+  background: rgba(93, 195, 162, 0.15);
+  color: #0b8358;
+  border: 1px solid rgba(93, 195, 162, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
 }
+
+/* ---------------------
+   COMPLETION MODAL
+---------------------- */
 
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.55);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1100;
+  align-items: center;
+  z-index: 9000;
 }
 
 .modal {
   background: #fff;
-  padding: 25px;
-  border-radius: 10px;
+  padding: 26px;
   width: 350px;
+  border-radius: 10px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.modal h2 {
-  margin-bottom: 10px;
-  color: #16a34a;
-  font-size: 22px;
-}
-
-.modal p {
-  margin-bottom: 20px;
-  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .continueBtn {
-  background: #2563eb;
+  background: #007bff;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 6px;
   border: none;
+  padding: 10px 16px;
+  margin-top: 12px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .continueBtn:hover {
-  background: #1e40af;
+  background: #005fcc;
+}
+
+/* General */
+.loading {
+  padding: 20px;
+  text-align: center;
+}
+
+.noData {
+  padding: 20px;
+  font-size: 14px;
+  color: #777;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  margin-bottom: 10px;
 }

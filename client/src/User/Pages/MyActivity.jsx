@@ -47,14 +47,16 @@ export default function MyActivity() {
             if (status === "in_progress") {
                 // Continue Code Test
                 if (window.confirm("Do you want to continue your test?")) {
-                    navigate(`/dashboard/course/${course}/code/${id}`);
+                    navigate(`/dashboard/course/${course}/code/${id}`, { replace: true });
                 }
             } else if (status === "complete") {
                 // Show Code Result Page (if you have one)
-                navigate(`/dashboard/course/${course}/code/${id}/result`);
+                navigate(`/dashboard/course/${course}/code/${id}/result`, { replace: true });
+            } else if (status === "abort") {
+                (window.confirm("This test was aborted! You can not view results"))
             } else {
                 // Start New Code Test
-                navigate(`/dashboard/course/${course}/code/${id}`);
+                navigate(`/dashboard/course/${course}/code/${id}`, { replace: true });
             }
             return;
         }
@@ -63,16 +65,20 @@ export default function MyActivity() {
         switch (status) {
             case "in_progress":
                 if (window.confirm("Do you want to continue your test?")) {
-                    navigate(`/dashboard/course/${course}/test/${id}`);
+                    navigate(`/dashboard/course/${course}/test/${id}`, { replace: true });
                 }
                 break;
 
             case "complete":
-                navigate(`/dashboard/course/${course}/result/${id}`);
+                navigate(`/dashboard/course/${course}/result/${id}`, { replace: true });
+                break;
+
+            case "abort":
+                (window.confirm("This test was aborted! You can not view results"))
                 break;
 
             default:
-                navigate(`/dashboard/course/${course}/test/${id}`);
+                navigate(`/dashboard/course/${course}/test/${id}`, { replace: true });
         }
     };
 
@@ -82,14 +88,20 @@ export default function MyActivity() {
     return (
         <div className={styles.activityContainer}>
             <div className={styles.headerRow}>
-                <button className={styles.backButton} onClick={() => navigate("/", { replace: true })}>
+                <button
+                    className={styles.backButton}
+                    onClick={() => navigate("/", { replace: true })}
+                >
                     ← Back
                 </button>
-                <h2 className={styles.title}>My Activity</h2>
-                <span className={styles.testCount}>
-                    Total Tests: {dates.reduce((sum, d) => sum + groupedTests[d].length, 0)}
-                </span>
+                <div className={styles.centerBlock}>
+                    <span className={styles.testCount}>
+                        Total Tests: {dates.reduce((sum, d) => sum + groupedTests[d].length, 0)}
+                    </span>
+                    <h2 className={styles.title}>My Activity</h2>
+                </div>
             </div>
+
 
             {dates.length === 0 ? (
                 <p className={styles.noData}>No test records found.</p>
@@ -150,14 +162,19 @@ export default function MyActivity() {
                                                 <span
                                                     className={`${styles.statusBadge} ${test.latest_status === "complete"
                                                         ? styles.completed
-                                                        : styles.inProgress
+                                                        : test.latest_status === "abort"
+                                                            ? styles.aborted
+                                                            : styles.inProgress
                                                         }`}
                                                 >
                                                     {test.latest_status === "complete"
                                                         ? "Completed"
-                                                        : "Continue Test"}
+                                                        : test.latest_status === "abort"
+                                                            ? "Test Aborted"
+                                                            : "Continue Test"}
                                                 </span>
                                             </td>
+
                                         </tr>
                                     ))}
                                 </React.Fragment>
