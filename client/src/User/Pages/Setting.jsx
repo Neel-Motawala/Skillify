@@ -7,6 +7,14 @@ export default function Settings() {
     const [user, setUser] = useState(null);
     const [editField, setEditField] = useState(null); // which field is being edited
     const [editValue, setEditValue] = useState("");   // current editable value
+    const [passwords, setPasswords] = useState({
+        current: "",
+        newPass: "",
+        confirm: ""
+    });
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
 
     const handleEditClick = (fieldName, currentValue) => {
@@ -78,6 +86,68 @@ export default function Settings() {
 
         fetchUser();
     }, []);
+
+    // ===============================
+    // Password Update Function
+    // ===============================
+    const handlePasswordUpdate = async () => {
+        // Reset previous message
+        setMessage("");
+        setMessageType("");
+        setShowMessage(false);
+
+        const show = (msg, type) => {
+            setMessage(msg);
+            setMessageType(type);
+            setShowMessage(true);
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                setShowMessage(false);
+
+                setTimeout(() => {
+                    setMessage("");
+                    setMessageType("");
+                }, 500); // allow fade-out animation
+            }, 2000);
+        };
+
+        // ==========================
+        // Validation
+        // ==========================
+        if (!passwords.current || !passwords.newPass || !passwords.confirm) {
+            return show("Please fill all fields", "error");
+        }
+
+        if (passwords.newPass !== passwords.confirm) {
+            return show("New passwords do not match", "error");
+        }
+
+        // ==========================
+        // API Call
+        // ==========================
+        try {
+            const userId = localStorage.getItem("id");
+
+            const res = await axios.put(
+                `http://localhost:5000/api/users/update-password/${userId}`,
+                {
+                    current_password: passwords.current,
+                    new_password: passwords.newPass
+                }
+            );
+
+            show(res.data.message || "Password updated successfully", "success");
+
+            // Clear fields after success
+            setPasswords({ current: "", newPass: "", confirm: "" });
+
+        } catch (err) {
+            show(err.response?.data?.error || "Failed to update password", "error");
+        }
+    };
+
+
 
     const handleLogout = () => {
         localStorage.clear();
@@ -265,25 +335,62 @@ export default function Settings() {
                 <div className={styles.card}>
                     <h3 className={styles.sectionTitle}>Security</h3>
 
+                    {/* STATUS MESSAGE BOX (Success or Error) */}
+                    {message && (
+                        <div
+                            className={`${styles.messageBox} 
+                                ${messageType === "error" ? styles.errorBox : styles.successBox}
+                                ${showMessage ? styles.fadeIn : styles.fadeOut}
+                            `}
+                        >
+                            {message}
+                        </div>
+                    )}
+
+
                     <div className={styles.infoRow}>
                         <label>Current Password</label>
-                        <input type="password" placeholder="••••••••" />
+                        <input
+                            type="password"
+                            placeholder="••••••••"
+                            value={passwords.current}
+                            onChange={(e) =>
+                                setPasswords({ ...passwords, current: e.target.value })
+                            }
+                        />
                     </div>
 
                     <div className={styles.inlineRow}>
                         <div className={styles.inlineInput}>
                             <label>New Password</label>
-                            <input type="password" placeholder="Enter new password" />
+                            <input
+                                type="password"
+                                placeholder="Enter new password"
+                                value={passwords.newPass}
+                                onChange={(e) =>
+                                    setPasswords({ ...passwords, newPass: e.target.value })
+                                }
+                            />
                         </div>
 
                         <div className={styles.inlineInput}>
                             <label>Confirm Password</label>
-                            <input type="password" placeholder="Confirm password" />
+                            <input
+                                type="password"
+                                placeholder="Confirm password"
+                                value={passwords.confirm}
+                                onChange={(e) =>
+                                    setPasswords({ ...passwords, confirm: e.target.value })
+                                }
+                            />
                         </div>
                     </div>
 
-                    <button className={styles.primaryBtn}>Update Password</button>
+                    <button className={styles.primaryBtn} onClick={handlePasswordUpdate}>
+                        Update Password
+                    </button>
                 </div>
+
 
                 {/* ✅ Account */}
                 <div className={styles.card}>

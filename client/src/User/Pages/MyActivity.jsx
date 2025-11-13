@@ -144,19 +144,36 @@ export default function MyActivity() {
                                             <td>{test.course_name}</td>
 
                                             <td className={styles.typeText}>
-                                                {test.test_type.toUpperCase()}
+                                                <strong>{test.test_type.toUpperCase()}</strong>
                                             </td>
 
                                             <td>{test.stage}</td>
-                                            <td>{test.test_mode}</td>
+                                            <td><strong>{test.test_mode}</strong></td>
 
-                                            <td>{new Date(test.test_created_at).toLocaleString()}</td>
+                                            <td>
+                                                {new Date(test.test_created_at).toLocaleString("en-GB", {
+                                                    day: "2-digit",
+                                                    month: "short",
+                                                    year: "numeric",
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                    hour12: true,
+                                                })}
+                                            </td>
 
                                             <td>
                                                 {test.end_time
-                                                    ? new Date(test.end_time).toLocaleString()
+                                                    ? new Date(test.end_time).toLocaleString("en-GB", {
+                                                        day: "2-digit",
+                                                        month: "short",
+                                                        year: "numeric",
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                        hour12: true,
+                                                    })
                                                     : "Still Active"}
                                             </td>
+
 
                                             <td>
                                                 <span

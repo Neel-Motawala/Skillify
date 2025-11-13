@@ -13,12 +13,12 @@ export default function Sidebar({ isCollapsed, onToggle }) {
     return (
         <aside
             className={[
-                styles.adminSidebar,
+                styles.sidebar,
                 isCollapsed ? styles.collapsed : styles.expanded,
-                isMobile && !isCollapsed ? styles.expanded : "",
                 isMobile && isCollapsed ? styles.hidden : "",
             ].join(" ")}
         >
+            {/* Header */}
             <div className={styles.sidebarHeader}>
                 {!isCollapsed && <h4 className={styles.sidebarTitle}>Admin Panel</h4>}
                 <button className={styles.toggleBtn} onClick={onToggle}>
@@ -26,6 +26,7 @@ export default function Sidebar({ isCollapsed, onToggle }) {
                 </button>
             </div>
 
+            {/* Menu */}
             <ul className={styles.sidebarMenu}>
                 {[
                     { icon: "bi-speedometer2", label: "Overview", href: "#overview" },

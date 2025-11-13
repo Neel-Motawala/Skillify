@@ -1,5 +1,5 @@
 // client/src/Pages/CodePlayground.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import CodeEditor from "../Components/CodeEditor/CodeEditor";
@@ -71,6 +71,7 @@ export default function CodePlayground() {
     const [error, setError] = useState("");
 
     const monacoLang = monacoLanguageMap[courseLang] || "plaintext";
+    const previewRef = useRef(null); // for iframe preview
 
     // ---------------------------------------------------
     // Fetch stage and user_id
@@ -97,14 +98,11 @@ export default function CodePlayground() {
                 const courseRes = await axios.get(`http://localhost:5000/api/course/${courseId}`);
 
                 let language = courseRes.data.course_name.toLowerCase();
-
-                // ✅ Normalize invalid names
                 if (language.includes("c++")) language = "cpp";
                 else if (language.includes("c language")) language = "c";
                 else if (language === "c-lang") language = "c";
                 else if (language === "cpp-lang") language = "cpp";
 
-                console.log("Normalized Language:", language);
                 setCourseLang(language);
 
                 const template = courseRes.data?.template || "";
@@ -116,12 +114,46 @@ export default function CodePlayground() {
                 const q = qRes.data.question;
                 setQuestion(q);
 
+                // =======================================================
+                // FRONTEND LANGUAGES (HTML / CSS / JAVASCRIPT)
+                // =======================================================
+                if (["html", "css", "javascript"].includes(language)) {
+                    // Merge all code parts into the full HTML template
+                    let finalCode = template
+                        .replace("__HTML__", q.html_template || "")
+                        .replace("__CSS__", q.css_template || "")
+                        .replace("__JS__", q.js_template || "");
+
+                    // Format the entire HTML document
+                    try {
+                        finalCode = await prettier.format(finalCode, {
+                            parser: "html",
+                            plugins: [
+                                prettierPluginBabel,
+                                prettierPluginEstree,
+                                prettierPluginHTML,
+                                prettierPluginPostCSS,
+                                prettierPluginTypeScript,
+                            ],
+                            tabWidth: 4,
+                            printWidth: 100,
+                        });
+                    } catch {
+                        // If formatting fails, still show raw code
+                    }
+
+                    setCode(finalCode);
+                    return;
+                }
+
+                // =======================================================
+                // BACKEND LANGUAGES (C, C++, JAVA, PYTHON, PHP, ETC.)
+                // =======================================================
                 let finalCode = template
                     .replace("__IMPORT_CLASSES__", q.require_import || "")
                     .replace("__USER_INPUT__", q.user_input || "")
                     .replace("__FUNCTION_TEMPLATE__", q.function_template || "");
 
-                // ✅ Formatting only for supported languages
                 let formatted = finalCode;
                 const cfg = getPrettierConfigForLanguage(language);
 
@@ -134,7 +166,6 @@ export default function CodePlayground() {
                 }
 
                 setCode(formatted);
-
                 if (q.test_cases?.length > 0) setInput(q.test_cases[0].input);
 
             } catch {
@@ -144,6 +175,9 @@ export default function CodePlayground() {
 
         if (courseId && stage && questionId) loadQuestion();
     }, [courseId, stage, questionId]);
+
+
+
 
     // ---------------------------------------------------
     // Format Code
@@ -161,14 +195,38 @@ export default function CodePlayground() {
     };
 
     // ---------------------------------------------------
-    // Run Code
+    // Run Code (backend + frontend logic)
     // ---------------------------------------------------
     const handleRun = async () => {
         setLoading(true);
         setOutput("");
 
-        const normalizedLang =
-            courseLang === "c language" ? "c" : courseLang;
+        // -----------------------------
+        // Frontend languages (HTML, CSS, JS)
+        // -----------------------------
+        if (["html", "css", "javascript"].includes(courseLang)) {
+            const iframe = previewRef.current;
+            if (!iframe) {
+                setLoading(false);
+                return;
+            }
+
+            // The "code" already contains full HTML template with CSS + JS placeholders replaced
+            // Just run the complete code directly
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(code);
+            iframeDoc.close();
+
+            setOutput("✅ Executed in browser preview");
+            setLoading(false);
+            return;
+        }
+
+        // -----------------------------
+        // Backend languages (C, C++, Java, Python, PHP)
+        // -----------------------------
+        const normalizedLang = courseLang === "c language" ? "c" : courseLang;
 
         try {
             const res = await axios.post("http://localhost:5000/api/run", {
@@ -176,7 +234,6 @@ export default function CodePlayground() {
                 code,
                 stdin: input,
             });
-
             setOutput(res.data.stdout || res.data.stderr || "No output");
         } catch {
             setOutput("Error running code");
@@ -187,15 +244,39 @@ export default function CodePlayground() {
 
 
     // ---------------------------------------------------
-    // Submit Code
+    // Submit Code (backend + frontend)
     // ---------------------------------------------------
     const handleSubmit = async () => {
         setLoading(true);
         setOutput("");
 
-        const normalizedLang =
-            courseLang === "c language" ? "c" : courseLang;
+        // Direct frontend submit simulation
+        if (["html", "css", "javascript"].includes(courseLang)) {
+            const normalizedLang = courseLang === "c language" ? "c" : courseLang;
+            try {
+                await axios.post("http://localhost:5000/api/code/submit_frontend_code", {
+                    question_id: questionId,
+                    language: normalizedLang,
+                    code,
+                    user_id: userId,
+                    user_test_id: userTestId,
+                });
 
+                setOutput("✅ Frontend code saved successfully.");
+                setTimeout(() => {
+                    navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true });
+                }, 1000);
+            } catch {
+                setOutput("❌ Failed to save frontend code.");
+            } finally {
+                setLoading(false);
+            }
+            return;
+        }
+
+
+        // Backend submission
+        const normalizedLang = courseLang === "c language" ? "c" : courseLang;
         try {
             const res = await axios.post("http://localhost:5000/api/submit", {
                 question_id: questionId,
@@ -210,21 +291,16 @@ export default function CodePlayground() {
                 return;
             }
 
-            const allPassed = res.data.results?.every(tc => tc.passed);
-
+            const allPassed = res.data.results?.every((tc) => tc.passed);
             if (!allPassed) {
                 setOutput("❌ Code logic is wrong");
                 return;
             }
 
-            // ✅ Code correct
             setOutput("✅ Code is Correct and Question Solved");
-
-            // ✅ Redirect after 1 second
             setTimeout(() => {
                 navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true });
             }, 1000);
-
         } catch (err) {
             if (err.response?.data?.error) setOutput(err.response.data.error);
             else setOutput("Unexpected Error");
@@ -232,7 +308,6 @@ export default function CodePlayground() {
             setLoading(false);
         }
     };
-
 
     // ---------------------------------------------------
     // Render
@@ -243,7 +318,12 @@ export default function CodePlayground() {
     return (
         <div className={styles.layout}>
             <div className={styles.headerRow}>
-                <button className={styles.backBtn} onClick={() => navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true })}>
+                <button
+                    className={styles.backBtn}
+                    onClick={() =>
+                        navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true })
+                    }
+                >
                     ← Back
                 </button>
 
@@ -260,7 +340,12 @@ export default function CodePlayground() {
             </div>
 
             <div className={styles.editorLayout}>
-                <div className={styles.leftPane}>
+                <div
+                    className={`${styles.leftPane} ${["html", "css", "javascript"].includes(courseLang)
+                        ? styles.wideEditor
+                        : styles.normalEditor
+                        }`}
+                >
                     <CodeEditor
                         code={code}
                         language={monacoLang}
@@ -268,26 +353,49 @@ export default function CodePlayground() {
                     />
                 </div>
 
-                <div className={styles.rightPane}>
-                    <div className={styles.inputBox}>
-                        <h4>Input</h4>
-                        <textarea
-                            className={styles.textarea}
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                        />
-                    </div>
+                <div
+                    className={`${styles.rightPane} ${["html", "css", "javascript"].includes(courseLang)
+                        ? styles.previewMode
+                        : styles.outputMode
+                        }`}
+                >
 
-                    <div className={styles.outputBox}>
-                        <h4>Output</h4>
-                        <textarea
-                            className={`${styles.textarea} ${styles.outputArea}`}
-                            readOnly
-                            value={loading ? "Running..." : output}
-                        />
-                    </div>
+                    {!["html", "css", "javascript"].includes(courseLang) && (
+                        <>
+                            <div className={styles.inputBox}>
+                                <h4>Input</h4>
+                                <textarea
+                                    className={styles.textarea}
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                />
+                            </div>
+                            <div className={styles.outputBox}>
+                                <h4>Output</h4>
+                                <textarea
+                                    className={`${styles.textarea} ${styles.outputArea}`}
+                                    readOnly
+                                    value={loading ? "Running..." : output}
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    {["html", "css", "javascript"].includes(courseLang) && (
+                        <div className={styles.previewBox}>
+                            <h4>Preview</h4>
+                            <iframe
+                                title="preview"
+                                className={styles.previewFrame}
+                                sandbox="allow-scripts allow-same-origin"
+                                ref={previewRef}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
+
+
 
             <div className={styles.buttonContainer}>
                 <button className={styles.button} disabled={loading} onClick={handleRun}>

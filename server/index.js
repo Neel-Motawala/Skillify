@@ -12,6 +12,7 @@ const userTestRoutes = require("./routes/userTestRoutes");
 const userResponseRoutes = require("./routes/userResponseRoute");
 const userResultRoutes = require("./routes/userResultRoute");
 const codeRoutes = require("./routes/codeRoutes");
+const adminUserRoutes = require("./routes/adminUserRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ app.use("/api/user-test", userTestRoutes);
 app.use("/api/user-response", userResponseRoutes);
 app.use("/api/results", userResultRoutes);
 app.use("/api", codeRoutes);
+app.use("/api/admin/users", adminUserRoutes);
 
 app.get("/", (req, res) => {
     res.send("✅ Skill Assessment API is running");

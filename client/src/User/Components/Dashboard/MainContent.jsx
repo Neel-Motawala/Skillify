@@ -23,7 +23,6 @@ export default function MainContent() {
         { title: "My Progress", icon: "bi-graph-up", route: "/dashboard/progress" },
         { title: "Profile", icon: "bi-person", route: "/dashboard/profile" },
         { title: "My Activity", icon: "bi-clock-history", route: "/dashboard/activity" },
-        { title: "Achievements", icon: "bi-award", route: "/dashboard/achievements" },
         { title: "Settings", icon: "bi-gear", route: "/dashboard/settings" },
     ];
 

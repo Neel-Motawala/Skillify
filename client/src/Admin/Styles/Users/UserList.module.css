@@ -1,0 +1,68 @@
+.pageContainer {
+  padding: 1.5rem 2rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.pageTitle {
+  color: #1e3a8a;
+  font-weight: 600;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Search bar */
+.searchContainer {
+  position: relative;
+  width: 300px;
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 38px 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  color: #1e293b;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* DataTable overrides */
+.card {
+  background: white;
+  border-radius: 14px;
+}
+
+.card-body {
+  background: white;
+}
+
+.dataTable {
+  border-radius: 10px;
+  overflow: hidden;
+}

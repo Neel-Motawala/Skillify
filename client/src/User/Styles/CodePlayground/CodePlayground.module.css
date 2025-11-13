@@ -1,13 +1,15 @@
 /* ============================= */
-/* PAGE WRAPPER */
+/* BASE PAGE LAYOUT */
 /* ============================= */
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 16px 24px;
+  padding: 20px 28px;
   gap: 16px;
-  font-family: "Segoe UI", sans-serif;
+  background: #f7fbfc;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: #222;
 }
 
 /* ============================= */
@@ -17,8 +19,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
   gap: 20px;
+  width: 100%;
+  border-bottom: 2px solid #d6ebed;
+  padding-bottom: 10px;
+}
+
+.backBtn {
+  padding: 8px 16px;
+  border: 1px solid #a8d5d9;
+  background: #e8f6f7;
+  color: #34767b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  font-weight: 500;
+}
+
+.backBtn:hover {
+  background: #5fa8af;
+  color: #fff;
+  border-color: #5fa8af;
 }
 
 .titleBox {
@@ -27,127 +48,142 @@
 
 .title {
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #2f5c60;
   margin-bottom: 4px;
 }
 
 .desc {
   color: #444;
   line-height: 1.4;
+  font-size: 0.95rem;
 }
 
 .formatBtn {
-  padding: 8px 16px;
-  background: #1976d2;
+  padding: 8px 18px;
+  background: #5fa8af;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.25s ease;
+  font-weight: 500;
 }
 
 .formatBtn:hover {
-  background: #125ea8;
+  background: #4b8b91;
 }
 
 /* ============================= */
-/* LAYOUT: Editor + IO */
+/* MAIN EDITOR LAYOUT */
 /* ============================= */
-/* MAIN 2-COLUMN LAYOUT */
 .editorLayout {
   display: flex;
-  flex: 1;
-  gap: 25px;
-  min-height: 0;
-  height: calc(100vh - 200px); /* keeps content visible */
-}
-
-/* LEFT COLUMN = Code Editor */
-.leftPane {
-  flex: 2;
-  background: #1e1e1e;
-  border-radius: 8px;
+  width: 100%;
+  height: calc(100vh - 180px);
+  background: #fff;
+  border: 1px solid #d6ebed;
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.15);
+}
+
+/* Left: Code Editor */
+.leftPane {
+  height: 100%;
   display: flex;
+  flex-direction: column;
 }
 
-.leftPane > * {
-  flex: 1;
+.wideEditor {
+  width: 55%; /* for frontend */
 }
 
-/* Remove extra bottom white line in CodeMirror */
-.cm-editor {
-  padding: 0 !important;
-  border: none !important;
+.normalEditor {
+  width: 65%; /* for backend */
 }
 
-.cm-scroller {
-  padding: 0 !important;
-}
-
-.cm-content {
-  padding: 0 !important;
-}
-
-.cm-gutters {
-  border-right: none !important;
-}
-
-.cm-line {
-  padding-bottom: 0 !important;
-  margin-bottom: 0 !important;
-}
-
-/* RIGHT COLUMN */
+/* Right: Output / Preview */
 .rightPane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f9f9fc;
+  border-left: 1px solid #dbe7e8;
+  overflow: hidden;
+}
+
+.previewMode {
+  width: 45%;
+}
+
+.outputMode {
+  width: 35%;
+}
+
+/* ============================= */
+/* INPUT / OUTPUT / PREVIEW BOXES */
+/* ============================= */
+.inputBox,
+.outputBox,
+.previewBox {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 350px;
-  min-height: 0;
-  border: none !important;
-}
-
-/* INPUT BOX = 20% */
-.inputBox {
-  flex: 0.2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px; /* ensures spacing inside */
-}
-
-/* OUTPUT BOX = 80% */
-.outputBox {
-  flex: 0.8;
-  display: flex;
-  flex-direction: column;
-  gap: 8px; /* ensures spacing inside */
 }
 
 .inputBox h4,
-.outputBox h4 {
-  margin: 0 0 8px 0; /* add spacing under heading */
-  font-size: 1.1rem;
+.outputBox h4,
+.previewBox h4 {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2f5c60;
 }
 
-/* SHARED TEXTAREA */
 .textarea {
   flex: 1;
-  width: 100%;
-  border: 1px solid #cfd8dc;
-  border-radius: 6px;
-  padding: 10px;
-  font-family: monospace;
   resize: none;
-  outline: none;
-  background: #fff;
-  overflow: auto;
+  width: 100%;
+  font-family: monospace;
   font-size: 14px;
+  line-height: 1.5;
+  padding: 8px;
+  border: 1px solid #c5dbdc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #222;
 }
 
 .outputArea {
-  background: #f5f5f5;
+  background: #f6f6f6;
+  color: #222;
+}
+
+/* ============================= */
+/* PREVIEW */
+/* ============================= */
+.previewBox {
+  background: #fff;
+  border: 1px solid #dbe7e8;
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin: 0.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(95, 168, 175, 0.1);
+}
+
+.previewFrame {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+  border-radius: 6px;
 }
 
 /* ============================= */
@@ -156,42 +192,66 @@
 .buttonContainer {
   display: flex;
   gap: 12px;
-  padding-top: 10px;
+  margin-top: 10px;
 }
 
 .button {
-  padding: 8px 18px;
-  background: #1976d2;
+  padding: 10px 22px;
+  background: #5fa8af;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.25s ease;
+  box-shadow: 0 2px 6px rgba(95, 168, 175, 0.25);
 }
 
 .button:hover {
-  background: #125ea8;
+  background: #4b8b91;
 }
 
 .button:disabled {
-  background: #a9c9f5;
+  background: #bcd9db;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* ============================= */
-/* BACK BUTTON */
+/* ERROR / LOADING STATES */
 /* ============================= */
-.backBtn {
-  padding: 6px 14px;
-  background: #eefafa;
-  border: 1px solid #cbe7e6;
-  color: #2e787b;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.25s;
+.error {
+  text-align: center;
+  color: #d32f2f;
+  font-size: 1rem;
+  margin-top: 40px;
 }
 
-.backBtn:hover {
-  background: #5faf98;
-  color: #fff;
+.loading {
+  text-align: center;
+  color: #5fa8af;
+  font-size: 1rem;
+  margin-top: 40px;
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+@media (max-width: 1024px) {
+  .editorLayout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .leftPane,
+  .rightPane {
+    width: 100%;
+    height: auto;
+  }
+
+  .previewMode,
+  .outputMode {
+    width: 100%;
+  }
 }

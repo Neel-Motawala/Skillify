@@ -3,6 +3,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
+  height: 35rem;
 }
 
 /* ✅ Removes Monaco's bottom white decoration */

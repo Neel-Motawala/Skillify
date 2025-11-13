@@ -272,25 +272,47 @@ exports.getCodeTestResults = async (req, res) => {
             [userTestId]
         );
 
-        // Parse JSON summary safely
-        const submissions = codeRows.map(r => ({
-            ...r,
-            result_summary: r.result_summary ? JSON.parse(r.result_summary) : null
-        }));
+        // -----------------------------
+        // Safely parse JSON only for backend languages
+        // -----------------------------
+        const submissions = codeRows.map((r) => {
+            const lang = r.code_language?.toLowerCase() || "";
+
+            // ✅ Skip parsing for frontend languages
+            if (["html", "css", "javascript"].includes(lang)) {
+                return {
+                    ...r,
+                    result_summary: r.result_summary || "Frontend submission saved",
+                };
+            }
+
+            // ✅ Parse for backend languages only
+            let parsedSummary = null;
+            try {
+                parsedSummary = r.result_summary ? JSON.parse(r.result_summary) : null;
+            } catch {
+                parsedSummary = r.result_summary; // fallback to raw string if invalid JSON
+            }
+
+            return {
+                ...r,
+                result_summary: parsedSummary,
+            };
+        });
 
         // -----------------------------
         // Response
         // -----------------------------
         return res.json({
             test: testDetail,
-            submissions
+            submissions,
         });
-
     } catch (err) {
         console.error("Fetch code results error:", err);
         return res.status(500).json({ error: "Server error" });
     }
 };
+
 
 exports.userTestAborted = async (req, res) => {
     try {
@@ -300,7 +322,7 @@ exports.userTestAborted = async (req, res) => {
         const sql = `
             INSERT INTO user_activity_logs 
                 (user_test_id, status, status_detail, timestamp)
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, now())
         `;
 
         await pool.query(sql, [
@@ -391,7 +413,7 @@ exports.getUserCodeTestResults = async (req, res) => {
                     runtime_ms: s.runtime_ms,
                     memory_kb: s.memory_kb,
                     result_summary: s.result_summary
-                        ? JSON.parse(s.result_summary)
+                        ? s.result_summary
                         : null,
                     timestamp: s.timestamp,
                 })),

@@ -7,7 +7,7 @@ const CodeEditor = ({ code, onChange, language = "plaintext" }) => {
     return (
         <div className={styles.editorContainer}>
             <Editor
-                height="60vh"
+                height="35rem"
                 language={language}
                 value={code}
                 onChange={onChange}

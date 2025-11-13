@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const multer = require("multer");
 const path = require("path");
 
@@ -19,25 +18,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Import controller functions
-const {
-    getUsers,
-    getUserCount,
-    updateStatus,
-    getUserData,
-    editUserDetails
-} = require('../controller/userController');
+const { updateStatus, getUserData, editUserDetails, updateUserPassword } = require('../controller/userController');
 
 // Routes
-router.get("/", getUsers);
-router.get("/count", getUserCount);
+
+// Api: http://localhost:5000/api/users/:userId
 router.get("/:userId", getUserData);
+
+// Api: http://localhost:5000/api/users/status/:id
 router.put("/status/:id", updateStatus);
 
-// ✅ Correct multer usage + correct function reference
-router.put(
-    "/edit-profile/:userId",
-    upload.single("profile_img"),   // ✅ THIS IS MULTER
-    editUserDetails                 // ✅ Direct function (not userController)
-);
+// Api: http://localhost:5000/api/users/edit-profile/:userId
+router.put("/edit-profile/:userId", upload.single("profile_img"), editUserDetails);
+
+// Api: http://localhost:5000/api/users/update-password/:id
+router.put("/update-password/:id", updateUserPassword);
+
 
 module.exports = router;

@@ -1,53 +1,106 @@
-/* Root Navbar */
-.adminNavbar {
-  height: 64px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
+.navbarWrapper {
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  z-index: 1050;
+  z-index: 1000;
 }
 
-/* Left Section */
-.navbarLeft {
+.navbar {
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(90deg, #1e293b 0%, #1e293b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Brand */
+.brandSection {
   display: flex;
   align-items: center;
 }
 
-.navbarBrandText {
-  color: #007bff;
-  font-weight: 600;
+.brandText {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.35rem;
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
-/* Right Section */
-.navbarRight {
+/* Profile */
+.profileSection {
   display: flex;
   align-items: center;
 }
 
-.navbarAvatar {
-  object-fit: cover;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.navbarAvatar:hover {
-  transform: scale(1.05);
-}
-
-/* Dropdown overrides */
-:global(.dropdown-menu) {
-  font-size: 0.9rem;
-  min-width: 180px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.profileButton {
+  display: flex;
+  align-items: center;
+  background: none;
   border: none;
+  color: #f8fafc;
+  gap: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-:global(.dropdown-item:hover) {
-  background-color: #f1f5ff;
-  color: #007bff;
+.profileButton:hover {
+  color: #93c5fd;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  border-color: #fff;
+}
+
+.username {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.dropdownIcon {
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+
+/* Dropdown menu */
+.dropdownMenu {
+  border-radius: 10px !important;
+  border: 1px solid #e2e8f0 !important;
+  min-width: 180px;
+  overflow: hidden;
+  font-size: 0.9rem;
+  padding: 4px 0;
+}
+
+.dropdownItem {
+  padding: 10px 16px;
+  color: #1e293b;
+  font-weight: 500;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.dropdownItem:hover {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.logout {
+  color: #dc2626 !important;
 }

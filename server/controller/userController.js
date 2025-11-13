@@ -1,15 +1,5 @@
 const pool = require("../config/db");
-
-// ✅ Get all users (returns array)
-exports.getUsers = async (req, res) => {
-    try {
-        const [users] = await pool.query("SELECT * FROM users");
-        res.status(200).json(users);
-    } catch (err) {
-        console.error("Get Users Error:", err);
-        res.status(500).json({ error: "Failed to retrieve users." });
-    }
-};
+const bcrypt = require("bcryptjs")
 
 exports.getUserData = async (req, res) => {
     const { userId } = req.params;
@@ -27,18 +17,6 @@ exports.getUserData = async (req, res) => {
     } catch (err) {
         console.error("Get User Data Error:", err);
         return res.status(500).json({ error: "Failed to retrieve user data." });
-    }
-};
-
-
-// ✅ Get total user count (returns object)
-exports.getUserCount = async (req, res) => {
-    try {
-        const [result] = await pool.query("SELECT COUNT(*) AS count FROM users");
-        res.status(200).json({ count: result[0].count });
-    } catch (err) {
-        console.error("Get User Count Error:", err);
-        res.status(500).json({ error: "Failed to retrieve user count." });
     }
 };
 
@@ -60,7 +38,6 @@ exports.updateStatus = async (req, res) => {
         res.status(500).json({ success: false, message: "Failed to update user status." });
     }
 };
-
 
 exports.editUserDetails = async (req, res) => {
     try {
@@ -124,4 +101,45 @@ exports.editUserDetails = async (req, res) => {
     }
 };
 
+exports.updateUserPassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { current_password, new_password } = req.body;
 
+        if (!id || !current_password || !new_password) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
+        // 1. Fetch user from DB
+        const [rows] = await pool.query(
+            "SELECT user_password FROM users WHERE id = ?",
+            [id]
+        );
+
+        if (!rows.length) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const user = rows[0];
+
+        // 2. Verify current password
+        const isMatch = await bcrypt.compare(current_password, user.user_password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Incorrect current password" });
+        }
+
+        // 3. Hash new password
+        const hashedPassword = await bcrypt.hash(new_password, 10);
+
+        // 4. Update in DB
+        await pool.query(
+            "UPDATE users SET user_password = ? WHERE id = ?",
+            [hashedPassword, id]
+        );
+
+        return res.json({ message: "Password updated successfully" });
+    } catch (err) {
+        console.error("Error updating password:", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};

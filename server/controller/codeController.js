@@ -4,17 +4,16 @@ const { exec } = require("child_process");
 const { v4: uuidv4 } = require("uuid");
 const pool = require("../config/db"); // MySQL2 connection pool
 
-/**
- * Safely delete temporary directory
- */
-function cleanup(dir) {
-    fs.remove(dir).catch(() => { });
+
+// Helper: safely delete temp directory
+async function cleanup(dir) {
+    try {
+        await fs.remove(dir);
+    } catch {
+        /* ignore cleanup errors */
+    }
 }
 
-/**
- * Run Java code inside Docker container
- * Executes Main.java with input redirection from input.txt
- */
 
 async function runInDocker(code, stdin = "", language) {
     const jobId = uuidv4();
@@ -27,130 +26,143 @@ async function runInDocker(code, stdin = "", language) {
     let runScript = "";
     let fileName = "";
 
-    switch (language.toLowerCase()) {
-        case "java":
-            fileName = "Main.java";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                javac Main.java
-                java Main < input.txt
-            `;
-            break;
+    try {
+        // -----------------------------
+        // Generate file and run script
+        // -----------------------------
+        switch (language.toLowerCase()) {
+            case "java":
+                fileName = "Main.java";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    javac Main.java
+                    java Main < input.txt
+                `;
+                break;
 
-        case "python":
-            fileName = "main.py";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                python3 main.py < input.txt
-            `;
-            break;
+            case "python":
+                fileName = "main.py";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    python3 main.py < input.txt
+                `;
+                break;
 
-        case "c":
-            fileName = "main.c";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                gcc main.c -o main.out
-                ./main.out < input.txt
-            `;
-            break;
+            case "c":
+                fileName = "main.c";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    gcc main.c -o main.out
+                    ./main.out < input.txt
+                `;
+                break;
 
-        case "cpp":
-            fileName = "main.cpp";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                g++ main.cpp -o main.out
-                ./main.out < input.txt
-            `;
-            break;
+            case "cpp":
+                fileName = "main.cpp";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    g++ main.cpp -o main.out
+                    ./main.out < input.txt
+                `;
+                break;
 
-        case "php":
-            fileName = "index.php";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                php index.php < input.txt
-            `;
-            break;
+            case "php":
+                fileName = "index.php";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    php index.php < input.txt
+                `;
+                break;
 
-        case "javascript":
-            fileName = "main.js";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                set -e
-                cd /sandbox
-                node main.js < input.txt
-            `;
-            break;
+            case "javascript":
+                fileName = "main.js";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    set -e
+                    cd /sandbox
+                    node main.js < input.txt
+                `;
+                break;
 
-        case "html":
-            fileName = "index.html";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                cd /sandbox
-                echo "HTML executed (render-only)."
-                cat index.html
-            `;
-            break;
+            case "html":
+                fileName = "index.html";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    cd /sandbox
+                    echo "HTML executed (render-only)."
+                    cat index.html
+                `;
+                break;
 
-        case "css":
-            fileName = "style.css";
-            await fs.writeFile(path.join(tempDir, fileName), code);
-            runScript = `
-                #!/bin/sh
-                cd /sandbox
-                echo "CSS executed (render-only)."
-                cat style.css
-            `;
-            break;
+            case "css":
+                fileName = "style.css";
+                await fs.writeFile(path.join(tempDir, fileName), code);
+                runScript = `
+                    #!/bin/sh
+                    cd /sandbox
+                    echo "CSS executed (render-only)."
+                    cat style.css
+                `;
+                break;
 
-        default:
-            return { stdout: "", stderr: "Unsupported language" };
-    }
+            default:
+                await cleanup(tempDir);
+                return { stdout: "", stderr: "Unsupported language" };
+        }
 
-    // Write run.sh
-    const runScriptPath = path.join(tempDir, "run.sh");
-    await fs.writeFile(runScriptPath, runScript);
-    await fs.chmod(runScriptPath, 0o755);
+        // -----------------------------
+        // Write and make run script executable
+        // -----------------------------
+        const runScriptPath = path.join(tempDir, "run.sh");
+        await fs.writeFile(runScriptPath, runScript);
+        await fs.chmod(runScriptPath, 0o755);
 
-    const dockerCmd = `docker run --rm --network none --memory=256m --cpus=0.5 -v "${tempDir}:/sandbox" skillify-runner sh /sandbox/run.sh`;
+        // -----------------------------
+        // Docker execution command
+        // -----------------------------
+        const dockerCmd = `docker run --rm --network none --memory=256m --cpus=0.5 -v "${tempDir}:/sandbox" skillify-runner sh /sandbox/run.sh`;
 
-    return new Promise((resolve) => {
-        exec(dockerCmd, { timeout: 10000 }, (err, stdout, stderr) => {
-            fs.remove(tempDir);
+        // -----------------------------
+        // Execute inside Docker
+        // -----------------------------
+        return await new Promise((resolve) => {
+            exec(dockerCmd, { timeout: 10000 }, async (err, stdout, stderr) => {
+                await cleanup(tempDir); // ✅ Always cleanup after execution
 
-            if (err && err.killed) {
-                return resolve({ stdout: "", stderr: "Time limit exceeded" });
-            }
+                if (err && err.killed) {
+                    return resolve({ stdout: "", stderr: "⏱️ Time limit exceeded" });
+                }
 
-            resolve({
-                stdout: stdout?.toString() || "",
-                stderr: stderr?.toString() || "",
+                resolve({
+                    stdout: stdout?.toString().trim() || "",
+                    stderr: stderr?.toString().trim() || "",
+                });
             });
         });
-    });
+    } catch (err) {
+        await cleanup(tempDir);
+        return { stdout: "", stderr: "Execution error: " + err.message };
+    }
 }
 
 
-/**
- * POST /api/run
- * Executes a single code snippet (for live testing)
- */
 exports.runCode = async (req, res) => {
     try {
         const { language, code, stdin } = req.body;
@@ -179,10 +191,6 @@ exports.runCode = async (req, res) => {
 };
 
 
-/**
- * POST /api/submit
- * Combines templates + user code, fetches test cases, and executes all inside Docker
- */
 exports.submitCode = async (req, res) => {
     try {
         const { language, code, question_id, user_id, user_test_id } = req.body;
@@ -272,8 +280,6 @@ exports.submitCode = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 };
-
-
 
 
 exports.getCodeQuestion = async (req, res) => {
@@ -373,8 +379,6 @@ exports.getSpecificCodeQuestion = async (req, res) => {
 };
 
 
-
-
 exports.getCodeStages = async (req, res) => {
     try {
         const { courseId } = req.params;
@@ -455,6 +459,7 @@ exports.addCodeQuestion = async (req, res) => {
     }
 };
 
+
 exports.addTestCode = async (req, res) => {
     try {
         const { question_id, test_cases } = req.body;
@@ -493,6 +498,7 @@ exports.addTestCode = async (req, res) => {
     }
 };
 
+
 exports.codeTestComplete = async (req, res) => {
     try {
         const { userTestId } = req.params;
@@ -519,3 +525,64 @@ exports.codeTestComplete = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 };
+
+
+exports.submitFrontendCode = async (req, res) => {
+    try {
+        const { question_id, language, code, user_id, user_test_id } = req.body;
+
+        if (!question_id || !language || !code || !user_id || !user_test_id) {
+            return res.status(400).json({ error: "Missing required fields." });
+        }
+
+        // ✅ Check for existing record
+        const [existing] = await pool.execute(
+            `SELECT id FROM user_code_ans 
+             WHERE user_id = ? AND user_test_id = ? AND question_id = ?`,
+            [user_id, user_test_id, question_id]
+        );
+
+        if (existing.length > 0) {
+            // ✅ Update existing record
+            await pool.execute(
+                `UPDATE user_code_ans 
+                 SET user_code = ?, 
+                     code_language = ?, 
+                     is_correct = 1, 
+                     runtime_ms = 0, 
+                     memory_kb = 0, 
+                     result_summary = 'Frontend submission saved',
+                     timestamp = NOW()
+                 WHERE id = ?`,
+                [code, language, existing[0].id]
+            );
+        } else {
+            // ✅ Insert new record
+            await pool.execute(
+                `INSERT INTO user_code_ans 
+                 (question_id, user_test_id, user_id, code_language, user_code, is_correct, runtime_ms, memory_kb, result_summary, timestamp)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+                [
+                    question_id,
+                    user_test_id,
+                    user_id,
+                    language,
+                    code,
+                    1,               // Mark as correct by default (frontend check)
+                    0,               // runtime_ms default
+                    0,               // memory_kb default
+                    "Frontend code stored successfully"
+                ]
+            );
+        }
+
+        return res.json({
+            success: true,
+            message: "✅ Frontend code saved successfully.",
+        });
+    } catch (err) {
+        console.error("Error saving frontend code:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+

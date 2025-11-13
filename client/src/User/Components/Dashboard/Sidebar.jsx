@@ -33,7 +33,6 @@ export default function Sidebar() {
             {/* Sidebar Menu */}
             <ul className={`nav flex-column ${styles.nav}`}>
                 {[
-                    { icon: "bi-speedometer2", label: "Overview", href: "#overview" },
                     { icon: "bi-graph-up", label: "Progress", href: "/dashboard/progress" },
                     { icon: "bi-bar-chart-line", label: "Analytics", href: "/dashboard/analytics" },
                     { icon: "bi-gear", label: "Settings", href: "/dashboard/settings" },

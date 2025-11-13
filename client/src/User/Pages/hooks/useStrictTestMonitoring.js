@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function useStrictTestMonitoring({
     testMode,
@@ -16,7 +16,7 @@ export default function useStrictTestMonitoring({
     };
 
     useEffect(() => {
-        if (testMode != "Attempt") return;
+        if (testMode !== "Attempt") return;
 
         const safe = () => !skipCheck.current && !disabled;
 

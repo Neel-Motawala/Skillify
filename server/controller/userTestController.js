@@ -126,7 +126,7 @@ exports.getUserTests = async (req, res) => {
         LEFT JOIN (
             SELECT user_test_id, MAX(timestamp) AS end_time
             FROM user_activity_logs
-            WHERE status = 'complete'
+            WHERE status = 'complete' Or status = 'abort'
             GROUP BY user_test_id
         ) AS endlog 
             ON endlog.user_test_id = ut.id
@@ -143,3 +143,99 @@ exports.getUserTests = async (req, res) => {
         res.status(500).json({ message: "Error fetching user tests" });
     }
 };
+
+exports.getCodeTestResult = async (req, res) => {
+    try {
+        const { id, codeTestId } = req.params; // id = courseId, codeTestId = user_test_id
+
+        if (!id || !codeTestId) {
+            return res.status(400).json({ error: "Missing parameters: courseId or codeTestId" });
+        }
+
+        // -----------------------------
+        // Fetch test detail
+        // -----------------------------
+        const [testRows] = await pool.query(
+            `SELECT id, user_id, course_id, test_type, test_mode, stage, timestamp
+             FROM user_tests
+             WHERE id = ? AND course_id = ?`,
+            [codeTestId, id]
+        );
+
+        if (!testRows.length) {
+            return res.status(404).json({ error: "Test not found for this course" });
+        }
+
+        const testDetail = testRows[0];
+
+        // -----------------------------
+        // Fetch all user code submissions + question details
+        // -----------------------------
+        const [codeRows] = await pool.query(
+            `SELECT 
+                uca.id,
+                uca.question_id,
+                cq.question_title,
+                cq.question,
+                uca.user_test_id,
+                uca.user_id,
+                uca.code_language,
+                uca.user_code,
+                uca.is_correct,
+                uca.runtime_ms,
+                uca.memory_kb,
+                uca.result_summary,
+                uca.timestamp
+             FROM user_code_ans AS uca
+             LEFT JOIN code_question AS cq ON cq.id = uca.question_id
+             WHERE uca.user_test_id = ?
+             ORDER BY uca.timestamp DESC`,
+            [codeTestId]
+        );
+
+        if (!codeRows.length) {
+            return res.status(404).json({ error: "No submissions found for this test" });
+        }
+
+        // -----------------------------
+        // Parse result_summary safely
+        // -----------------------------
+        const formattedResults = codeRows.map((r) => {
+            const lang = r.code_language?.toLowerCase() || "";
+
+            // Frontend submissions don’t need JSON parsing
+            if (["html", "css", "javascript"].includes(lang)) {
+                return {
+                    ...r,
+                    result_summary: "Frontend submission (no backend evaluation)",
+                };
+            }
+
+            // Attempt JSON parse for backend results
+            let parsedSummary = null;
+            try {
+                parsedSummary = r.result_summary ? JSON.parse(r.result_summary) : null;
+            } catch {
+                parsedSummary = r.result_summary; // fallback to raw text
+            }
+
+            return { ...r, result_summary: parsedSummary };
+        });
+
+        // -----------------------------
+        // Final response
+        // -----------------------------
+        return res.json({
+            success: true,
+            test: testDetail,
+            submissions: formattedResults,
+        });
+
+    } catch (err) {
+        console.error("Error fetching code test result:", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+

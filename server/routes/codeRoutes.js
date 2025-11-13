@@ -9,7 +9,8 @@ const {
     addTestCode,
     getCodeStages,
     getSpecificCodeQuestion,
-    codeTestComplete
+    codeTestComplete,
+    submitFrontendCode
 } = require("../controller/codeController");
 
 
@@ -48,6 +49,9 @@ router.post("/run", runCode);
 
 // 6. Submit code (evaluate test cases)
 router.post("/submit", submitCode);
+
+// POST http://localhost:5000/api/code/submit_frontend_code
+router.post("/code/submit_frontend_code", submitFrontendCode);
 
 // POST http://localhost:5000/api/code/test-complete/:userTestId
 router.post("/code/test-complete/:userTestId", codeTestComplete);
