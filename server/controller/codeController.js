@@ -9,13 +9,12 @@ const pool = require("../config/db"); // MySQL2 connection pool
 async function cleanup(dir) {
     try {
         await fs.remove(dir);
-    } catch {
-        /* ignore cleanup errors */
-    }
+    } catch { }
 }
 
-
 async function runInDocker(code, stdin = "", language) {
+    language = language.toLowerCase();
+
     const jobId = uuidv4();
     const tempDir = path.join(__dirname, "..", "temp", jobId);
     await fs.ensureDir(tempDir);
@@ -23,23 +22,19 @@ async function runInDocker(code, stdin = "", language) {
     const inputPath = path.join(tempDir, "input.txt");
     await fs.writeFile(inputPath, stdin || "");
 
-    let runScript = "";
     let fileName = "";
+    let runScript = "";
 
     try {
-        // -----------------------------
-        // Generate file and run script
-        // -----------------------------
-        switch (language.toLowerCase()) {
+        switch (language) {
             case "java":
                 fileName = "Main.java";
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    javac Main.java
-                    java Main < input.txt
+                    javac Main.java 2>&1
+                    /usr/bin/time -v java Main < input.txt
                 `;
                 break;
 
@@ -48,9 +43,8 @@ async function runInDocker(code, stdin = "", language) {
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    python3 main.py < input.txt
+                    /usr/bin/time -v python3 main.py < input.txt
                 `;
                 break;
 
@@ -59,10 +53,9 @@ async function runInDocker(code, stdin = "", language) {
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    gcc main.c -o main.out
-                    ./main.out < input.txt
+                    gcc main.c -o main.out 2>&1
+                    /usr/bin/time -v ./main.out < input.txt
                 `;
                 break;
 
@@ -71,10 +64,9 @@ async function runInDocker(code, stdin = "", language) {
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    g++ main.cpp -o main.out
-                    ./main.out < input.txt
+                    g++ main.cpp -o main.out 2>&1
+                    /usr/bin/time -v ./main.out < input.txt
                 `;
                 break;
 
@@ -83,9 +75,8 @@ async function runInDocker(code, stdin = "", language) {
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    php index.php < input.txt
+                    /usr/bin/time -v php index.php < input.txt
                 `;
                 break;
 
@@ -94,9 +85,8 @@ async function runInDocker(code, stdin = "", language) {
                 await fs.writeFile(path.join(tempDir, fileName), code);
                 runScript = `
                     #!/bin/sh
-                    set -e
                     cd /sandbox
-                    node main.js < input.txt
+                    /usr/bin/time -v node main.js < input.txt
                 `;
                 break;
 
@@ -106,7 +96,7 @@ async function runInDocker(code, stdin = "", language) {
                 runScript = `
                     #!/bin/sh
                     cd /sandbox
-                    echo "HTML executed (render-only)."
+                    echo "HTML executed"
                     cat index.html
                 `;
                 break;
@@ -117,7 +107,7 @@ async function runInDocker(code, stdin = "", language) {
                 runScript = `
                     #!/bin/sh
                     cd /sandbox
-                    echo "CSS executed (render-only)."
+                    echo "CSS executed"
                     cat style.css
                 `;
                 break;
@@ -127,73 +117,76 @@ async function runInDocker(code, stdin = "", language) {
                 return { stdout: "", stderr: "Unsupported language" };
         }
 
-        // -----------------------------
-        // Write and make run script executable
-        // -----------------------------
-        const runScriptPath = path.join(tempDir, "run.sh");
-        await fs.writeFile(runScriptPath, runScript);
-        await fs.chmod(runScriptPath, 0o755);
+        const scriptPath = path.join(tempDir, "run.sh");
+        await fs.writeFile(scriptPath, runScript);
+        await fs.chmod(scriptPath, 0o755);
 
-        // -----------------------------
-        // Docker execution command
-        // -----------------------------
-        const dockerCmd = `docker run --rm --network none --memory=256m --cpus=0.5 -v "${tempDir}:/sandbox" skillify-runner sh /sandbox/run.sh`;
+        const cmd = `docker run --rm --network none --memory=256m --cpus=0.5 \
+            -v "${tempDir}:/sandbox" skillify-runner sh /sandbox/run.sh`;
 
-        // -----------------------------
-        // Execute inside Docker
-        // -----------------------------
+        const start = Date.now();
+
         return await new Promise((resolve) => {
-            exec(dockerCmd, { timeout: 10000 }, async (err, stdout, stderr) => {
-                await cleanup(tempDir); // ✅ Always cleanup after execution
+            exec(cmd, { timeout: 10000 }, async (err, stdout, stderr) => {
+                const end = Date.now();
+                await cleanup(tempDir);
 
-                if (err && err.killed) {
-                    return resolve({ stdout: "", stderr: "⏱️ Time limit exceeded" });
-                }
+                // Extract memory (kbytes)
+                const memMatch = stderr.match(/Maximum resident set size.*?:\s*(\d+)/i);
+                let memoryKB = memMatch ? parseInt(memMatch[1]) : 0;
+
+                // Remove /usr/bin/time report to get REAL error
+                const cleanError = stderr
+                    .replace(/Command being timed:[\s\S]*/gi, "") // remove full time block
+                    .trim();
 
                 resolve({
-                    stdout: stdout?.toString().trim() || "",
-                    stderr: stderr?.toString().trim() || "",
+                    stdout: stdout?.trim() || "",
+                    stderr: cleanError, // only real error
+                    time_ms: end - start,
+                    memory_kb: memoryKB
                 });
             });
         });
-    } catch (err) {
+
+    } catch (error) {
         await cleanup(tempDir);
-        return { stdout: "", stderr: "Execution error: " + err.message };
+        return { stdout: "", stderr: "Execution error: " + error.message };
     }
 }
 
 
+
 exports.runCode = async (req, res) => {
     try {
-        const { language, code, stdin } = req.body;
+        let { language, code, stdin } = req.body;
+        language = (language || "").toLowerCase();
 
         if (!language || !code) {
             return res.status(400).json({ error: "Missing language or code" });
         }
 
-        const lang = language.toLowerCase();
-
-        // ✅ Supported languages
         const supported = ["java", "python", "c", "cpp", "php", "javascript", "html", "css"];
-        if (!supported.includes(lang)) {
+        if (!supported.includes(language)) {
             return res.status(400).json({ error: `Unsupported language: ${language}` });
         }
 
-        // ✅ Forward everything to Docker
-        const result = await runInDocker(code, stdin || "", lang);
+        const result = await runInDocker(code, stdin || "", language);
 
         return res.json(result);
 
     } catch (err) {
-        console.error("💥 Run error:", err);
+        console.error("Run error:", err);
         return res.status(500).json({ error: "Server error" });
     }
 };
 
 
+
 exports.submitCode = async (req, res) => {
     try {
-        const { language, code, question_id, user_id, user_test_id } = req.body;
+        let { language, code, question_id, user_id, user_test_id } = req.body;
+        language = (language || "").toLowerCase();
 
         if (!language || !code || !question_id || !user_id || !user_test_id) {
             return res.status(400).json({ error: "Missing fields" });
@@ -215,36 +208,36 @@ exports.submitCode = async (req, res) => {
             const input = (tc.input || "").trim();
             const expected = (tc.expected_output || "").trim();
 
-            const { stdout, stderr, time_ms = 0, memory_kb = 0 } =
+            const { stdout, stderr, time_ms, memory_kb } =
                 await runInDocker(code, input, language);
 
-            const output = (stdout || "").trim();
-            const passed = !stderr && output === expected;
-
+            const passed = !stderr && stdout === expected;
             if (!passed) allPassed = false;
 
             results.push({
                 input,
                 expected,
-                output,
-                passed,
+                output: stdout,
                 error: stderr || null,
+                passed,
                 runtime_ms: time_ms,
                 memory_kb
             });
         }
 
         const summary = {
-            total_tests: testCases.length,
+            total_tests: results.length,
             passed: results.filter(r => r.passed).length,
             failed: results.filter(r => !r.passed).length
         };
 
-        // ✅ INSERT ONLY WHEN allPassed = true
+        const avgRuntime = Math.round(results.reduce((a, b) => a + b.runtime_ms, 0) / results.length);
+        const avgMemory = Math.round(results.reduce((a, b) => a + b.memory_kb, 0) / results.length);
+
         if (allPassed) {
             await pool.query(
                 `INSERT INTO user_code_ans 
-                (question_id, user_test_id, user_id, code_language, user_code, is_correct, runtime_ms, memory_kb, result_summary) 
+                (question_id, user_test_id, user_id, code_language, user_code, is_correct, runtime_ms, memory_kb, result_summary)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     question_id,
@@ -253,25 +246,27 @@ exports.submitCode = async (req, res) => {
                     language,
                     code,
                     1,
-                    Math.round(results.reduce((a, b) => a + (b.runtime_ms || 0), 0) / results.length),
-                    Math.round(results.reduce((a, b) => a + (b.memory_kb || 0), 0) / results.length),
+                    avgRuntime,
+                    avgMemory,
                     JSON.stringify(summary)
                 ]
             );
         }
 
+        let message;
         if (results.some(r => r.error)) {
-            return res.json({
-                message: "Runtime or compilation error",
-                error: results.find(r => r.error)?.error,
-                results
-            });
+            const firstErr = results.find(r => r.error);
+            message = `Runtime or compilation error: ${firstErr.error}`;
+        } else if (!allPassed) {
+            message = `Some test cases failed (${summary.failed}/${summary.total_tests}).`;
+        } else {
+            message = "Code is correct — all test cases passed.";
         }
 
         return res.json({
-            message: allPassed
-                ? "Code is Correct and Question Solved"
-                : "Code logic is wrong",
+            success: allPassed,
+            message,
+            summary,
             results
         });
 
@@ -280,6 +275,8 @@ exports.submitCode = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 };
+
+
 
 
 exports.getCodeQuestion = async (req, res) => {

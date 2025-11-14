@@ -126,6 +126,7 @@ export default function CodeTestPage() {
                     <button
                         className={styles.abortConfirmBtn}
                         onClick={() => navigate("/dashboard/activity", { replace: true })}
+                    // onClick={() => navigate("/dashboard/activity")}
                     >
                         Confirm & Exit
                     </button>
@@ -160,6 +161,7 @@ export default function CodeTestPage() {
             <button className={styles.backBtn} onClick={() => {
                 pauseChecking();
                 navigate(`/dashboard/activity`, { replace: true });
+                // navigate(`/dashboard/activity`);
             }}>
                 <i className="bi bi-arrow-left"></i> Back
             </button>
@@ -233,6 +235,7 @@ export default function CodeTestPage() {
 
                                         setTimeout(() => {
                                             navigate("/dashboard/activity", { replace: true });
+                                            // navigate("/dashboard/activity");
                                         }, 2000);
                                     } catch (err) {
                                         console.error("Error completing test:", err);

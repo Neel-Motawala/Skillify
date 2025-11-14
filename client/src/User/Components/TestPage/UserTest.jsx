@@ -160,6 +160,7 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
             }
 
             navigate("/dashboard/activity", { replace: true });
+            // navigate("/dashboard/activity");
         };
 
         return (
@@ -206,6 +207,7 @@ export default function UserTest({ userId, courseId, testType, stage, testMode, 
     const handleQuit = () => {
         if (window.confirm("Are you sure you want to quit?"))
             navigate("/dashboard/activity", { replace: true });
+        // navigate("/dashboard/activity");
     };
 
     // ==================================================

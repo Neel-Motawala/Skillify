@@ -14,6 +14,7 @@ export default function ViewResult() {
         const handlePopState = (e) => {
             e.preventDefault();
             navigate("/dashboard/activity", { replace: true });
+            // navigate("/dashboard/activity");
         };
 
         window.addEventListener("popstate", handlePopState);
@@ -46,6 +47,7 @@ export default function ViewResult() {
                 <button
                     className={styles.backButton}
                     onClick={() => navigate("/dashboard/activity", { replace: true })}
+                // onClick={() => navigate("/dashboard/activity")}
                 >
                     ← Back
                 </button>

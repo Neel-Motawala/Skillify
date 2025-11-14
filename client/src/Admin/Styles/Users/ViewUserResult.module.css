@@ -1,0 +1,168 @@
+.page {
+  padding: 30px;
+  background: #eef3ff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Back button */
+.backBtn {
+  padding: 8px 16px;
+  background: #dce6ff;
+  border: 1px solid #a9c4ff;
+  color: #1e3a8a;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* TITLES */
+.pageTitle {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 5px;
+}
+
+.courseName {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 30px;
+}
+
+/* Heading Row */
+.headingRow {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #d0d9f5;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.leftHeading,
+.rightHeading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  gap: 30px;
+}
+
+.leftPane {
+  width: 65%;
+}
+
+.rightPane {
+  width: 35%;
+}
+
+/* Blocks */
+.block {
+  margin-bottom: 25px;
+}
+
+.blockTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+/* Question Card */
+.questionCard {
+  background: white;
+  padding: 18px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 5px solid #2563eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.answerBox {
+  background: #f8f9ff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd8ff;
+}
+
+/* Code Block */
+.codeSummary {
+  cursor: pointer;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.codeBlock {
+  background: #f0f4ff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #c7d9ff;
+  overflow-x: auto;
+}
+
+/* Right Pane Cards */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #2563eb;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #1e3a8a;
+}
+
+/* TIMELINE */
+.timeline {
+  border-left: 3px solid #2563eb;
+  padding-left: 20px;
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: #2563eb;
+  border-radius: 50%;
+  position: absolute;
+  left: -27px;
+  top: 5px;
+}
+
+.timelineStatus {
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 2px;
+}
+
+.statusDetail {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Loading & No Data */
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #475569;
+}

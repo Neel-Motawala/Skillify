@@ -276,7 +276,19 @@ export default function CodePlayground() {
 
 
         // Backend submission
-        const normalizedLang = courseLang === "c language" ? "c" : courseLang;
+        const normalizeLanguage = (lang) => {
+            const lower = lang.toLowerCase().trim();
+
+            if (lower === "c language" || lower === "c") return "c";
+            if (lower === "cpp" || lower === "c++" || lower === "c++ language") return "cpp";
+            if (lower === "javascript" || lower === "js") return "javascript";
+            if (lower === "python" || lower === "py") return "python";
+
+            return lower; // fallback
+        };
+
+        const normalizedLang = normalizeLanguage(courseLang);
+
         try {
             const res = await axios.post("http://localhost:5000/api/submit", {
                 question_id: questionId,
@@ -286,27 +298,40 @@ export default function CodePlayground() {
                 user_test_id: userTestId,
             });
 
+            // Backend error
             if (res.data.error) {
-                setOutput(res.data.error);
+                setOutput(`⚠ ${res.data.error}`);
                 return;
             }
 
-            const allPassed = res.data.results?.every((tc) => tc.passed);
-            if (!allPassed) {
-                setOutput("❌ Code logic is wrong");
+            const { success, message, results } = res.data;
+
+            // Runtime or Compilation error in one of the testcases
+            if (results?.some((r) => r.error)) {
+                const firstErr = results.find((r) => r.error)?.error || "Runtime error";
+                setOutput(`⚠ Runtime/Compilation Error:\n${firstErr}`);
                 return;
             }
 
-            setOutput("✅ Code is Correct and Question Solved");
+            // Some testcases failed
+            if (!success) {
+                setOutput(`❌ ${message}`);
+                return;
+            }
+
+            // All passed
+            setOutput(`✅ ${message}`);
+
             setTimeout(() => {
                 navigate(`/dashboard/course/${courseId}/code/${userTestId}`, { replace: true });
             }, 1000);
+
         } catch (err) {
-            if (err.response?.data?.error) setOutput(err.response.data.error);
-            else setOutput("Unexpected Error");
+            setOutput(err.response?.data?.error || "Unexpected Error");
         } finally {
             setLoading(false);
         }
+
     };
 
     // ---------------------------------------------------

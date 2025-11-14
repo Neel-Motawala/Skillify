@@ -16,6 +16,7 @@ import UserTest from "./Admin/Pages/UserTest";
 import UserReport from "./Admin/Pages/UserReport";
 import ViewUserTest from "./Admin/Components/User/ViewUserTest";
 import DetailUserTest from "./Admin/Pages/DetailUserTest";
+import ViewUserResult from "./Admin/Pages/ViewUserResult";
 
 import { UserProvider } from "./Admin/Context/UserContext";
 
@@ -74,6 +75,9 @@ function App() {
                     <Route path="manage-courses/:id/add" element={<AddQuestions />} />
                     <Route path="user-tests" element={<UserTest />} />
                     <Route path="user-tests/:userId" element={<ViewUserTest />} />
+                    <Route path="user-tests/:userId/result/:userTestId" element={<ViewUserResult />} />
+
+
                     <Route path="user-report" element={<UserReport />} />
                     <Route path="user-report/:userId" element={<DetailUserTest />} />
                   </Routes>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import styles from "./style/AdminLogin.module.css";
 
 const AdminLogin = () => {
     const navigate = useNavigate();
@@ -21,14 +22,19 @@ const AdminLogin = () => {
         setMessage({ text: "", type: "" });
 
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login-admin", formData);
+            const res = await axios.post(
+                "http://localhost:5000/api/auth/login-admin",
+                formData
+            );
 
             if (res.data.success) {
                 setMessage({ text: res.data.message, type: "success" });
+
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("role", res.data.role);
                 localStorage.setItem("id", res.data.adminId);
-                setTimeout(() => navigate("/admin-dashboard", { replace: true }), 1000);
+
+                setTimeout(() => navigate("/admin-dashboard", { replace: true }), 1200);
             } else {
                 setMessage({ text: res.data.error || "Login failed.", type: "error" });
             }
@@ -41,13 +47,16 @@ const AdminLogin = () => {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-            <div className="card shadow p-4" style={{ width: "400px" }}>
-                <h3 className="text-center mb-3">Admin Login</h3>
+        <div className={styles.adminLoginWrapper}>
+            <div className={styles.adminCard}>
+                <img src="/images/avtar/cat.png" className={styles.brandIcon} alt="Admin" />
+
+                <h3 className={styles.adminTitle}>Skillify Admin</h3>
+                <p className={styles.adminSubtitle}>Sign in to access your dashboard</p>
 
                 {message.text && (
                     <div
-                        className={`alert text-center py-2 ${message.type === "success" ? "alert-success" : "alert-danger"
+                        className={`${styles.alertBox} text-center ${message.type === "success" ? "alert alert-success" : "alert alert-danger"
                             }`}
                     >
                         {message.text}
@@ -56,30 +65,32 @@ const AdminLogin = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label className="form-label">Email</label>
+                        <label className={styles.formLabel}>Email</label>
                         <input
                             type="email"
                             name="admin_email"
-                            className="form-control"
+                            className={styles.formControl}
                             value={formData.admin_email}
                             onChange={handleChange}
+                            placeholder="Enter admin email"
                             required
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Password</label>
+                        <label className={styles.formLabel}>Password</label>
                         <input
                             type="password"
                             name="admin_password"
-                            className="form-control"
+                            className={styles.formControl}
                             value={formData.admin_password}
                             onChange={handleChange}
+                            placeholder="Enter password"
                             required
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary w-100">
+                    <button type="submit" className={styles.loginBtn}>
                         Login
                     </button>
                 </form>

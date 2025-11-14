@@ -1,0 +1,109 @@
+.adminLoginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.adminCard {
+  width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adminTitle {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 6px;
+}
+
+.adminSubtitle {
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.brandIcon {
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  display: block;
+  margin-bottom: 12px;
+  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+}
+
+.formLabel {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.formControl {
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s ease;
+  font-size: 15px;
+}
+
+.formControl:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  outline: none;
+}
+
+.loginBtn {
+  width: 100%;
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: background 0.25s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background: #1e40af;
+}
+
+.alertBox {
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 600;
+  animation: fadeSlide 0.5s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

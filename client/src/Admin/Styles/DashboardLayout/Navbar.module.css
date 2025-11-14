@@ -1,15 +1,17 @@
+/* NAVBAR WRAPPER */
 .navbarWrapper {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 2000;
 }
 
+/* NAVBAR */
 .navbar {
   width: 100%;
   height: 70px;
-  background: linear-gradient(90deg, #1e293b 0%, #1e293b 100%);
+  background: #1e293b; /* admin dark blue */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,7 +20,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Brand */
+/* BRAND */
 .brandSection {
   display: flex;
   align-items: center;
@@ -27,32 +29,39 @@
 .brandText {
   color: #ffffff;
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   margin: 0;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
 }
 
-/* Profile */
+/* PROFILE SECTION */
 .profileSection {
   display: flex;
   align-items: center;
 }
 
+/* Profile Button */
 .profileButton {
   display: flex;
   align-items: center;
-  background: none;
+  background: transparent;
   border: none;
   color: #f8fafc;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
 }
 
 .profileButton:hover {
-  color: #93c5fd;
+  background: rgba(255, 255, 255, 0.1);
 }
 
+/* Avatar */
 .avatar {
   width: 42px;
   height: 42px;
@@ -62,35 +71,44 @@
 }
 
 .avatar:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
   border-color: #fff;
 }
 
+/* Username */
 .username {
   font-size: 1rem;
   font-weight: 600;
   color: #f9fafb;
 }
 
+/* Dropdown Icon */
 .dropdownIcon {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #e2e8f0;
 }
 
-/* Dropdown menu */
+/* DROPDOWN MENU */
 .dropdownMenu {
+  margin-top: 14px !important;
   border-radius: 10px !important;
-  border: 1px solid #e2e8f0 !important;
-  min-width: 180px;
+  border: 1px solid #d0d7e0 !important;
+  min-width: 190px;
   overflow: hidden;
-  font-size: 0.9rem;
-  padding: 4px 0;
+  font-size: 0.92rem;
+  padding: 6px 0;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.12);
 }
 
+/* DROPDOWN ITEM */
 .dropdownItem {
   padding: 10px 16px;
   color: #1e293b;
   font-weight: 500;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
   transition:
     background 0.25s ease,
     color 0.25s ease;
@@ -101,6 +119,18 @@
   color: #1e40af;
 }
 
+/* Divider */
+.dropdownDivider {
+  margin: 5px 0;
+  border-color: #d1d5db;
+}
+
+/* Logout Item */
 .logout {
   color: #dc2626 !important;
+}
+
+.logout:hover {
+  background: #fee2e2;
+  color: #b91c1c !important;
 }

@@ -10,11 +10,14 @@ export default function PreviewPage() {
 
     const [editableAnswers, setEditableAnswers] = useState({ ...answers });
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false); // <- disable button
 
     useEffect(() => {
         const handlePopState = (e) => {
             e.preventDefault();
             navigate("/dashboard/activity", { replace: true });
+            // navigate("/dashboard/activity");
         };
         window.addEventListener("popstate", handlePopState);
         return () => window.removeEventListener("popstate", handlePopState);
@@ -25,10 +28,14 @@ export default function PreviewPage() {
     const handleEdit = (qid, value) => {
         setEditableAnswers((prev) => ({ ...prev, [qid]: value }));
         setMessage("Answer updated successfully");
+
         setTimeout(() => setMessage(""), 2000);
     };
 
     const handleSubmit = async () => {
+        setIsSubmitting(true);     // disable button
+        setLoading(true);          // show modal
+
         const mcqData = [];
         const theoryData = [];
 
@@ -52,25 +59,43 @@ export default function PreviewPage() {
         });
 
         try {
-            if (mcqData.length > 0)
+            if (mcqData.length > 0) {
                 await axios.post("http://localhost:5000/api/user-response/mcq", mcqData);
-            if (theoryData.length > 0)
+            }
+
+            if (theoryData.length > 0) {
                 await axios.post("http://localhost:5000/api/user-response/theory", theoryData);
+            }
 
-            alert("Answers submitted successfully.");
+            setTimeout(() => {
+                setLoading(false);
+                navigate(`/dashboard/course/${state?.courseId}/result/${userTestId}`, {
+                    replace: true,
+                });
+            }, 1000);
 
-            // Redirect to ViewResult page
-            navigate(`/dashboard/course/${state?.courseId}/result/${userTestId}`, { replace: true });
         } catch (error) {
             console.error("Error submitting answers:", error);
-            alert("Failed to submit answers. Check console for details.");
+            setLoading(false);
+            setIsSubmitting(false); // allow retry on failure
+            alert("Failed to submit answers.");
         }
-
     };
 
     return (
         <div className={styles.previewContainer}>
+            {/* Loading Modal */}
+            {loading && (
+                <div className={styles.loadingOverlay}>
+                    <div className={styles.loadingCard}>
+                        <div className={styles.loader}></div>
+                        <p>Please wait... Submitting your answers</p>
+                    </div>
+                </div>
+            )}
+
             <h2>Preview Your Answers</h2>
+
             <table className={styles.previewTable}>
                 <thead>
                     <tr>
@@ -79,6 +104,7 @@ export default function PreviewPage() {
                         <th>Your Answer</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {questions.map((q, idx) => (
                         <tr key={q.id}>
@@ -114,8 +140,17 @@ export default function PreviewPage() {
 
             {message && <p className={styles.successMessage}>{message}</p>}
 
-            <button className={styles.submitButton} onClick={handleSubmit}>
-                Submit Final Answers
+            {/* Disable button & show loading text */}
+            <button
+                className={styles.submitButton}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                style={{
+                    opacity: isSubmitting ? 0.6 : 1,
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                }}
+            >
+                {isSubmitting ? "Submitting..." : "Submit Final Answers"}
             </button>
         </div>
     );
